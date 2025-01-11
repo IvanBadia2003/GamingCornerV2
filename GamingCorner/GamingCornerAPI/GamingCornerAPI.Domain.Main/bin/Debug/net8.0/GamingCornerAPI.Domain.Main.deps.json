@@ -1,0 +1,70 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "GamingCornerAPI.Domain.Main/1.0.0": {
+        "dependencies": {
+          "GamingCornerAPI.Application.DTO": "1.0.0",
+          "GamingCornerAPI.CrossCutting.Enums": "1.0.0",
+          "GamingCornerAPI.Domain.Entities": "1.0.0"
+        },
+        "runtime": {
+          "GamingCornerAPI.Domain.Main.dll": {}
+        }
+      },
+      "GamingCornerAPI.Application.DTO/1.0.0": {
+        "dependencies": {
+          "GamingCornerAPI.CrossCutting.Enums": "1.0.0"
+        },
+        "runtime": {
+          "GamingCornerAPI.Application.DTO.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "GamingCornerAPI.CrossCutting.Enums/1.0.0": {
+        "runtime": {
+          "GamingCornerAPI.CrossCutting.Enums.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "GamingCornerAPI.Domain.Entities/1.0.0": {
+        "runtime": {
+          "GamingCornerAPI.Domain.Entities.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "GamingCornerAPI.Domain.Main/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GamingCornerAPI.Application.DTO/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GamingCornerAPI.CrossCutting.Enums/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GamingCornerAPI.Domain.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2D911F84-A424-4B96-9E6F-C1DDF25D815B}|GamingCornerAPI.Data.Main\\GamingCornerAPI.Data.Main.csproj|c:\\proyectos\\tfg\\gamingcorner\\gamingcornerapi\\gamingcornerapi.data.main\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2D911F84-A424-4B96-9E6F-C1DDF25D815B}|GamingCornerAPI.Data.Main\\GamingCornerAPI.Data.Main.csproj|solutionrelative:gamingcornerapi.data.main\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{925CDE76-935A-43FD-B8DD-BFCEE479601D}|GamingCornerAPI.Domain.Entities\\GamingCornerAPI.Domain.Entities.csproj|c:\\proyectos\\tfg\\gamingcorner\\gamingcornerapi\\gamingcornerapi.domain.entities\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{925CDE76-935A-43FD-B8DD-BFCEE479601D}|GamingCornerAPI.Domain.Entities\\GamingCornerAPI.Domain.Entities.csproj|solutionrelative:gamingcornerapi.domain.entities\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{925CDE76-935A-43FD-B8DD-BFCEE479601D}|GamingCornerAPI.Domain.Entities\\GamingCornerAPI.Domain.Entities.csproj|c:\\proyectos\\tfg\\gamingcorner\\gamingcornerapi\\gamingcornerapi.domain.entities\\producto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{925CDE76-935A-43FD-B8DD-BFCEE479601D}|GamingCornerAPI.Domain.Entities\\GamingCornerAPI.Domain.Entities.csproj|solutionrelative:gamingcornerapi.domain.entities\\producto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F03E7EA0-5D8C-4AE3-B3D3-2D94CBBD2E03}|GamingCornerAPI.Domain.Main\\GamingCornerAPI.Domain.Main.csproj|c:\\proyectos\\tfg\\gamingcorner\\gamingcornerapi\\gamingcornerapi.domain.main\\services\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F03E7EA0-5D8C-4AE3-B3D3-2D94CBBD2E03}|GamingCornerAPI.Domain.Main\\GamingCornerAPI.Domain.Main.csproj|solutionrelative:gamingcornerapi.domain.main\\services\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D911F84-A424-4B96-9E6F-C1DDF25D815B}|GamingCornerAPI.Data.Main\\GamingCornerAPI.Data.Main.csproj|c:\\proyectos\\tfg\\gamingcorner\\gamingcornerapi\\gamingcornerapi.data.main\\repositories\\userrepository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2D911F84-A424-4B96-9E6F-C1DDF25D815B}|GamingCornerAPI.Data.Main\\GamingCornerAPI.Data.Main.csproj|solutionrelative:gamingcornerapi.data.main\\repositories\\userrepository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36F3EEC8-8BBC-4D35-A7AF-F9AC1E93B4DD}|GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj|c:\\proyectos\\tfg\\gamingcorner\\gamingcornerapi\\gamingcornerapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36F3EEC8-8BBC-4D35-A7AF-F9AC1E93B4DD}|GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj|solutionrelative:gamingcornerapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CAB51C64-9C5C-47BF-905F-99E8465853C4}|GamingCornerAPI.Application.Main\\GamingCornerAPI.Application.Main.csproj|c:\\proyectos\\tfg\\gamingcorner\\gamingcornerapi\\gamingcornerapi.application.main\\userservices\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CAB51C64-9C5C-47BF-905F-99E8465853C4}|GamingCornerAPI.Application.Main\\GamingCornerAPI.Application.Main.csproj|solutionrelative:gamingcornerapi.application.main\\userservices\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36F3EEC8-8BBC-4D35-A7AF-F9AC1E93B4DD}|GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj|c:\\proyectos\\tfg\\gamingcorner\\gamingcornerapi\\gamingcornerapi\\gamingcornerapi.presentation.mvc.main.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{36F3EEC8-8BBC-4D35-A7AF-F9AC1E93B4DD}|GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj|solutionrelative:gamingcornerapi\\gamingcornerapi.presentation.mvc.main.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{842AF3CD-6084-4621-B9D8-0ED8F02B1993}|Elementos de la soluci\u00F3n{842AF3CD-6084-4621-B9D8-0ED8F02B1993}|C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{842AF3CD-6084-4621-B9D8-0ED8F02B1993}|Elementos de la soluci\u00F3n{842AF3CD-6084-4621-B9D8-0ED8F02B1993}|solutionrelative:docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36F3EEC8-8BBC-4D35-A7AF-F9AC1E93B4DD}|GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj|c:\\proyectos\\tfg\\gamingcorner\\gamingcornerapi\\gamingcornerapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{36F3EEC8-8BBC-4D35-A7AF-F9AC1E93B4DD}|GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj|solutionrelative:gamingcornerapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36F3EEC8-8BBC-4D35-A7AF-F9AC1E93B4DD}|GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj|c:\\proyectos\\tfg\\gamingcorner\\gamingcornerapi\\gamingcornerapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36F3EEC8-8BBC-4D35-A7AF-F9AC1E93B4DD}|GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj|solutionrelative:gamingcornerapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CAB51C64-9C5C-47BF-905F-99E8465853C4}|GamingCornerAPI.Application.Main\\GamingCornerAPI.Application.Main.csproj|c:\\proyectos\\tfg\\gamingcorner\\gamingcornerapi\\gamingcornerapi.application.main\\userservices\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CAB51C64-9C5C-47BF-905F-99E8465853C4}|GamingCornerAPI.Application.Main\\GamingCornerAPI.Application.Main.csproj|solutionrelative:gamingcornerapi.application.main\\userservices\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Producto.cs",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Entities\\Producto.cs",
+              "RelativeDocumentMoniker": "GamingCornerAPI.Domain.Entities\\Producto.cs",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Entities\\Producto.cs",
+              "RelativeToolTip": "GamingCornerAPI.Domain.Entities\\Producto.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB8AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T17:37:41.048Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IUserRepository.cs",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Main\\Services\\IUserRepository.cs",
+              "RelativeDocumentMoniker": "GamingCornerAPI.Domain.Main\\Services\\IUserRepository.cs",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Main\\Services\\IUserRepository.cs",
+              "RelativeToolTip": "GamingCornerAPI.Domain.Main\\Services\\IUserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T12:31:05.357Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Usuario.cs",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Entities\\Usuario.cs",
+              "RelativeDocumentMoniker": "GamingCornerAPI.Domain.Entities\\Usuario.cs",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Entities\\Usuario.cs",
+              "RelativeToolTip": "GamingCornerAPI.Domain.Entities\\Usuario.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T12:30:41.736Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "GamingCornerAPI\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI\\Controllers\\UserController.cs",
+              "RelativeToolTip": "GamingCornerAPI\\Controllers\\UserController.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAA6wDoAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T12:20:45.751Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Application.Main\\UserServices\\UserService.cs",
+              "RelativeDocumentMoniker": "GamingCornerAPI.Application.Main\\UserServices\\UserService.cs",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Application.Main\\UserServices\\UserService.cs",
+              "RelativeToolTip": "GamingCornerAPI.Application.Main\\UserServices\\UserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T11:56:11.326Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Data.Main\\Repositories\\UserRepository\\UserRepository.cs",
+              "RelativeDocumentMoniker": "GamingCornerAPI.Data.Main\\Repositories\\UserRepository\\UserRepository.cs",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Data.Main\\Repositories\\UserRepository\\UserRepository.cs",
+              "RelativeToolTip": "GamingCornerAPI.Data.Main\\Repositories\\UserRepository\\UserRepository.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAswAsAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T12:02:45.66Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "GamingCornerAPI\\appsettings.json",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI\\appsettings.json",
+              "RelativeToolTip": "GamingCornerAPI\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-12-13T16:30:07.11Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Data.Main\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "GamingCornerAPI.Data.Main\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Data.Main\\ApplicationDbContext.cs",
+              "RelativeToolTip": "GamingCornerAPI.Data.Main\\ApplicationDbContext.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAcwEIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T11:36:20.778Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI\\Program.cs",
+              "RelativeDocumentMoniker": "GamingCornerAPI\\Program.cs",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI\\Program.cs",
+              "RelativeToolTip": "GamingCornerAPI\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T11:56:45.515Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Application.Main\\UserServices\\IUserService.cs",
+              "RelativeDocumentMoniker": "GamingCornerAPI.Application.Main\\UserServices\\IUserService.cs",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Application.Main\\UserServices\\IUserService.cs",
+              "RelativeToolTip": "GamingCornerAPI.Application.Main\\UserServices\\IUserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAwAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T12:22:41.133Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "docker-compose.yml",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\docker-compose.yml",
+              "RelativeDocumentMoniker": "docker-compose.yml",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\docker-compose.yml",
+              "RelativeToolTip": "docker-compose.yml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
+              "WhenOpened": "2024-12-13T16:29:26.202Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "GamingCornerAPI.Presentation.MVC.Main.csproj",
+              "DocumentMoniker": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj",
+              "RelativeDocumentMoniker": "GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj",
+              "ToolTip": "C:\\Proyectos\\TFG\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj",
+              "RelativeToolTip": "GamingCornerAPI\\GamingCornerAPI.Presentation.MVC.Main.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-12-13T11:53:45.788Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

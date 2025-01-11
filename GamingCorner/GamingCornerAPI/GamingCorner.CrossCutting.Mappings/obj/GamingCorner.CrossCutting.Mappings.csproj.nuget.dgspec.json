@@ -1,0 +1,269 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCorner.CrossCutting.Mappings\\GamingCorner.CrossCutting.Mappings.csproj": {}
+  },
+  "projects": {
+    "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCorner.CrossCutting.Mappings\\GamingCorner.CrossCutting.Mappings.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCorner.CrossCutting.Mappings\\GamingCorner.CrossCutting.Mappings.csproj",
+        "projectName": "GamingCorner.CrossCutting.Mappings",
+        "projectPath": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCorner.CrossCutting.Mappings\\GamingCorner.CrossCutting.Mappings.csproj",
+        "packagesPath": "C:\\Users\\ibadia\\.nuget\\packages\\",
+        "outputPath": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCorner.CrossCutting.Mappings\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\ibadia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Application.DTO\\GamingCornerAPI.Application.DTO.csproj": {
+                "projectPath": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Application.DTO\\GamingCornerAPI.Application.DTO.csproj"
+              },
+              "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Entities\\GamingCornerAPI.Domain.Entities.csproj": {
+                "projectPath": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Entities\\GamingCornerAPI.Domain.Entities.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Application.DTO\\GamingCornerAPI.Application.DTO.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Application.DTO\\GamingCornerAPI.Application.DTO.csproj",
+        "projectName": "GamingCornerAPI.Application.DTO",
+        "projectPath": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Application.DTO\\GamingCornerAPI.Application.DTO.csproj",
+        "packagesPath": "C:\\Users\\ibadia\\.nuget\\packages\\",
+        "outputPath": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Application.DTO\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\ibadia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.CrossCutting.Enums\\GamingCornerAPI.CrossCutting.Enums.csproj": {
+                "projectPath": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.CrossCutting.Enums\\GamingCornerAPI.CrossCutting.Enums.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.CrossCutting.Enums\\GamingCornerAPI.CrossCutting.Enums.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.CrossCutting.Enums\\GamingCornerAPI.CrossCutting.Enums.csproj",
+        "projectName": "GamingCornerAPI.CrossCutting.Enums",
+        "projectPath": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.CrossCutting.Enums\\GamingCornerAPI.CrossCutting.Enums.csproj",
+        "packagesPath": "C:\\Users\\ibadia\\.nuget\\packages\\",
+        "outputPath": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.CrossCutting.Enums\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\ibadia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Entities\\GamingCornerAPI.Domain.Entities.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Entities\\GamingCornerAPI.Domain.Entities.csproj",
+        "projectName": "GamingCornerAPI.Domain.Entities",
+        "projectPath": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Entities\\GamingCornerAPI.Domain.Entities.csproj",
+        "packagesPath": "C:\\Users\\ibadia\\.nuget\\packages\\",
+        "outputPath": "C:\\Ivan\\GamingCorner\\GamingCornerAPI\\GamingCornerAPI.Domain.Entities\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\ibadia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

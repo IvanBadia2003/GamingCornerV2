@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\GamingCornerAPI.Presentation.MVC.Main.props" />
+</Project>
