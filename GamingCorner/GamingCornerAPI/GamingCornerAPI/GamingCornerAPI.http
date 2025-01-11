@@ -1,6 +1,0 @@
-@GamingCornerAPI_HostAddress = http://localhost:5125
-
-GET {{GamingCornerAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
