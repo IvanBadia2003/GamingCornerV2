@@ -3,6 +3,7 @@
   <h2>DESTACADOS Y RECOMENDADOS</h2>
   <DestacablesComponent />
  
+  <h2>top ventas - JUEGOS</h2>
 
   <GridComponent />
 </v-container>
