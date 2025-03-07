@@ -1,6 +1,5 @@
   <script setup lang="ts">
   import PrincipalImage from '../Images/PrincipalImage.vue';
-  import SecondaryImage from '../Images/SecondaryImage.vue';
 
 
 </script>
