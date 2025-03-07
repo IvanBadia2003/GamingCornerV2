@@ -28,11 +28,20 @@ h2 {
     size: clamp(24px, 7vw, 48px);
   }
 }
+
 h3 {
   font: {
     family: "Bebas Neue", serif;
     weight: 400;
     size: 4vw;
+  }
+}
+
+h5 {
+  font: {
+    family: "Bebas Neue", serif;
+    weight: 400;
+    size: clamp(12px, 1.5vw, 24px);
   }
 }
 </style>

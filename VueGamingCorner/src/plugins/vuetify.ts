@@ -18,7 +18,7 @@ const myCustomLightTheme = {
     warning: '#FB8C00', // Naranja para advertencias
     'on-background': '#000000', // Color del texto sobre el fondo
     'on-surface': '#000000', // Color del texto sobre la superficie
-    'on-primary': '#FFFFFF', // Color del texto sobre el color primario
+    'on-primary': '#000000', // Color del texto sobre el color primario
     'on-secondary': '#000000', // Color del texto sobre el color secundario
     'on-error': '#FFFFFF', // Color del texto sobre el color de error
     'on-info': '#FFFFFF', // Color del texto sobre el color de información
@@ -51,8 +51,8 @@ const myCustomDarkTheme = {
     warning: '#FB8C00', // Naranja para advertencias
     'on-background': '#FFFFFF', // Color del texto sobre el fondo
     'on-surface': '#FFFFFF', // Color del texto sobre la superficie
-    'on-primary': '#000000', // Color del texto sobre el color primario
-    'on-secondary': '#000000', // Color del texto sobre el color secundario
+    'on-primary': '#FFFFFF', // Color del texto sobre el color primario
+    'on-secondary': '#FFFFFF', // Color del texto sobre el color secundario
     'on-error': '#000000', // Color del texto sobre el color de error
     'on-info': '#000000', // Color del texto sobre el color de información
     'on-success': '#000000', // Color del texto sobre el color de éxito
