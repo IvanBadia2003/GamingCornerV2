@@ -27,7 +27,7 @@ const toggleMenu = ref<boolean>(false);
 
         <ul class="menu" :class="{ 'open': toggleMenu }">
             <router-link class="item" :to="'/'">Inicio</router-link>
-            <router-link class="item" :to="'/grid'">Productos</router-link>
+            <router-link class="item" :to="'/catalog'">Productos</router-link>
             <router-link class="item" :to="'/grid-segunda-mano'">Segunda Mano</router-link>
             <router-link class="item" :to="'/perfil'">Perfil</router-link>
             <!-- <router-link v-if="UserStore.user.isAuthenticated == false" class="btn" :to="'/login'">Login</router-link>
