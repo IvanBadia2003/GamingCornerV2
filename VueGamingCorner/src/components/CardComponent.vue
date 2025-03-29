@@ -8,7 +8,8 @@ defineProps({
 });
 </script>
 <template>
-  <v-card tile style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
+  <router-link to="/description/1">
+    <v-card tile style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
     <div class="discount bg-primary"><h5>50%</h5></div>
     <div style="height: 85%;">
       <v-img :src="src" cover height="100%" width="100%" />
@@ -18,6 +19,9 @@ defineProps({
       <h5>43€</h5>
     </div>
   </v-card>
+
+  </router-link>
+
 </template>
 
 <style lang="scss" scoped>
