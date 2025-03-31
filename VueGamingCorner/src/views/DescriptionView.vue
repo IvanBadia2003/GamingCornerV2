@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PrincipalImage from '@/components/Images/PrincipalImage.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 
 const loading = ref(false)
@@ -9,6 +9,52 @@ function reserve() {
     loading.value = true
     setTimeout(() => (loading.value = false), 2000)
 }
+
+
+
+/* PARA EL CARRUSEL */
+
+const images = ref([
+    "https://helios-i.mashable.com/imagery/articles/02aR11GDLtX9X3OuVX7Oh9E/images-4.fill.size_2000x1125.v1667406172.png",
+    "https://preview.redd.it/zero-dawn-remastered-pre-load-v0-z4vhl1l56lwd1.jpeg?auto=webp&s=061dd572a460a5883ca3d6c86e95d6a0fefdffae",
+    "https://helios-i.mashable.com/imagery/articles/02aR11GDLtX9X3OuVX7Oh9E/images-4.fill.size_2000x1125.v1667406172.png",
+    "https://helios-i.mashable.com/imagery/articles/02aR11GDLtX9X3OuVX7Oh9E/images-4.fill.size_2000x1125.v1667406172.png"
+
+]);
+
+const selectedImage = ref(images.value[0]);
+
+
+
+
+/* PARA LA DESCRIPCIÓN */
+const maxLength = 800; // Caracteres antes de truncar
+const isExpanded = ref(false);
+
+const truncatedDescription = computed(() =>
+    description.value.length > maxLength
+        ? description.value.substring(0, maxLength) + '...'
+        : description.value
+);
+
+const description = ref(
+    `Obligados a rebelarse. Perseguidos desde dentro. Esto es Call of Duty: Black Ops 6.
+Desarrollado por Treyarch y Raven, Black Ops 6 es un thriller de acción y espionaje ambientado a principios de los 90, un periodo de transición y agitación en el ámbito político mundial caracterizado por el fin de la Guerra Fría y el auge de Estados Unidos como superpotencia. Con una apasionante narrativa y libre de ataduras, presentamos el inconfundible Black Ops.
+La campaña de Black Ops 6 ofrece una mecánica dinámica a cada momento, distintos espacios de juego con escenas impactantes y situaciones, asaltos de alto riesgo y actividades de espionaje clandestinas cargados de acción.
+En esta experiencia Multijugador inmejorable, los jugadores pondrán a prueba sus habilidades en 16 nuevos mapas, que incluyen 12 mapas principales 6c6 y 4 mapas de asalto que pueden jugarse en 2c2 o 6c6.
+Black Ops 6 marca también el regreso de Zombis por rondas, con dos mapas nuevos de ese modo tan querido en el que los jugadores acaban con hordas de no muertos. Entre el contenido adicional que vendrá, habrá disponibles más mapas emocionantes y experiencias demoledoras, tanto para el Multijugador como para Zombis.
+</br>Obligados a rebelarse. Perseguidos desde dentro. Esto es Call of Duty: Black Ops 6.
+Desarrollado por Treyarch y Raven, Black Ops 6 es un thriller de acción y espionaje ambientado a principios de los 90, un periodo de transición y agitación en el ámbito político mundial caracterizado por el fin de la Guerra Fría y el auge de Estados Unidos como superpotencia. Con una apasionante narrativa y libre de ataduras, presentamos el inconfundible Black Ops.
+La campaña de Black Ops 6 ofrece una mecánica dinámica a cada momento, distintos espacios de juego con escenas impactantes y situaciones, asaltos de alto riesgo y actividades de espionaje clandestinas cargados de acción.
+En esta experiencia Multijugador inmejorable, los jugadores pondrán a prueba sus habilidades en 16 nuevos mapas, que incluyen 12 mapas principales 6c6 y 4 mapas de asalto que pueden jugarse en 2c2 o 6c6.
+Black Ops 6 marca también el regreso de Zombis por rondas, con dos mapas nuevos de ese modo tan querido en el que los jugadores acaban con hordas de no muertos. Entre el contenido adicional que vendrá, habrá disponibles más mapas emocionantes y experiencias demoledoras, tanto para el Multijugador como para Zombis.`
+);
+
+
+const toggleExpand = () => {
+    isExpanded.value = !isExpanded.value;
+};
+
 </script>
 
 
@@ -25,10 +71,10 @@ function reserve() {
 
         <!-- Contenedor del contenido -->
         <v-container class="content">
-            <v-row >
+            <v-row style="width: 80%;" class="">
                 <!-- Imagen principal del juego -->
                 <v-col cols="12" md="6">
-                    <v-sheet class="game-cover" max-width="600">
+                    <v-sheet class="game-cover">
                         <v-img
                             src="https://preview.redd.it/zero-dawn-remastered-pre-load-v0-z4vhl1l56lwd1.jpeg?auto=webp&s=061dd572a460a5883ca3d6c86e95d6a0fefdffae"
                             cover width="100%" class="img" />
@@ -36,15 +82,36 @@ function reserve() {
                 </v-col>
 
                 <!-- Información del juego -->
-                <v-col cols="12" md="6" class="game-info" > 
-                    <v-card height="100%" :disabled="loading" :loading="loading" class="d-flex flex-column align-center text-center"    style=" background: rgba(0, 0, 0, 0.7);"
-                    >
+                <v-col cols="12" md="6" class="game-info">
+                    <v-card height="100%" :disabled="loading" :loading="loading"
+                        class="d-flex flex-column align-center justify-space-around text-center "
+                        style=" background: #1A2A3EB3">
 
                         <v-card-title class="text-overline">
-                            <h1 class="game-title">Nombre del Juego</h1>
+                            <h1 class="game-title">God of war</h1>
                         </v-card-title>
 
+                        <div class="d-flex py-3 justify-space-between bg-background">
+                            <v-list-item density="compact">
+                                <v-list-item-subtitle>123</v-list-item-subtitle>
+                            </v-list-item>
 
+                            <v-list-item density="compact">
+                                <v-list-item-subtitle>48%</v-list-item-subtitle>
+                            </v-list-item>
+                            <v-list-item density="compact">
+                                <v-list-item-subtitle>48%</v-list-item-subtitle>
+                            </v-list-item>
+                        </div>
+                        <div class="d-flex py-3 justify-space-between">
+                            <v-list-item density="compact">
+                                <v-list-item-subtitle>123</v-list-item-subtitle>
+                            </v-list-item>
+
+                            <v-list-item density="compact">
+                                <v-list-item-subtitle>48%</v-list-item-subtitle>
+                            </v-list-item>
+                        </div>
 
                         <v-card-actions>
                             <v-btn color="deep-purple-lighten-2" text="Añadir a favoritos" border
@@ -55,7 +122,196 @@ function reserve() {
                     </v-card>
 
                 </v-col>
+
             </v-row>
+            <v-row style="width: 100%;" class="pt-15">
+                <v-col cols="12" md="6">
+                    <h3>MULTIMEDIA</h3>
+
+                    <!-- Imagen principal -->
+                    <v-img :src="selectedImage" class="main-image rounded-lg border-primary" cover></v-img>
+
+                    <!-- Miniaturas -->
+                    <v-row class="mt-3 thumbnails">
+                        <v-col v-for="(image, index) in images" :key="index" cols="3">
+                            <v-img :src="image" class="thumbnail rounded-lg" cover
+                                @click="selectedImage = image"></v-img>
+                        </v-col>
+                    </v-row>
+
+                </v-col>
+                <v-col cols="12" md="6">
+                    <h3>INFORMACIÓN</h3>
+
+                    <v-card class="game-card">
+                        <v-card-text>
+                            <div class="review-score">
+                                <v-avatar class="score-circle" color="green-darken-2">9</v-avatar>
+                                <span class="reviews">Basado en 30 reseñas</span>
+                            </div>
+                            <v-divider class="my-3"></v-divider>
+                            <v-container>
+                                <v-row dense>
+                                    <v-col cols="12">
+                                        <strong>Género:</strong>
+                                    </v-col>
+
+                                    <v-col cols="12" sm="6">
+                                        <strong>Fecha de lanzamiento:</strong>
+                                    </v-col>
+                                    <v-col cols="12" sm="6">
+                                        24 de octubre de 2024
+                                    </v-col>
+
+                                    <v-col cols="12" sm="6">
+                                        <strong>Desarrollador:</strong>
+                                    </v-col>
+                                    <v-col cols="12" sm="6">
+                                        Raven Software Treyarch
+                                    </v-col>
+
+                                    <v-col cols="12" sm="6">
+                                        <strong>Distribuidor:</strong>
+                                    </v-col>
+                                    <v-col cols="12" sm="6">
+                                        Activision
+                                    </v-col>
+
+                                    <v-col cols="12" sm="6">
+                                        <strong>Instalación:</strong>
+                                    </v-col>
+                                    <v-col cols="12" sm="6">
+                                        Cómo activar tu producto
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+
+                            <v-divider class="my-3"></v-divider>
+                            <div class="tags">
+                                <v-chip class="mr-2" color="blue-darken-3">UN JUGADOR</v-chip>
+                                <v-chip class="mr-2" color="blue-darken-3">UN JUGADOR</v-chip>
+                                <v-chip color="blue-darken-3">UN JUGADOR</v-chip>
+                            </div>
+                            <v-img class="pegi-logo" src="https://www.pegi.info/themes/custom/pegi/public/pegi18.png"
+                                height="50" contain></v-img>
+                        </v-card-text>
+                    </v-card>
+
+                </v-col>
+            </v-row>
+            <v-row style="width: 100%;" class="pt-15">
+
+
+                <v-col cols="12">
+                    <h3>ACERCA DE</h3>
+                    <p class="game-text">
+                        {{ isExpanded ? description : truncatedDescription }}
+
+                    </p>
+                    <v-btn variant="text" class="text-primary" @click="toggleExpand">
+                        {{ isExpanded ? 'Ver menos' : 'Ver más' }}
+                    </v-btn>
+
+
+                </v-col>
+
+            </v-row>
+
+            <v-row style="width: 100%;" class="pt-15">
+
+
+                <v-col cols="12">
+                    <h3>CONFIGURACIÓN</h3>
+                    <v-row dense>
+                        <v-col cols="12" lg="6">
+                            <h4>MINIMA</h4>
+
+                            <v-row dense>
+                                <v-col cols="5">
+                                    <strong>SO:</strong>
+                                </v-col>
+                                <v-col cols="7">
+                                    Windows 10 - 64-bit
+                                </v-col>
+
+                                <v-col cols="5">
+                                    <strong>PROCESADOR:</strong>
+                                </v-col>
+                                <v-col cols="7">
+                                    Intel Core i5-2500K / AMD FX-6300
+                                </v-col>
+
+                                <v-col cols="5">
+                                    <strong>MEMORIA:</strong>
+                                </v-col>
+                                <v-col cols="7">
+                                    8 GB RAM
+                                </v-col>
+
+                                <v-col cols="5">
+                                    <strong>GRÁFICOS:</strong>
+                                </v-col>
+                                <v-col cols="7">
+                                    Nvidia GeForce GTX 770 2GB / AMD Radeon R9 280 3GB
+                                </v-col>
+
+                                <v-col cols="5">
+                                    <strong>ALMACENAMIENTO:</strong>
+                                </v-col>
+                                <v-col cols="7">
+                                    150 GB available space
+                                </v-col>
+                            </v-row>
+
+                        </v-col>
+                        <v-col cols="12" lg="6">
+                            <h4>MAXIMA</h4>
+                            <v-row dense>
+                                <v-col cols="5">
+                                    <strong>SO:</strong>
+                                </v-col>
+                                <v-col cols="7">
+                                    Windows 10 - 64-bit
+                                </v-col>
+
+                                <v-col cols="5">
+                                    <strong>PROCESADOR:</strong>
+                                </v-col>
+                                <v-col cols="7">
+                                    Intel Core i5-2500K / AMD FX-6300
+                                </v-col>
+
+                                <v-col cols="5">
+                                    <strong>MEMORIA:</strong>
+                                </v-col>
+                                <v-col cols="7">
+                                    8 GB RAM
+                                </v-col>
+
+                                <v-col cols="5">
+                                    <strong>GRÁFICOS:</strong>
+                                </v-col>
+                                <v-col cols="7">
+                                    Nvidia GeForce GTX 770 2GB / AMD Radeon R9 280 3GB
+                                </v-col>
+
+                                <v-col cols="5">
+                                    <strong>ALMACENAMIENTO:</strong>
+                                </v-col>
+                                <v-col cols="7">
+                                    150 GB available space
+                                </v-col>
+                            </v-row>
+
+                        </v-col>
+
+                    </v-row>
+
+
+                </v-col>
+
+            </v-row>
+
         </v-container>
     </v-container>
 
@@ -85,6 +341,9 @@ function reserve() {
     margin-top: 20vh;
     border-radius: 10px;
     width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* .game-cover img {
@@ -92,4 +351,66 @@ function reserve() {
     width: 100%;
     height: auto;
 } */
+
+
+
+
+.main-image {
+    border: 2px solid #1976d2;
+
+}
+
+
+
+.thumbnail {
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border 0.3s
+}
+
+.thumbnail:hover {
+    border: 2px solid #1976d2;
+}
+
+
+
+
+
+
+
+.game-card {
+    background: #1e293b;
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.review-score {
+    display: flex;
+    align-items: center;
+}
+
+.score-circle {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+
+.reviews {
+    margin-left: 12px;
+    font-size: 14px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.pegi-logo {
+    margin-top: 12px;
+    align-self: flex-end;
+}
 </style>

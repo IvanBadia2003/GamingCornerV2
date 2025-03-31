@@ -33,7 +33,15 @@ h3 {
   font: {
     family: "Bebas Neue", serif;
     weight: 400;
-    size: 4vw;
+    size: clamp(20px, 5vw, 40px);
+  }
+}
+
+h4 {
+  font: {
+    family: "Bebas Neue", serif;
+    weight: 400;
+    size: clamp(15px, 2.5vw, 30px);
   }
 }
 
@@ -42,6 +50,13 @@ h5 {
     family: "Bebas Neue", serif;
     weight: 400;
     size: clamp(12px, 1.5vw, 24px);
+  }
+}
+
+p {
+  font: {
+    family: "Montserrat", serif;
+    size: clamp(1rem, 1vw, 2rem);
   }
 }
 </style>
