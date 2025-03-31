@@ -2,6 +2,8 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import '@mdi/font/css/materialdesignicons.css'
+
 
 const myCustomLightTheme = {
   dark: false,
@@ -78,5 +80,8 @@ export default createVuetify({
       myCustomLightTheme,
       myCustomDarkTheme,
     },
+  },
+  icons: {
+    defaultSet: 'mdi', // Configura MDI como el conjunto de iconos predeterminado
   },
 })
