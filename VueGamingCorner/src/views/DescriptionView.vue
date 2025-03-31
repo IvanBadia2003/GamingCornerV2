@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import PrincipalImage from '@/components/Images/PrincipalImage.vue';
 import { computed, ref } from 'vue';
+import CardComponent from '@/components/CardComponent.vue'
 
 
 const loading = ref(false)
@@ -54,6 +55,63 @@ Black Ops 6 marca también el regreso de Zombis por rondas, con dos mapas nuevos
 const toggleExpand = () => {
     isExpanded.value = !isExpanded.value;
 };
+
+
+
+/* PARA LOS PRODUCTOS SIMILARES */
+const populars = [
+    {
+        img: "image/1.png",
+        title: "Appel Mac Book Pro",
+        price: "$ 93.358.01",
+        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
+    },
+    {
+        img: "image/2.png",
+        title: "Appel Mac Book Pro",
+        price: "$ 93.358.01",
+        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
+    },
+    {
+        img: "image/3.png",
+        title: "Appel Mac Book Pro",
+        price: "$ 93.358.01",
+        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
+    },
+    {
+        img: "image/4.png",
+        title: "Appel Mac Book Pro",
+        price: "$ 93.358.01",
+        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
+    },
+    {
+        img: "image/1.png",
+        title: "Appel Mac Book Pro",
+        price: "$ 93.358.01",
+        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
+    },
+    {
+        img: "image/2.png",
+        title: "Appel Mac Book Pro",
+        price: "$ 93.358.01",
+        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
+    },
+    {
+        img: "image/3.png",
+        title: "Appel Mac Book Pro",
+        price: "$ 93.358.01",
+        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
+    },
+    {
+        img: "image/4.png",
+        title: "Appel Mac Book Pro",
+        price: "$ 93.358.01",
+        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
+    },
+]
+
+/* RESEÑAS */
+const rating = ref(4.5)
 
 </script>
 
@@ -217,7 +275,7 @@ const toggleExpand = () => {
 
             </v-row>
 
-            <v-row style="width: 100%;" class="pt-15">
+            <v-row style="width: 100%;" class="py-15">
 
 
                 <v-col cols="12">
@@ -313,6 +371,117 @@ const toggleExpand = () => {
             </v-row>
 
         </v-container>
+
+
+        <v-row class="bg-primary my-15">
+            <v-container class="content mt-0">
+                <v-col cols="12">
+                    <h3>Productos similares</h3>
+                    <v-carousel height="auto" hide-delimiters style=" position: relative;">
+                        <!-- Botón Anterior -->
+                        <template v-slot:prev="{ props }">
+                            <v-btn variant="elevated" class="custom-prev" @click="props.onClick"
+                                style="position: absolute;  left: 0;">
+                                ◀
+                            </v-btn>
+                        </template>
+
+                        <!-- Botón Siguiente -->
+                        <template v-slot:next="{ props }">
+                            <v-btn variant="elevated" class="custom-next" @click="props.onClick"
+                                style="position: absolute;  right:  0;">
+                                ▶
+                            </v-btn>
+                        </template>
+                        <v-carousel-item v-for="(item, i) in 2" :key="i">
+                            <v-row>
+                                <v-col v-for="(item, i) in 4" :key="i" cols="6" lg="3">
+
+                                    <CardComponent title="Silent Hill"
+                                        src="https://media.vandal.net/m/4-2024/21/202442110133878_1.jpg" />
+                                </v-col>
+
+                            </v-row>
+
+                        </v-carousel-item>
+                    </v-carousel>
+                </v-col>
+            </v-container>
+
+        </v-row>
+        <v-row class="bg-primary my-15">
+            <v-container class="content mt-0">
+                <v-col cols="12">
+                    <h3>CONSOLAS COMPATIBLES</h3>
+                    <v-carousel height="auto" hide-delimiters style=" position: relative;">
+                        <!-- Botón Anterior -->
+                        <template v-slot:prev="{ props }">
+                            <v-btn variant="elevated" class="custom-prev" @click="props.onClick"
+                                style="position: absolute;  left: 0;">
+                                ◀
+                            </v-btn>
+                        </template>
+
+                        <!-- Botón Siguiente -->
+                        <template v-slot:next="{ props }">
+                            <v-btn variant="elevated" class="custom-next" @click="props.onClick"
+                                style="position: absolute;  right:  0;">
+                                ▶
+                            </v-btn>
+                        </template>
+                        <v-carousel-item v-for="(item, i) in 2" :key="i">
+                            <v-row>
+                                <v-col v-for="(item, i) in 4" :key="i" cols="6" lg="3">
+
+                                    <CardComponent title="Silent Hill"
+                                        src="https://media.vandal.net/m/4-2024/21/202442110133878_1.jpg" />
+                                </v-col>
+
+                            </v-row>
+
+                        </v-carousel-item>
+                    </v-carousel>
+                </v-col>
+            </v-container>
+
+        </v-row>
+
+        <v-container class="content mt-0">
+            <v-row style="width: 100%;" class="pt-15">
+                <v-col cols="12">
+                    <h3>RESEÑAS</h3>
+                    <v-row>
+                        <v-col cols="12" sm="6" md="4" lg="3" v-for="(item, index) in 4" :key="index">
+                            <v-card class="review-card pa-4" elevation="3">
+                                <v-card-title class="text-center font-weight-bold text-white">
+                                    Usuario
+                                </v-card-title>
+
+                                <v-divider class="mx-auto mb-3" thickness="2" width="90%"></v-divider>
+
+                                <v-card-subtitle class="text-h6 font-weight-bold text-center">
+                                    SILENT HILL 2
+                                </v-card-subtitle>
+
+                                <v-card-text class="">
+                                    <p>Hermano que juegazo, pero puto juegazo no? OMG, ¡Aún estoy flipando! ¡Hermano!
+                                    </p>
+                                </v-card-text>
+
+                                <v-divider class="mx-auto mt-3" thickness="2" width="90%"></v-divider>
+
+                                <v-rating v-model="rating" active-color="yellow-accent-4" color="white" half-increments
+                                    density="comfortable" hover></v-rating>
+
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
+
+
+        </v-container>
+
     </v-container>
 
 

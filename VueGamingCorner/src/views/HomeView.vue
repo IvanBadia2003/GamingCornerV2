@@ -3,6 +3,7 @@
   <v-container style="width: 80%;">
 
     <h2>DESTACADOS Y RECOMENDADOS</h2>
+
     <DestacablesComponent />
   </v-container>
 
