@@ -174,7 +174,9 @@ const rating = ref(4.5)
                         <v-card-actions>
                             <v-btn color="deep-purple-lighten-2" text="Añadir a favoritos" border
                                 @click="reserve"></v-btn>
-                            <v-btn color="deep-purple-lighten-2" text="Comprar Ahora" border @click="reserve"></v-btn>
+                            <router-link to="/cart">
+                                <v-btn color="deep-purple-lighten-2" text="Comprar Ahora" border
+                                    @click="reserve"></v-btn></router-link>
                         </v-card-actions>
 
                     </v-card>

@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import ColorPaletteView from '../views/ColorPaletteView.vue'
 import CatalogView from '../views/CatalogView.vue'
 import DescriptionView from '../views/DescriptionView.vue'
+import CartView from '../views/CartView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,11 @@ const router = createRouter({
       name: 'description',
       component: DescriptionView,
     } , 
+    {
+      path: '/cart',
+      name: 'cart',
+      component: CartView,
+    } ,
     {
       path: '/colors',
       name: 'colors',
