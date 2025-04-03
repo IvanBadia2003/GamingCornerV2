@@ -17,9 +17,9 @@ function reserve() {
 
 const images = ref([
     "https://helios-i.mashable.com/imagery/articles/02aR11GDLtX9X3OuVX7Oh9E/images-4.fill.size_2000x1125.v1667406172.png",
-    "https://preview.redd.it/zero-dawn-remastered-pre-load-v0-z4vhl1l56lwd1.jpeg?auto=webp&s=061dd572a460a5883ca3d6c86e95d6a0fefdffae",
-    "https://helios-i.mashable.com/imagery/articles/02aR11GDLtX9X3OuVX7Oh9E/images-4.fill.size_2000x1125.v1667406172.png",
-    "https://helios-i.mashable.com/imagery/articles/02aR11GDLtX9X3OuVX7Oh9E/images-4.fill.size_2000x1125.v1667406172.png"
+    "https://i.blogs.es/23b32a/0000/1366_2000.jpeg",
+    "https://img.redbull.com/images/c_limit,w_1500,h_1000/f_auto,q_auto/redbullcom/2022/11/8/woz7urmjqlvaat1roixn/kratos-god-of-war-ragnarok",
+    "https://www.diez.hn/binrepository/1200x675/0c0/0d0/none/3014757/QLHS/god2_7637565_20240531011042.jpg"
 
 ]);
 
@@ -32,23 +32,44 @@ const selectedImage = ref(images.value[0]);
 const maxLength = 800; // Caracteres antes de truncar
 const isExpanded = ref(false);
 
-const truncatedDescription = computed(() =>
-    description.value.length > maxLength
-        ? description.value.substring(0, maxLength) + '...'
-        : description.value
-);
+const descriptionTxt = computed(() => {
+    let truncatedDescr = description.value.replace(/\n/g, "<br>")
+    return truncatedDescr;
+
+});
+
+    const truncatedDescription = computed(() => {
+    let truncatedDescr = description.value.replace(/\n/g, "<br>")
+    // Primero truncamos la descripción si excede el maxLength
+    let truncatedText = descriptionTxt.value.length > maxLength
+        ? descriptionTxt.value.substring(0, maxLength) + '...'
+        : descriptionTxt.value;
+
+    // Luego reemplazamos los saltos de línea por <br> en el texto truncado
+    return truncatedText;
+});
 
 const description = ref(
-    `Obligados a rebelarse. Perseguidos desde dentro. Esto es Call of Duty: Black Ops 6.
-Desarrollado por Treyarch y Raven, Black Ops 6 es un thriller de acción y espionaje ambientado a principios de los 90, un periodo de transición y agitación en el ámbito político mundial caracterizado por el fin de la Guerra Fría y el auge de Estados Unidos como superpotencia. Con una apasionante narrativa y libre de ataduras, presentamos el inconfundible Black Ops.
-La campaña de Black Ops 6 ofrece una mecánica dinámica a cada momento, distintos espacios de juego con escenas impactantes y situaciones, asaltos de alto riesgo y actividades de espionaje clandestinas cargados de acción.
-En esta experiencia Multijugador inmejorable, los jugadores pondrán a prueba sus habilidades en 16 nuevos mapas, que incluyen 12 mapas principales 6c6 y 4 mapas de asalto que pueden jugarse en 2c2 o 6c6.
-Black Ops 6 marca también el regreso de Zombis por rondas, con dos mapas nuevos de ese modo tan querido en el que los jugadores acaban con hordas de no muertos. Entre el contenido adicional que vendrá, habrá disponibles más mapas emocionantes y experiencias demoledoras, tanto para el Multijugador como para Zombis.
-</br>Obligados a rebelarse. Perseguidos desde dentro. Esto es Call of Duty: Black Ops 6.
-Desarrollado por Treyarch y Raven, Black Ops 6 es un thriller de acción y espionaje ambientado a principios de los 90, un periodo de transición y agitación en el ámbito político mundial caracterizado por el fin de la Guerra Fría y el auge de Estados Unidos como superpotencia. Con una apasionante narrativa y libre de ataduras, presentamos el inconfundible Black Ops.
-La campaña de Black Ops 6 ofrece una mecánica dinámica a cada momento, distintos espacios de juego con escenas impactantes y situaciones, asaltos de alto riesgo y actividades de espionaje clandestinas cargados de acción.
-En esta experiencia Multijugador inmejorable, los jugadores pondrán a prueba sus habilidades en 16 nuevos mapas, que incluyen 12 mapas principales 6c6 y 4 mapas de asalto que pueden jugarse en 2c2 o 6c6.
-Black Ops 6 marca también el regreso de Zombis por rondas, con dos mapas nuevos de ese modo tan querido en el que los jugadores acaban con hordas de no muertos. Entre el contenido adicional que vendrá, habrá disponibles más mapas emocionantes y experiencias demoledoras, tanto para el Multijugador como para Zombis.`
+    `God of War Ragnarök es un videojuego de acción y aventura desarrollado por Santa Monica Studio y publicado por Sony Interactive Entertainment. Es la secuela directa de God of War (2018) y continúa la historia de Kratos y su hijo Atreus, mientras navegan por los complejos mitos nórdicos y enfrentan las amenazas que surgen del inminente fin del mundo, conocido como el Ragnarök. El juego fue lanzado en noviembre de 2022 para PlayStation 4 y PlayStation 5. A continuación, se presenta un resumen detallado de la trama, los personajes y la jugabilidad del juego.
+
+Contexto y Trama Principal:
+God of War Ragnarök se desarrolla en los últimos días antes de que se desate el Ragnarök, el apocalipsis en la mitología nórdica, que es el evento que destruirá el mundo y traerá consigo la muerte de varios dioses, incluyendo a los principales como Odín y Thor. El juego sigue a Kratos, el antiguo dios griego de la guerra, y su hijo Atreus, ahora un adolescente, mientras luchan por encontrar su lugar en este nuevo mundo que está al borde de la destrucción.
+
+La trama comienza con Kratos y Atreus tratando de vivir en relativa paz en el reino de Vanaheim, después de los eventos de la entrega anterior. Sin embargo, pronto se ven envueltos en una serie de eventos que los obligan a enfrentarse a nuevos desafíos. Atreus, quien ahora busca respuestas sobre su identidad como Loki y su rol en los acontecimientos del Ragnarök, quiere entender su destino y cómo evitar la tragedia que se avecina. Kratos, por su parte, lucha con su propio pasado y la responsabilidad de ser un padre protector, mientras trata de evitar que su hijo repita sus propios errores y se convierta en una figura de destrucción como él lo fue en su juventud.
+
+Personajes Principales:
+1. Kratos: Es el protagonista de la serie, un hombre endurecido por la guerra y la pérdida, pero que ahora busca redención y quiere evitar que su hijo cometa los mismos errores que él. En Ragnarök, se enfrenta a la difícil tarea de ser un padre, mientras lucha por proteger a Atreus de los peligros del mundo.
+
+2. Atreus (Loki): El hijo de Kratos, quien se ha convertido en un joven que tiene su propio camino por recorrer. A lo largo del juego, Atreus busca comprender su herencia, especialmente su vínculo con los gigantes y su identidad como Loki, el dios de las travesuras. Atreus también tiene un papel clave en la lucha contra el Ragnarök y, a diferencia de su padre, está mucho más dispuesto a desafiar a los dioses y cambiar el curso de los eventos.
+
+3. Odín: El principal antagonista del juego, Odín es el líder de los dioses de Asgard. Un dios sabio pero manipulador y calculador, Odín está dispuesto a hacer todo lo necesario para evitar el Ragnarök y mantener su poder. A lo largo del juego, su relación con Kratos y Atreus se vuelve cada vez más tensa y peligrosa.
+
+4. Thor: El dios del trueno, hijo de Odín y uno de los antagonistas principales. Después de la muerte de su hijos en el primer juego, Thor se presenta como un personaje mucho más oscuro y violento, aunque sigue siendo una figura trágica, atrapada en las expectativas de su padre.
+
+5. Freya: En God of War (2018), Freya fue una aliada, pero en Ragnarök se convierte en una enemiga después de la muerte de su hijo Baldur a manos de Kratos. La relación entre Freya y Kratos es tensa, pero su historia también está llena de tragedia y complejidad, ya que busca venganza por la muerte de su hijo, mientras también lidia con su propia culpabilidad.
+
+6. Mimir: El sabio decapitado y aliado cercano de Kratos y Atreus, que ofrece consejos y conocimientos durante su travesía. Mimir sigue siendo un personaje clave en la historia, proporcionando información vital sobre los eventos del Ragnarök y los dioses nórdicos.
+`
 );
 
 
@@ -134,7 +155,7 @@ const rating = ref(4.5)
                 <v-col cols="12" md="6">
                     <v-sheet class="game-cover">
                         <v-img
-                            src="https://preview.redd.it/zero-dawn-remastered-pre-load-v0-z4vhl1l56lwd1.jpeg?auto=webp&s=061dd572a460a5883ca3d6c86e95d6a0fefdffae"
+                            src="https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/aqZdSwWyy9JcQ66BxHDKrky6.jpg"
                             cover width="100%" class="img" />
                     </v-sheet>
                 </v-col>
@@ -264,10 +285,8 @@ const rating = ref(4.5)
 
                 <v-col cols="12">
                     <h3>ACERCA DE</h3>
-                    <p class="game-text">
-                        {{ isExpanded ? description : truncatedDescription }}
+                    <p class="game-text" v-html="isExpanded ? descriptionTxt : truncatedDescription"></p>
 
-                    </p>
                     <v-btn variant="text" class="text-primary" @click="toggleExpand">
                         {{ isExpanded ? 'Ver menos' : 'Ver más' }}
                     </v-btn>
@@ -462,11 +481,11 @@ const rating = ref(4.5)
                                 <v-divider class="mx-auto mb-3" thickness="2" width="90%"></v-divider>
 
                                 <v-card-subtitle class="text-h6 font-weight-bold text-center">
-                                    SILENT HILL 2
+                                    GOD OF WAR: RAGNAROK
                                 </v-card-subtitle>
 
                                 <v-card-text class="">
-                                    <p>Hermano que juegazo, pero puto juegazo no? OMG, ¡Aún estoy flipando! ¡Hermano!
+                                    <p>Hermano que juegazo, lo recomiendo a todos ¡Aún estoy flipando! ¡Hermano!
                                     </p>
                                 </v-card-text>
 
