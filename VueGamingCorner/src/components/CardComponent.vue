@@ -19,7 +19,7 @@ defineProps({
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; height: 15%;" class="px-2 ">
         <p>{{ title }}</p>
-        <p>43€</p>
+        <p>35€</p>
       </div>
     </v-card>
 

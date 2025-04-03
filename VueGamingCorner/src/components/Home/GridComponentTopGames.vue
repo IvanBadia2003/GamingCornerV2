@@ -6,7 +6,7 @@
         <CardComponent title="Fifa 25" src="https://pm1.aminoapps.com/6768/06db30091670c5a17e9c4660120117d53a859123v2_hq.jpg"/>
       </v-col>
       <v-col cols="12" md="6">
-        <CardComponent title="Tetris" src="https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_download_software_1/H2x1_NSwitchDS_Tetris99_image1600w.jpg"/>
+        <CardComponent title="God of war: Ragnarok" src="https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/aqZdSwWyy9JcQ66BxHDKrky6.jpg"/>
       </v-col>
     </v-row>
 

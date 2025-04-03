@@ -26,7 +26,7 @@
           </v-col>
 
           <v-col cols="12" sm="12" md="4" lg="4" class="bg-surface d-flex flex-column align-center">
-            <h3>GOD OF WAR</h3>
+            <h3>HORIZON ZERO DAWN</h3>
             <v-row class="secundaryImages">
               <v-col cols="6" xs="6" sm="6" md="6" lg="6">
                 <PrincipalImage />
