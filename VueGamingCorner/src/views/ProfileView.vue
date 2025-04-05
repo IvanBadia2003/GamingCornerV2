@@ -156,23 +156,26 @@
                                     </v-card>
                                 </v-col>
                             </v-row>
-                            <v-row >
+                            <v-row>
                                 <v-col cols="12" md="6">
                                     <v-card class="text-center bg-primary">
                                         <v-card-title class="pt-5">ÚLTIMOS JUEGOS EN FAVORITOS</v-card-title>
                                         <v-card-text class="py-10">
                                             <v-row class="d-flex justify-space-between">
                                                 <v-col cols="12" md="4">
-                                                    <CardComponent title="Tom Clancy's" src="https://cdn1.epicgames.com/offer/acf914daf6034292a207051e3287f1c0/GRT_StoreLandscape_2560x1440_2560x1440-f79268e269a2b1e99eeb9934e18d3053"/>
+                                                    <CardComponent title="Tom Clancy's"
+                                                        src="https://cdn1.epicgames.com/offer/acf914daf6034292a207051e3287f1c0/GRT_StoreLandscape_2560x1440_2560x1440-f79268e269a2b1e99eeb9934e18d3053" />
                                                 </v-col>
                                                 <v-divider vertical />
                                                 <v-col cols="12" md="4">
-                                                    <CardComponent title="Horizon Zero Down" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3bl4VJL9Anr3DpY2snWMGElBqFH15axLLbw&s"/>
+                                                    <CardComponent title="Horizon Zero Down"
+                                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3bl4VJL9Anr3DpY2snWMGElBqFH15axLLbw&s" />
 
                                                 </v-col>
                                                 <v-divider vertical />
                                                 <v-col cols="12" md="4">
-                                                    <CardComponent title="Horizon Zero Down" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3bl4VJL9Anr3DpY2snWMGElBqFH15axLLbw&s"/>
+                                                    <CardComponent title="Horizon Zero Down"
+                                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3bl4VJL9Anr3DpY2snWMGElBqFH15axLLbw&s" />
 
                                                 </v-col>
                                             </v-row>
@@ -202,7 +205,7 @@
                                             </v-row>
 
                                         </v-card-text>
-                                        
+
                                     </v-card>
                                 </v-col>
                                 <v-col cols="12" md="4">
@@ -227,27 +230,30 @@
                                             </v-row>
 
                                         </v-card-text>
-                                       
+
                                     </v-card>
                                 </v-col>
                             </v-row>
-                            <v-row >
+                            <v-row>
                                 <v-col cols="12" md="6">
                                     <v-card class="text-center bg-primary">
                                         <v-card-title class="pt-5">ÚLTIMOS CONSOLAS EN FAVORITOS</v-card-title>
                                         <v-card-text class="py-10">
                                             <v-row class="d-flex justify-space-between">
                                                 <v-col cols="12" md="4">
-                                                    <CardComponent title="Tom Clancy's" src="https://cdn1.epicgames.com/offer/acf914daf6034292a207051e3287f1c0/GRT_StoreLandscape_2560x1440_2560x1440-f79268e269a2b1e99eeb9934e18d3053"/>
+                                                    <CardComponent title="Tom Clancy's"
+                                                        src="https://cdn1.epicgames.com/offer/acf914daf6034292a207051e3287f1c0/GRT_StoreLandscape_2560x1440_2560x1440-f79268e269a2b1e99eeb9934e18d3053" />
                                                 </v-col>
                                                 <v-divider vertical />
                                                 <v-col cols="12" md="4">
-                                                    <CardComponent title="Horizon Zero Down" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3bl4VJL9Anr3DpY2snWMGElBqFH15axLLbw&s"/>
+                                                    <CardComponent title="Horizon Zero Down"
+                                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3bl4VJL9Anr3DpY2snWMGElBqFH15axLLbw&s" />
 
                                                 </v-col>
                                                 <v-divider vertical />
                                                 <v-col cols="12" md="4">
-                                                    <CardComponent title="Horizon Zero Down" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3bl4VJL9Anr3DpY2snWMGElBqFH15axLLbw&s"/>
+                                                    <CardComponent title="Horizon Zero Down"
+                                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3bl4VJL9Anr3DpY2snWMGElBqFH15axLLbw&s" />
 
                                                 </v-col>
                                             </v-row>
@@ -255,7 +261,70 @@
                                         </v-card-text>
                                     </v-card>
                                 </v-col>
-                                
+                                <v-col cols="12" md="6">
+                                    <v-card class="text-center bg-primary">
+                                        <v-card-title class="pt-5">VINCULAR CUENTAS</v-card-title>
+                                        <v-card-text class="py-10">
+                                            <v-row class="d-flex justify-space-between">
+                                                <v-col cols="12" md="2" class="px-0">
+                                                    <div>
+                                                        <p>Play Station</p>
+                                                        <v-avatar>
+                                                            <v-img alt="John"
+                                                                src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+                                                        </v-avatar>
+                                                    </div>
+                                                </v-col>
+                                                <v-col cols="12" md="2" class="px-0">
+                                                    <div>
+                                                        <p>Steam</p>
+                                                        <v-avatar>
+                                                            <v-img alt="John"
+                                                                src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+                                                        </v-avatar>
+                                                    </div>
+                                                </v-col>
+                                                <v-col cols="12" md="2" class="px-0">
+                                                    <div>
+                                                        <p>Nintendo</p>
+                                                        <v-avatar>
+                                                            <v-img alt="John"
+                                                            src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+                                                        </v-avatar>
+                                                    </div>
+                                                </v-col>
+                                                <v-col cols="12" md="2" class="px-0">
+                                                    <div>
+                                                        <p>Xbox</p>
+                                                        <v-avatar>
+                                                            <v-img alt="John"
+                                                                src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+                                                        </v-avatar>
+                                                    </div>
+                                                </v-col>
+                                                <v-col cols="12" md="2" class="px-0">
+                                                    <div>
+                                                        <p>Epic Games</p>
+                                                        <v-avatar>
+                                                            <v-img alt="John"
+                                                                src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+                                                        </v-avatar>
+                                                    </div>
+                                                </v-col>
+                                                <v-col cols="12" md="2" class="px-0">
+                                                    <div>
+                                                        <p>Ubisoft</p>
+                                                        <v-avatar>
+                                                            <v-img alt="John"
+                                                                src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+                                                        </v-avatar>
+                                                    </div>
+                                                </v-col>
+                                            </v-row>
+
+                                        </v-card-text>
+                                    </v-card>
+                                </v-col>
                             </v-row>
                         </v-tabs-window-item>
 
