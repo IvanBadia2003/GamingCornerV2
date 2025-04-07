@@ -329,7 +329,7 @@
                         </v-tabs-window-item>
 
                         <v-tabs-window-item value="two">
-                            Two
+                            TwoO
                         </v-tabs-window-item>
 
                         <v-tabs-window-item value="three">
