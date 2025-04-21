@@ -341,7 +341,7 @@ const mostrarProductos = ref(false)
 
                                             </v-col>
                                             <v-col cols="12" md="6">
-                                                <v-row >
+                                                <v-row>
                                                     <v-col cols="6" class="pa-0">
                                                         <p>Sistema:</p>
                                                     </v-col>
@@ -359,7 +359,7 @@ const mostrarProductos = ref(false)
                                                 </v-row>
                                             </v-col>
                                             <v-col cols="12" md="2">
-                                               <h3>36€</h3>
+                                                <h3>36€</h3>
                                             </v-col>
 
                                         </v-row>
@@ -367,18 +367,137 @@ const mostrarProductos = ref(false)
                                     </v-card-text>
                                 </v-card>
                             </v-col>
-                            
+
                         </v-row>
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="three">
-                        Three
+                        <v-row>
+                            <v-col cols="6" v-for="(item, index) in 4" :key="index">
+                                <v-card class="bg-primary">
+                                    <v-card-title class="pt-5">GOD OF WAR</v-card-title>
+                                    <v-card-text class="">
+                                        <v-row class="d-flex justify-space-between">
+                                            <v-col cols="12" md="4">
+                                                <v-img
+                                                    src="https://cdn1.epicgames.com/offer/acf914daf6034292a207051e3287f1c0/GRT_StoreLandscape_2560x1440_2560x1440-f79268e269a2b1e99eeb9934e18d3053"></v-img>
+
+                                            </v-col>
+                                            <v-col cols="12" md="6">
+                                                <v-row>
+                                                    <v-col cols="6" class="pa-0">
+                                                        <p>Sistema:</p>
+                                                    </v-col>
+                                                    <v-col cols="6" class="pa-0">
+                                                        <p>PC</p>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col cols="6" class="pa-0">
+                                                        <p>Plataforma:</p>
+                                                    </v-col>
+                                                    <v-col cols="6" class="pa-0">
+                                                        <p>Steam</p>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-col>
+                                            <v-col cols="12" md="2">
+                                                <h3>36€</h3>
+                                            </v-col>
+
+                                        </v-row>
+
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+
+                        </v-row>
                     </v-tabs-window-item>
                     <v-tabs-window-item value="four">
-                        four
+                        <v-row>
+                            <v-col cols="12" sm="4" md="4">
+                                <CardComponent title="Resident Evil"
+                                    src="https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_download_software_1/H2x1_NSwitchDS_ResidentEvil.jpg" />
+                            </v-col>
+                            <v-col cols="12" sm="4" md="4">
+                                <CardComponent title="Silent Hill"
+                                    src="https://media.vandal.net/m/4-2024/21/202442110133878_1.jpg" />
+                            </v-col>
+                            <v-col cols="12" sm="4" md="4">
+                                <CardComponent title="Tom Clancy's"
+                                    src="https://cdn1.epicgames.com/offer/acf914daf6034292a207051e3287f1c0/GRT_StoreLandscape_2560x1440_2560x1440-f79268e269a2b1e99eeb9934e18d3053" />
+
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12" sm="4" md="4">
+                                <CardComponent title="Resident Evil"
+                                    src="https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_download_software_1/H2x1_NSwitchDS_ResidentEvil.jpg" />
+                            </v-col>
+                            <v-col cols="12" sm="4" md="4">
+                                <CardComponent title="Silent Hill"
+                                    src="https://media.vandal.net/m/4-2024/21/202442110133878_1.jpg" />
+                            </v-col>
+                            <v-col cols="12" sm="4" md="4">
+                                <CardComponent title="Tom Clancy's"
+                                    src="https://cdn1.epicgames.com/offer/acf914daf6034292a207051e3287f1c0/GRT_StoreLandscape_2560x1440_2560x1440-f79268e269a2b1e99eeb9934e18d3053" />
+
+                            </v-col>
+                        </v-row>
                     </v-tabs-window-item>
                     <v-tabs-window-item value="five">
-                        five
+                        <v-row>
+                            <v-col cols="12" sm="6" md="4" lg="3" v-for="(item, index) in 4" :key="index">
+                                <v-card class="review-card pa-4 bg-primary" elevation="3">
+                                    <v-card-title class="text-center font-weight-bold text-white">
+                                        Usuario
+                                    </v-card-title>
+
+                                    <v-divider class="mx-auto mb-3" thickness="2" width="90%"></v-divider>
+
+                                    <v-card-subtitle class="text-h6 font-weight-bold text-center">
+                                        GOD OF WAR: RAGNAROK
+                                    </v-card-subtitle>
+
+                                    <v-card-text class="">
+                                        <p>Hermano que juegazo, lo recomiendo a todos ¡Aún estoy flipando! ¡Hermano!
+                                        </p>
+                                    </v-card-text>
+
+                                    <v-divider class="mx-auto mt-3" thickness="2" width="90%"></v-divider>
+
+                                    <v-rating active-color="yellow-accent-4" color="white" half-increments
+                                        density="comfortable" hover></v-rating>
+
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12" sm="6" md="4" lg="3" v-for="(item, index) in 4" :key="index">
+                                <v-card class="review-card pa-4 bg-primary" elevation="3">
+                                    <v-card-title class="text-center font-weight-bold text-white">
+                                        Usuario
+                                    </v-card-title>
+
+                                    <v-divider class="mx-auto mb-3" thickness="2" width="90%"></v-divider>
+
+                                    <v-card-subtitle class="text-h6 font-weight-bold text-center">
+                                        GOD OF WAR: RAGNAROK
+                                    </v-card-subtitle>
+
+                                    <v-card-text class="">
+                                        <p>Hermano que juegazo, lo recomiendo a todos ¡Aún estoy flipando! ¡Hermano!
+                                        </p>
+                                    </v-card-text>
+
+                                    <v-divider class="mx-auto mt-3" thickness="2" width="90%"></v-divider>
+
+                                    <v-rating active-color="yellow-accent-4" color="white" half-increments
+                                        density="comfortable" hover></v-rating>
+
+                                </v-card>
+                            </v-col>
+                        </v-row>
                     </v-tabs-window-item>
                     <v-tabs-window-item value="six">
                         six
