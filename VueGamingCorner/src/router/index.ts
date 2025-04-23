@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-//import ProfileView from '../views/ProfileView.vue'
+import ProfileView from '../views/ProfileView.vue'
 import ColorPaletteView from '../views/ColorPaletteView.vue'
-import CatalogView from '../views/CatalogView.vue'
 import DescriptionView from '../views/DescriptionView.vue'
 import CartView from '../views/CartView.vue'
+import CatalogView from '../views/CatalogView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,11 +14,11 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     } ,
-     /* {
+      {
       path: '/perfil',
       name: 'perfil',
       component: ProfileView,
-    } , */ 
+    } ,  
     {
       path: '/catalog',
       name: 'catalog',
