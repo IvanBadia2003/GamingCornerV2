@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useTheme } from 'vuetify'
+import { useTheme } from 'vuetify';
+import { useThemeStore } from '@/stores/themeStore'
 
 const theme = useTheme()
 
 const toggleTheme = () => {
-  theme.global.name.value = theme.global.name.value === 'myCustomLightTheme' ? 'myCustomDarkTheme' : 'myCustomLightTheme'
-}
+  const current = theme.global.name.value
+  const newTheme = current === 'light' ? 'dark' : 'light'
 
+  theme.global.name.value = newTheme
+  useThemeStore().setTheme(newTheme)
+}
 const toggleMenu = ref<boolean>(false);
 </script>
+
 
 <template>
     <header id="Header" class="bg-primary">
