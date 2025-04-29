@@ -23,7 +23,7 @@ export const useThemeStore = defineStore('themeStore', () => {
   const theme = ref<'light' | 'dark'>('light')
 
   async function setTheme(value: 'light' | 'dark') {
-    const day = 60 * 1000;//  // 1 minute
+    const day = 5 * 1000;//  // 1 minute
     const cookieName = "cookieTheme";
 
       // Set cookie: passing options

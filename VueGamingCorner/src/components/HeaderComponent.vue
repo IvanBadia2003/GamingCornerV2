@@ -15,7 +15,6 @@ const toggleTheme = () => {
 const toggleMenu = ref<boolean>(false);
 </script>
 
-
 <template>
     <header id="Header" class="bg-primary">
         <router-link  :to="'/'">
