@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useDisplay } from 'vuetify'
+import { useAuthStore } from '@/stores/AuthStore'
+
 import CardComponent from '@/components/CardComponent.vue'
 import PerfilTab from '@/components/Settings/PerfilTab.vue'
 import AddressesTab from '@/components/Settings/AddressesTab.vue'
@@ -10,7 +12,7 @@ import SecurityTab from '@/components/Settings/SecurityTab.vue'
 import SecondHandTab from '@/components/Settings/SecondHandTab.vue'
 
 
-
+const auth = useAuthStore()
 const { xs, sm, md, lg } = useDisplay()
 
 const avatarSize = computed(() => {
@@ -58,7 +60,7 @@ function getComponent(tabName: string) {
                         <v-row justify="center">
                             <v-col cols="12">
 
-                                <p>nombre de usuario</p>
+                                <p>{{ auth.user?.email }}</p>
                                 <p>16 de noviembre</p>
                             </v-col>
                         </v-row>
