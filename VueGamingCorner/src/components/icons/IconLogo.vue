@@ -1,5 +1,5 @@
 <template>
-    <svg class="logo-svg" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" aria-label="Gaming Corner logo">
+    <svg class="logo-svg" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" aria-label="Gaming Corner logo" >
         <!-- Líneas curvas -->
         <path class="curva1" d="M40,140 Q40,100 70,60 L240,60 Q270,100 270,140" stroke="black" fill="none"
             stroke-width="6" />
@@ -30,7 +30,7 @@
 <style scoped>
 .logo-svg {
     width: 100%;
-    max-width: 180px;
+    max-width: 100px;
     height: auto;
     display: block;
     cursor: pointer;

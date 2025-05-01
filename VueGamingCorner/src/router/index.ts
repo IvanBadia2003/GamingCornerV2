@@ -6,6 +6,8 @@ import DescriptionView from '../views/DescriptionView.vue'
 import CartView from '../views/CartView.vue'
 import CatalogView from '../views/CatalogView.vue'
 import LoginView from '../views/AuthView.vue'
+import { useAuthStore } from '@/stores/AuthStore' // o desde Pinia, etc.
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +21,7 @@ const router = createRouter({
       path: '/perfil',
       name: 'perfil',
       component: ProfileView,
+      meta: { requiresAuth: true },
     } ,  
     {
       path: '/catalog',
@@ -34,6 +37,7 @@ const router = createRouter({
       path: '/cart',
       name: 'cart',
       component: CartView,
+      
     } ,
     {
       path: '/colors',
@@ -49,6 +53,17 @@ const router = createRouter({
       component: LoginView,
     }, 
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
+  
 })
 
 export default router
