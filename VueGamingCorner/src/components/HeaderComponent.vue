@@ -59,6 +59,9 @@ const platforms = [
                         <v-list-item :to="'/orders'">
                             <v-list-item-title>Mis pedidos</v-list-item-title>
                         </v-list-item>
+                        <v-list-item :to="'/admin'" v-if="auth.user?.admin">
+                            <v-list-item-title>Pantalla Admin</v-list-item-title>
+                        </v-list-item>
                         <v-list-item>
                             <v-list-item-title @click="auth.logout">Cerrar sesión</v-list-item-title>
                         </v-list-item>

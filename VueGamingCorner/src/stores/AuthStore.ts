@@ -7,6 +7,7 @@ interface User {
   id: number
   username: string
   email: string
+  admin: boolean
   // agrega más campos si lo necesitas
 }
 
