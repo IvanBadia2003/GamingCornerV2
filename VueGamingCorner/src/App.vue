@@ -11,10 +11,11 @@ import HeaderComponent from '@/components/HeaderComponent.vue'
 </template>
 
 <style lang="scss">
-$HeaderHeight: 80px;
+$HeaderHeight: 90px;
 
 #App {
   min-height: calc(100vh - $HeaderHeight);
+  //min-height: calc(100vh - $HeaderHeight);
 }
 
 #Header {

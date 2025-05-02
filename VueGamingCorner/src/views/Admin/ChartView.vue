@@ -62,8 +62,8 @@ const kpis = [
 ]
 
 const chartOptions = {
-    responsive: false,
-    maintainAspectRatio: false,
+    responsive: true,
+    maintainAspectRatio: true,
     plugins: {
         legend: { position: 'top' as const, labels: { color: '#000' } },
         title: { display: false },

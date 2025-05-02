@@ -46,7 +46,7 @@
     { title: 'Ventas hoy', value: '1.250 €', icon: 'mdi-cash' },
     { title: 'Pedidos hoy', value: '47', icon: 'mdi-package-variant' },
     { title: 'Ticket medio', value: '135 €', icon: 'mdi-chart-pie' },
-    { title: 'Devoluciones', value: '3', icon: 'mdi-backup-restore' },
+    { title: '', value: '', icon: '' },
   ]
   
   const chartData = {

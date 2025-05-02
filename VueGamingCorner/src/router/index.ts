@@ -9,6 +9,8 @@ import LoginView from '../views/AuthView.vue'
 import AdminView from '../views/AdminView.vue'
 import AdminEconomyView from '../views/Admin/EconomyView.vue'
 import AdminChartView from '../views/Admin/ChartView.vue'
+import AdminUsersView from '../views/Admin/UsersView.vue'
+import AdminDataManagementView from '../views/Admin/DataManagement.vue'
 import { useAuthStore } from '@/stores/AuthStore' // o desde Pinia, etc.
 
 
@@ -30,20 +32,32 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: AdminView,
-      meta: { requiresAuth: true },
+      //meta: { requiresAuth: true },
     },
     {
       path: '/admin/economy',
       name: 'adminEconomy',
       component: AdminEconomyView,
-      meta: { requiresAuth: true },
+      //meta: { requiresAuth: true },
     },
     {
       path: '/admin/charts',
-      name: 'chartsEconomy',
+      name: 'adminCharts',
       component: AdminChartView,
-/*       meta: { requiresAuth: true },
- */    },
+     // meta: { requiresAuth: true },
+     },
+    {
+      path: '/admin/users',
+      name: 'adminUsers',
+      component: AdminUsersView,
+    //  meta: { requiresAuth: true },
+     },
+    {
+      path: '/admin/datamanagement',
+      name: 'adminDataManagement',
+      component: AdminDataManagementView,
+    //  meta: { requiresAuth: true },
+     },
     {
       path: '/catalog',
       name: 'catalog',

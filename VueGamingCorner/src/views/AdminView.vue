@@ -16,14 +16,14 @@
         </v-col>
   
         <v-col cols="12" md="6">
-          <v-card class="pa-6" @click="goTo('contenido')" hover>
+          <v-card class="pa-6" @click="goTo('datamanagement')" hover>
             <v-icon size="40" color="primary">mdi-database-edit</v-icon>
             <h3>Gestión de Contenidos</h3>
           </v-card>
         </v-col>
   
         <v-col cols="12" md="6">
-          <v-card class="pa-6" @click="goTo('usuarios')" hover>
+          <v-card class="pa-6" @click="goTo('users')" hover>
             <v-icon size="40" color="primary">mdi-account-group</v-icon>
             <h3>Gestión de Usuarios</h3>
           </v-card>
