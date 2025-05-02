@@ -65,7 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
   const fetchCurrentUser = async () => {
     try {
       const response = await axios.get('/api/auth/me', { withCredentials: true })
-      user.value = response.data
+      //user.value = response.data
     } catch {
       user.value = null
     }
