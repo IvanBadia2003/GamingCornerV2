@@ -86,5 +86,46 @@ export function createMyVuetify(defaultTheme: 'light' | 'dark') {
     icons: {
       defaultSet: 'mdi',
     },
+    defaults: {
+      VTextField: {
+        variant: 'outlined',
+        color: 'primary',
+        density: 'comfortable',
+        clearable : true,
+      },
+      VSelect: {
+        variant: 'outlined',
+        color: 'primary',
+        density: 'comfortable',
+      },
+      VTextarea: {
+        variant: 'outlined',
+        color: 'primary',
+        autoGrow: true,
+        density: 'comfortable',
+      },
+      VCheckbox: {
+        color: 'primary',
+      },
+      VRadioGroup: {
+        color: 'primary',
+      },
+      VSwitch: {
+        color: 'primary',
+      },
+      VFileInput: {
+        variant: 'outlined',
+        color: 'primary',
+        density: 'comfortable',
+        prependIcon: 'mdi-upload', // opcional, puedes cambiarlo
+        showSize: true,            // muestra el tamaño del archivo
+        multiple: false,           // o true si aceptas varios archivos por defecto
+      },
+/*       VBtn: {
+        rounded: 'lg',
+        color: 'secondary',
+        elevation: 2,
+      }, */
+    },
   })
 }
