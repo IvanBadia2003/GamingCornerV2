@@ -65,6 +65,7 @@ const rules = {
                 <!-- Campos comunes -->
                 <v-text-field label="Nombre" v-model="formData.name" :rules="[rules.required]" />
                 <v-text-field label="Precio (€)" type="number" v-model="formData.price" :rules="[rules.required]" />
+
                 <v-text-field label="Stock" type="number" v-model="formData.stock" :rules="[rules.required]" />
                 <v-textarea label="Descripción" v-model="formData.description" :rules="[rules.required]" />
 

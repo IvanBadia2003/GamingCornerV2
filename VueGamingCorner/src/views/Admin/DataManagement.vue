@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import AddProductDialogComponent from '@/components/Admin/AddProductDialogComponent.vue'
+import DataTableComponent from '@/components/DataTableComponent.vue'
 
 const tab = ref('juegos')
 const dialogAbierto = ref(false)
 const formType = ref<'juego' | 'consola'>('juego')
 const isEditing = ref(false)
 const selectedItem = ref<any>(null)
+const search = ref('')
 // Cabeceras para cada tabla
 
 const gameHeaders = [
@@ -18,7 +20,7 @@ const gameHeaders = [
 ]
 
 const consoleHeaders = [
-  { title: 'Modelo', key: 'model' },
+  { title: 'Modelo', key: 'name' },
   { title: 'Marca', key: 'brand' },
   { title: 'Precio', key: 'price' },
   { title: 'Stock', key: 'stock' },
@@ -42,8 +44,8 @@ const games = [
 ]
 
 const consoles = [
-  { id: 1, model: 'PlayStation 5', brand: 'Sony', price: '499 €', stock: 8 },
-  { id: 2, model: 'Xbox Series X', brand: 'Microsoft', price: '479 €', stock: 4 },
+  { id: 1, name: 'PlayStation 5', brand: 'Sony', price: '499 €', stock: 8 },
+  { id: 2, name: 'Xbox Series X', brand: 'Microsoft', price: '479 €', stock: 4 },
 ]
 
 const usedProducts = [
@@ -107,65 +109,22 @@ const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name
     <v-window v-model="tab" class="mt-4">
       <!-- JUEGOS -->
       <v-window-item value="juegos">
-        <v-data-table :headers="gameHeaders" :items="games" class="elevation-1" item-value="id"  :footer-props="{
-          itemsPerPageOptions: [5, 10, 25],
-          itemsPerPageText: 'Elementos por página:',
-          showFirstLastPage: true,
-        }">
-          <template #top>
-            <v-toolbar flat>
-              <v-toolbar-title>Juegos</v-toolbar-title>
-              <v-spacer></v-spacer>
+        <DataTableComponent :headers="gameHeaders" :items="games" title="Juegos" icon="mdi-controller"
+          add-label="Añadir juego" search-key="name" :on-add="añadirJuego" :on-edit="editarJuego"
+          :on-delete="eliminarJuego" />
 
-              <!-- Filtro por plataforma -->
-              <v-select label="Plataforma" dense hide-details style="max-width: 150px" />
-
-              <!-- Filtro por nombre -->
-              <v-text-field label="Buscar por nombre" dense hide-details append-icon="mdi-magnify"
-                style="max-width: 250px; margin-left: 10px;" />
-
-              <!-- Botón de añadir -->
-              <v-btn color="primary" @click="añadirJuego">Añadir Juego</v-btn>
-            </v-toolbar>
-
-          </template>
-
-          <template #item.actions="{ item }">
-            <v-btn icon size="small" color="info" @click="editarJuego(item)" class="mr-1">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn icon size="small" color="error" @click="eliminarJuego(item)" class="ml-1">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </template>
-        </v-data-table>
       </v-window-item>
 
       <!-- CONSOLAS -->
       <v-window-item value="consolas">
-        <v-data-table :headers="consoleHeaders" :items="consoles" class="elevation-1" item-value="id">
-          <template #top>
-            <v-toolbar flat>
-              <v-toolbar-title>Consolas</v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" @click="añadirConsola">Añadir Consola</v-btn>
-
-            </v-toolbar>
-          </template>
-
-          <template #item.actions="{ item }">
-            <v-btn icon size="small" color="info" @click="editarConsola(item)" class="mr-1">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn icon size="small" color="error" @click="eliminarConsola(item)" class="ml-1">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </template>
-        </v-data-table>
+        <DataTableComponent :headers="consoleHeaders" :items="consoles" title="Consolas" icon="mdi-controller"
+          add-label="Añadir consola" search-key="name" :on-add="añadirConsola" :on-edit="editarConsola"
+          :on-delete="eliminarConsola" />
       </v-window-item>
 
       <!-- SEGUNDA MANO -->
       <v-window-item value="segundaMano">
+        
         <v-data-table :headers="usedHeaders" :items="usedProducts" class="elevation-1" item-value="id">
           <template #top>
             <v-toolbar flat>
@@ -174,12 +133,8 @@ const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name
           </template>
 
           <template #item.actions="{ item }">
-            <v-btn icon color="success" @click="aprobarProducto(item)">
-              <v-icon>mdi-check</v-icon>
-            </v-btn>
-            <v-btn icon color="error" @click="rechazarProducto(item)">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
+              <v-icon @click="aprobarProducto(item)">mdi-check</v-icon>
+              <v-icon  @click="rechazarProducto(item)">mdi-close</v-icon>
           </template>
         </v-data-table>
       </v-window-item>
