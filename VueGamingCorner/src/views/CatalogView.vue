@@ -1,6 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { useDisplay } from 'vuetify'
+
 import CardComponent from '@/components/CardComponent.vue'
+
+const { mdAndUp } = useDisplay() //será true si la pantalla está en md, lg o xl
 
 
 const showFilters = ref(false);
@@ -10,6 +14,8 @@ const selectedPlatform = ref(null);
 
 const categories = ['Acción', 'Aventura', 'RPG', 'Deportes', 'Carreras'];
 const platforms = ['PlayStation', 'Xbox', 'Nintendo', 'PC'];
+const stores = ['Steam', 'Epic Games', 'Ubisoft'];
+
 
 const products = ref([
   { id: 1, name: 'The Last of Us', category: 'Aventura', platform: 'PlayStation', price: 49.99, image: 'https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_download_software_1/H2x1_NSwitchDS_Tetris99_image1600w.jpg' },
@@ -37,6 +43,11 @@ const resetFilters = () => {
   selectedPlatform.value = null;
 };
 
+
+
+function onClick() {
+  alert('Buscando')
+}
 </script>
 
 <template>
@@ -54,30 +65,70 @@ const resetFilters = () => {
   </div> -->
   <!-- Contenedor Principal -->
   <v-container style="width: 80%;">
-    <v-row>
-      <!-- Botón para mostrar filtros -->
-      <v-col cols="1">
-        <v-btn @click="showFilters = !showFilters" color="primary">
-           Filtros
+
+    <v-row justify="center" class="mb-10 mt-5">
+      <v-btn-toggle rounded="xl">
+        <v-btn v-for="(store, index) in stores" :key="index" :size="mdAndUp ? 'large' : 'default'"
+          :min-width="mdAndUp ? 150 : undefined">
+          {{ store }}
         </v-btn>
-      </v-col>
-      <v-col cols="9">
-        <v-text-field v-model="search" label="Buscar..." prepend-inner-icon="mdi-magnify" clearable />
-      </v-col>
-      <v-col cols="2">
-        <v-select v-model="selectedCategory" :items="categories" label="Categoría" clearable />
+      </v-btn-toggle>
+    </v-row>
+
+    <!-- Fila de búsqueda y acciones -->
+    <v-row align="center" justify="space-between" class="mb-4">
+      <!-- Búsqueda -->
+      <v-col cols="12" md="6">
+        <v-text-field v-model="search" append-inner-icon="mdi-magnify" variant="solo" hide-details single-line
+          placeholder="Buscar..." clearable @click:append-inner="onClick"></v-text-field>
       </v-col>
 
-    </v-row>
-    <v-row v-if="showFilters">
-      <v-col cols="4">
-        <v-select v-model="selectedCategory" :items="categories" label="Categoría" clearable />
+      <!-- Filtros y Ordenar -->
+      <v-col cols="12" md="4" class="d-flex justify-end ">
+        <v-btn variant="flat" @click="showFilters = !showFilters" class="mr-2">Filtros</v-btn>
+
+        <v-menu offset-y transition="slide-y-transition" :close-on-content-click="false">
+          <template #activator="{ props }">
+            <v-btn variant="flat" v-bind="props" @click="toggleSort">Ordenar</v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item>
+              <v-list-item-title>Precio más bajo</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>Precio más alto</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>Más rebaja</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>Menos rebaja</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-col>
-      <v-col cols="4">
-        <v-select v-model="selectedPlatform" :items="platforms" label="Plataforma" clearable />
-      </v-col>
-      <v-btn block @click="resetFilters" color="error">Limpiar Filtros</v-btn>
     </v-row>
+
+    <v-expand-transition>
+      <div v-if="showFilters">
+        <v-row dense>
+          <v-col cols="12" md="3">
+            <v-select v-model="selectedPlatform" :items="platforms" label="Plataforma" clearable variant="solo" />
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-select v-model="selectedCondition" :items="['Nuevo', 'Segunda mano']" label="Estado" clearable
+              variant="solo" />
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-select v-model="selectedBrand" :items="brands" label="Marca" clearable variant="solo" />
+          </v-col>
+          <v-col cols="12" md="3" class="d-flex justify-end ">
+            <v-btn variant="flat" color="primary" @click="resetFilters">Restablecer filtros</v-btn>
+          </v-col>
+        </v-row>
+      </div>
+    </v-expand-transition>
 
 
     <!-- Grid de Productos -->
@@ -119,5 +170,13 @@ const resetFilters = () => {
     transition: transform 0.3s ease-in-out;
   }
 
+}
+
+.store-button {
+
+  &:hover {
+    background-color: transparent;
+    border: 1px solid #1976D2;
+  }
 }
 </style>

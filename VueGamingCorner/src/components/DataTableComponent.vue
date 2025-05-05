@@ -12,7 +12,9 @@ interface Props {
     onEdit: (item: any) => void
     onDelete: (item: any) => void
 }
-
+const categories = ['Acción', 'Aventura', 'RPG', 'Deportes', 'Carreras'];
+const platforms = ['PlayStation', 'Xbox', 'Nintendo', 'PC'];
+const stores = ['Steam', 'Epic Games', 'Ubisoft', 'PlayStation 4', 'PlayStation 5', 'Xbox One', 'Xbox Series X', 'Nintendo Switch'];
 defineProps<Props>()
 
 const search = ref('')
@@ -22,15 +24,30 @@ const search = ref('')
     <v-data-table :headers="headers" :items="items" class="elevation-1" item-value="id" v-model:search="search"
         :filter-keys="[searchKey || 'name']">
         <template #top>
-            <v-toolbar flat>
-                <v-toolbar-title>
+            <v-toolbar flat class="flex-wrap">
+                <v-toolbar-title class="mr-4">
                     <v-icon color="medium-emphasis" :icon="icon || 'mdi-database'" size="x-small" start></v-icon>
                     {{ title }}
                 </v-toolbar-title>
+
+                <!-- Filtro de búsqueda -->
                 <v-text-field v-model="search" density="compact" label="Buscar" prepend-inner-icon="mdi-magnify"
-                    variant="solo-filled" flat hide-details single-line style="max-width: 300px;" class="mr-3"></v-text-field>
+                    variant="solo-filled" flat hide-details single-line style="max-width: 300px;" class="mr-3" />
+
+                <!-- Filtro de platforms -->
+                <v-select v-model="selectedPlatform" :items="platforms" label="Plataforma" density="compact"
+                    variant="solo-filled" hide-details style="max-width: 200px;" class="mr-3" clearable />
+                <!-- Filtro de categoría -->
+                <v-select v-if="title === 'Juegos'" v-model="selectedCategory" :items="categories" label="Categoría"
+                    density="compact" variant="solo-filled" hide-details style="max-width: 200px;" class="mr-3"
+                    clearable />
+                <!-- Filtro de tiendas -->
+                <v-select v-if="title === 'Juegos'" v-model="selected" :items="stores" label="Tienda" density="compact"
+                    variant="solo-filled" hide-details style="max-width: 200px;" class="mr-3" clearable />
+
+                <!-- Botón de acción -->
                 <v-btn class="me-2" prepend-icon="mdi-plus" rounded="lg" :text="addLabel || 'Añadir'" border
-                    @click="onAdd"></v-btn>
+                    @click="onAdd" />
             </v-toolbar>
         </template>
 
