@@ -52,8 +52,6 @@ builder.Services.AddScoped<IPlatformRepository, PlatformEFRepository>();
 builder.Services.AddScoped<IConsoleService, ConsoleService>();
 builder.Services.AddScoped<IConsoleRepository, ConsoleEFRepository>();
 
-builder.Services.AddScoped<ITransactionService, TransactionService>();
-builder.Services.AddScoped<ITransactionRepository, TransactionEFRepository>();
 
 
 // builder.Services.AddScoped<IIngredienteService, IngredienteService>();
@@ -80,10 +78,10 @@ builder.WebHost.ConfigureKestrel(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+/*if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
-}
+}*/
 
 app.UseSwagger();
 app.UseSwaggerUI();

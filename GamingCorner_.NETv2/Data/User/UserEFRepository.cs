@@ -84,12 +84,6 @@ public class UserEFRepository : IUserRepository
         }
     }
 
-    public List<Transaction> GetTransactionsByUser (int id)
-        {
-            return _context.Transactions
-                           .Where(u => u.UserId == id)
-                           .ToList();    
-        }
 
     public void Update(User user)
     {

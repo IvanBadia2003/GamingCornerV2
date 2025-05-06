@@ -18,34 +18,6 @@ namespace GamingCorner.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<Transaction>()
-                .HasKey(t => t.TransactionId);
-
-            modelBuilder.Entity<Transaction>()
-                .HasOne(t => t.User)
-                .WithMany(u => u.Transactions)
-                .HasForeignKey(t => t.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Transaction>()
-                .HasOne(t => t.Product)
-                .WithMany(p => p.Transactions)
-                .HasForeignKey(t => t.ProductId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            modelBuilder.Entity<Transaction>()
-                .HasOne(t => t.Videogame)
-                .WithMany(v => v.Transactions)
-                .HasForeignKey(t => t.VideogameId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            modelBuilder.Entity<Transaction>()
-                .HasOne(t => t.Console)
-                .WithMany(c => c.Transactions)
-                .HasForeignKey(t => t.ConsoleId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-
             modelBuilder.Entity<User>()
                 .HasMany(v => v.Videogames)
                 .WithOne(u => u.User)
@@ -165,12 +137,6 @@ namespace GamingCorner.Data
                 new Product { ProductId = 3, Name = "Dark Souls", Description = "Practicamente nuevo", Price = 7, Available = true, ImageURL = "https://images.milanuncios.com/api/v1/ma-ad-media-pro/images/69f02b50-a035-4b00-a96b-184ba7a061d1?rule=hw396_70" }
             );
 
-            modelBuilder.Entity<Transaction>().HasData(
-                new Transaction { TransactionId = 1, UserId = 1, ProductId = 1, VideogameId = null, ConsoleId = null, Type = "Compra", Date = DateTime.Now },
-                new Transaction { TransactionId = 2, UserId = 2, ProductId = 2, VideogameId = null, ConsoleId = null, Type = "Compra", Date = DateTime.Now },
-                new Transaction { TransactionId = 3, UserId = 3, ProductId = 3, VideogameId = null, ConsoleId = null, Type = "Compra", Date = DateTime.Now }
-            );
-
 
 
         }
@@ -182,7 +148,6 @@ namespace GamingCorner.Data
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<Console_> Consoles { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
 
     }
 }

@@ -323,7 +323,7 @@ namespace GamingCorner.Data.Migrations
                         new
                         {
                             TransactionId = 1,
-                            Date = new DateTime(2025, 4, 29, 23, 13, 55, 332, DateTimeKind.Local).AddTicks(883),
+                            Date = new DateTime(2025, 5, 6, 19, 41, 14, 860, DateTimeKind.Local).AddTicks(2299),
                             ProductId = 1,
                             Type = "Compra",
                             UserId = 1
@@ -331,7 +331,7 @@ namespace GamingCorner.Data.Migrations
                         new
                         {
                             TransactionId = 2,
-                            Date = new DateTime(2025, 4, 29, 23, 13, 55, 332, DateTimeKind.Local).AddTicks(913),
+                            Date = new DateTime(2025, 5, 6, 19, 41, 14, 860, DateTimeKind.Local).AddTicks(2335),
                             ProductId = 2,
                             Type = "Compra",
                             UserId = 2
@@ -339,7 +339,7 @@ namespace GamingCorner.Data.Migrations
                         new
                         {
                             TransactionId = 3,
-                            Date = new DateTime(2025, 4, 29, 23, 13, 55, 332, DateTimeKind.Local).AddTicks(915),
+                            Date = new DateTime(2025, 5, 6, 19, 41, 14, 860, DateTimeKind.Local).AddTicks(2337),
                             ProductId = 3,
                             Type = "Compra",
                             UserId = 3

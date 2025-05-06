@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GamingCorner.Data.Migrations
 {
-    public partial class InitialCreate4 : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -241,9 +241,9 @@ namespace GamingCorner.Data.Migrations
                 columns: new[] { "TransactionId", "ConsoleId", "Date", "ProductId", "Type", "UserId", "VideogameId" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2025, 4, 29, 23, 13, 55, 332, DateTimeKind.Local).AddTicks(883), 1, "Compra", 1, null },
-                    { 2, null, new DateTime(2025, 4, 29, 23, 13, 55, 332, DateTimeKind.Local).AddTicks(913), 2, "Compra", 2, null },
-                    { 3, null, new DateTime(2025, 4, 29, 23, 13, 55, 332, DateTimeKind.Local).AddTicks(915), 3, "Compra", 3, null }
+                    { 1, null, new DateTime(2025, 5, 6, 19, 41, 14, 860, DateTimeKind.Local).AddTicks(2299), 1, "Compra", 1, null },
+                    { 2, null, new DateTime(2025, 5, 6, 19, 41, 14, 860, DateTimeKind.Local).AddTicks(2335), 2, "Compra", 2, null },
+                    { 3, null, new DateTime(2025, 5, 6, 19, 41, 14, 860, DateTimeKind.Local).AddTicks(2337), 3, "Compra", 3, null }
                 });
 
             migrationBuilder.InsertData(

@@ -9,36 +9,12 @@ public class UserService : IUserService
 {
 
     private readonly IUserRepository _userRepository;
-    private readonly ITransactionRepository _transactionRepository;
 
 
-    public UserService(IUserRepository userRepository, ITransactionRepository transactionRepository)
+    public UserService(IUserRepository userRepository)
     {
         _userRepository = userRepository;
-        _transactionRepository = transactionRepository;
 
-    }
-    public (UserDTO currentUser, UserDTO sellerUser) PrepareChatUsers(int currentUserId, int productId)
-    {
-        var currentUser = _userRepository.Get(currentUserId);
-        if (currentUser == null)
-        {
-            throw new KeyNotFoundException($"User with ID {currentUserId} not found.");
-        }
-
-        var transaction = _transactionRepository.Get(productId);
-        if (transaction == null || transaction.UserId == null)
-        {
-            throw new KeyNotFoundException($"Transaction for Product with ID {productId} not found or the transaction has no associated user.");
-        }
-
-        var sellerUser = _userRepository.Get(transaction.UserId.Value); // Usamos .Value para obtener el valor de int? como int
-        if (sellerUser == null)
-        {
-            throw new KeyNotFoundException($"Seller with ID {transaction.UserId} not found.");
-        }
-
-        return (currentUser, sellerUser);
     }
 
     public List<UserDTO> GetAll()
@@ -51,26 +27,6 @@ public class UserService : IUserService
     {
         var user = _userRepository.Get(id);
         return user;
-    }
-
-    public List<TransactionDTO> GetTransactionsByUser(int id)
-    {
-        var transactions = _userRepository.GetTransactionsByUser(id);
-
-        if (transactions == null || !transactions.Any())
-        {
-            return null;
-        }
-
-        return transactions.Select(v => new TransactionDTO
-        {
-            TransactionId = v.TransactionId,
-            VideogameId = v.VideogameId,
-            ConsoleId = v.ConsoleId,
-            ProductId = v.ProductId,
-            Type = v.Type,
-            Date = v.Date,
-        }).ToList();
     }
 
 
