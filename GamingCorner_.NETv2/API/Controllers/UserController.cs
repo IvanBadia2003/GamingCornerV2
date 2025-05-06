@@ -35,21 +35,6 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet]
-    [Route("{id}/transactions")]
-    public ActionResult<List<TransactionDTO>> GetTransactionsByUser(int id)
-    {
-        var transactions = _userService.GetTransactionsByUser(id);
-
-        if (transactions == null || transactions.Count == 0)
-        {
-            return NotFound();
-        }
-        return Ok(transactions);
-
-
-    }
-
 
     [HttpPost]
     public IActionResult Create([FromBody] UserCreateDTO userCreateDTO)

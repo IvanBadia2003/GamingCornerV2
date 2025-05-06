@@ -24,6 +24,7 @@ docker commit & docker push
 
 //SQLServer
 "ServerDB": "Server=gamingcornerdb.cmxwevk11cbf.us-east-1.rds.amazonaws.com;Database=GamingCornerDB;Uid=sa;Pwd=<YourStrongPassw0rd>;TrustServerCertificate=True" 
+"ServerDB": "Server=127.0.0.1;Database=GamingCornerDB;Uid=sa;Pwd=<YourStrongPassw0rd>;TrustServerCertificate=True" 
 
 //MySQL
 "ServerDB": "Server=127.0.0.1;Database=GamingCornerDB;User Id=sa;Password=<YourStrong@Passw0rd>;TrustServerCertificate=True"

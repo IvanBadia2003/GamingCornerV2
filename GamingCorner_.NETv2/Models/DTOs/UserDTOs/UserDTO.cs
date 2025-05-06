@@ -26,7 +26,6 @@ public class UserDTO
     public bool Admin { get; set; }
 
     public List<VideogameDTO> Videogames { get; set; }
-    public List<TransactionDTO> Transactions { get; set; }
 
     public User ToUser()
     {
