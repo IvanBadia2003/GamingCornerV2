@@ -60,14 +60,14 @@ public class UserController : ControllerBase
         }
         try
         {
-             _userService.Add(userCreateDTO);
-             return Ok();
+            _userService.Add(userCreateDTO);
+            return Ok();
         }
         catch (Exception ex)
         {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
-        
+
     }
 
     [HttpPut("{id}")]
@@ -107,19 +107,27 @@ public class UserController : ControllerBase
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState);
+            return BadRequest(ModelState); // Devuelve error 400 si el modelo no es válido
         }
 
-        // Llama al servicio de autenticación para manejar el inicio de sesión
-        var user = _userService.Login(userLoginDTO.Email, userLoginDTO.Password);
-
-        if (user == null)
+        try
         {
-            return Unauthorized(); // Devuelve un Unauthorized si las credenciales son inválidas
-        }
+            // Llama al servicio de autenticación para manejar el inicio de sesión
+            var user = _userService.Login(userLoginDTO.Email, userLoginDTO.Password);
 
-        // Devuelve un Ok con el objeto UserDTO si el inicio de sesión es exitoso
-        return Ok(user);
+            if (user == null)
+            {
+                return Unauthorized(new { message = "Credenciales inválidas. Por favor, verifique su correo y contraseña." }); // Devuelve un Unauthorized con mensaje si las credenciales son incorrectas
+            }
+
+            // Devuelve un Ok con el objeto UserDTO si el inicio de sesión es exitoso
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            // Captura cualquier error inesperado y devuelve un InternalServerError con el mensaje de la excepción
+            return StatusCode(500, new { message = "Ocurrió un error interno en el servidor. Inténtelo nuevamente más tarde.", details = ex.Message });
+        }
     }
 
 }

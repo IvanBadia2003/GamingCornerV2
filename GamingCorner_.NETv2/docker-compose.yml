@@ -21,7 +21,7 @@ services:
             #- ~/sqlserver-data:/var/opt/mssql  #bind mounted in Linux/Mac
         environment:    #more secure if you use an .env file
             - ACCEPT_EULA=Y
-            - MSSQL_SA_PASSWORD=<YourStrong@Passw0rd>
+            - MSSQL_SA_PASSWORD=<YourStrongPassw0rd>
     api:
         #container_name: apiContainer
         #image: apidb-dockerdemo:1.2

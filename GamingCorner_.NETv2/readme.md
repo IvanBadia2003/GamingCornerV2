@@ -21,3 +21,9 @@ docker commit & docker push
 
 
 `docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<YourStrong@Passw0rd>" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-CU21-ubuntu-20.04`
+
+//SQLServer
+"ServerDB": "Server=gamingcornerdb.cmxwevk11cbf.us-east-1.rds.amazonaws.com;Database=GamingCornerDB;Uid=sa;Pwd=<YourStrongPassw0rd>;TrustServerCertificate=True" 
+
+//MySQL
+"ServerDB": "Server=127.0.0.1;Database=GamingCornerDB;User Id=sa;Password=<YourStrong@Passw0rd>;TrustServerCertificate=True"

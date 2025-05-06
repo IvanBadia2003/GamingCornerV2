@@ -323,7 +323,7 @@ namespace GamingCorner.Data.Migrations
                         new
                         {
                             TransactionId = 1,
-                            Date = new DateTime(2024, 9, 5, 17, 31, 31, 451, DateTimeKind.Local).AddTicks(1282),
+                            Date = new DateTime(2025, 4, 29, 23, 13, 55, 332, DateTimeKind.Local).AddTicks(883),
                             ProductId = 1,
                             Type = "Compra",
                             UserId = 1
@@ -331,7 +331,7 @@ namespace GamingCorner.Data.Migrations
                         new
                         {
                             TransactionId = 2,
-                            Date = new DateTime(2024, 9, 5, 17, 31, 31, 451, DateTimeKind.Local).AddTicks(1325),
+                            Date = new DateTime(2025, 4, 29, 23, 13, 55, 332, DateTimeKind.Local).AddTicks(913),
                             ProductId = 2,
                             Type = "Compra",
                             UserId = 2
@@ -339,7 +339,7 @@ namespace GamingCorner.Data.Migrations
                         new
                         {
                             TransactionId = 3,
-                            Date = new DateTime(2024, 9, 5, 17, 31, 31, 451, DateTimeKind.Local).AddTicks(1328),
+                            Date = new DateTime(2025, 4, 29, 23, 13, 55, 332, DateTimeKind.Local).AddTicks(915),
                             ProductId = 3,
                             Type = "Compra",
                             UserId = 3
@@ -355,7 +355,6 @@ namespace GamingCorner.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Admin")
@@ -374,7 +373,6 @@ namespace GamingCorner.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");

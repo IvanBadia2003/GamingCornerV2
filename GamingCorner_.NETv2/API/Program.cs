@@ -7,13 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using GamingCorner.Models;
 
-
-
-
-
-
-
-var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 
 
@@ -21,22 +15,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy  =>
+                      policy =>
                       {
-                          policy.WithOrigins("*")
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
+                          policy.WithOrigins("http://localhost:5173") 
+                                .AllowAnyMethod()
+                                .AllowAnyHeader()
+                                .AllowCredentials(); 
                       });
 });
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-// Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment())
-// {
-// }
 
-// app.UseHttpsRedirection();
+
 // var connectionString = builder.Configuration.GetConnectionString("ServerDB");
 var connectionString = builder.Configuration.GetConnectionString("ServerDB");
 
@@ -73,15 +64,29 @@ builder.Services.AddScoped<ITransactionRepository, TransactionEFRepository>();
 //     .LogTo(Console.WriteLine, LogLevel.Information));
 builder.Services.AddDbContext<GamingCornerContext>(Options =>
         Options.UseSqlServer(connectionString)
-        .LogTo(Console.WriteLine,LogLevel.Information));
+        .LogTo(Console.WriteLine, LogLevel.Information));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configura Kestrel para permitir HTTP
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5000); // HTTP
+    options.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps());
+});
+
 var app = builder.Build();
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors(MyAllowSpecificOrigins);
 

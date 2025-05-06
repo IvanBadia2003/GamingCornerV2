@@ -10,10 +10,8 @@ public class UserCreateDTO
 {
 
 
-    [Required]
     public string? Name { get; set; }
     
-    [Required]
     public string? Address { get; set; }
 
     [Required]
@@ -22,10 +20,8 @@ public class UserCreateDTO
     [Required]
     public string? Password { get; set; }
 
-    [Required]
     public bool Admin { get; set; }
     
-    [Required]
     public string? phoneNumber { get; set; }
  
 
