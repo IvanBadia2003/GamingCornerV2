@@ -5,6 +5,9 @@ import CardComponent from '@/components/CardComponent.vue'
 
 
 const loading = ref(false)
+const dialog = ref(false)
+const review = ref('')
+
 
 function reserve() {
     loading.value = true
@@ -141,6 +144,25 @@ const rating = ref(4.5)
 
 
 
+    <v-dialog v-model="dialog" max-width="600">
+        <v-card>
+            <v-card-title class="text-h6">
+                Reseña para God of War
+            </v-card-title>
+
+            <v-card-text>
+                <v-rating v-model="rating" color="yellow darken-3" background-color="grey lighten-1" length="5"
+                    size="32" class="mb-4"></v-rating>
+
+                <v-textarea v-model="review" label="Escribir reseña" rows="4" auto-grow outlined></v-textarea>
+            </v-card-text>
+
+            <v-card-actions class="justify-end">
+                <v-btn @click="dialog = false">Cancelar</v-btn>
+                <v-btn color="primary">Enviar</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 
     <v-container fluid class="game-description">
         <!-- Imagen de fondo -->
@@ -407,7 +429,7 @@ const rating = ref(4.5)
             <v-container class="content mt-0">
                 <v-col cols="12">
                     <h3>Productos similares</h3>
-                    <v-carousel height="auto" hide-delimiters style=" position: relative;">
+                    <v-carousel height="auto" hide-delimiters style=" position: relative; ">
                         <!-- Botón Anterior -->
                         <template v-slot:prev="{ props }">
                             <v-btn variant="elevated" class="custom-prev" @click="props.onClick"
@@ -424,7 +446,7 @@ const rating = ref(4.5)
                             </v-btn>
                         </template>
                         <v-carousel-item v-for="(item, i) in 2" :key="i">
-                            <v-row>
+                            <v-row style="width: 100%;">
                                 <v-col v-for="(item, i) in 4" :key="i" cols="6" lg="3">
 
                                     <CardComponent title="Silent Hill"
@@ -459,8 +481,8 @@ const rating = ref(4.5)
                                 ▶
                             </v-btn>
                         </template>
-                        <v-carousel-item v-for="(item, i) in 2" :key="i">
-                            <v-row>
+                        <v-carousel-item v-for="(item, i) in 2" :key="i" style="width: 100%;">
+                            <v-row style="width: 100%;">
                                 <v-col v-for="(item, i) in 4" :key="i" cols="6" lg="3">
 
                                     <CardComponent title="Silent Hill"
@@ -479,7 +501,15 @@ const rating = ref(4.5)
         <v-container class="content mt-0">
             <v-row style="width: 100%;" class="pt-15">
                 <v-col cols="12">
-                    <h3>RESEÑAS</h3>
+                    <v-row>
+                        <v-col cols="6">
+                            <h3>RESEÑAS</h3>
+                        </v-col>
+                        <v-col cols="6" class="text-right">
+                            <v-btn prepend-icon="mdi-plus" text="Hacer Reseña" @click="dialog = true"></v-btn>
+                        </v-col>
+
+                    </v-row>
                     <v-row>
                         <v-col cols="12" sm="6" md="4" lg="3" v-for="(item, index) in 4" :key="index">
                             <v-card class="review-card pa-4" elevation="3">
@@ -494,8 +524,7 @@ const rating = ref(4.5)
                                 </v-card-subtitle>
 
                                 <v-card-text class="">
-                                    <p>Hermano que juegazo, lo recomiendo a todos ¡Aún estoy flipando! ¡Hermano!
-                                    </p>
+                                    <p>Hermano que juegazo, lo recomiendo a todos ¡Aún estoy flipando! ¡Hermano!</p>
                                 </v-card-text>
 
                                 <v-divider class="mx-auto mt-3" thickness="2" width="90%"></v-divider>
