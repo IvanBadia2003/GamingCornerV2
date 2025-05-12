@@ -66,7 +66,7 @@ const platforms = [
                             <v-list-item-title @click="auth.logout">Cerrar sesión</v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title> <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
+                            <v-list-item-title> 
                             </v-list-item-title>
                         </v-list-item>
                     </v-list>
@@ -82,6 +82,7 @@ const platforms = [
 
 
         </v-row>
+        <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
     </header>
 </template> -
 

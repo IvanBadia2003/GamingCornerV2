@@ -8,35 +8,40 @@ defineProps({
 });
 </script>
 <template>
-  <router-link to="/description/1">
-    <v-card tile class="bg-transparent"
-      style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative; ">
-      <div class="discount bg-primary">
-        <h5>50%</h5>
-      </div>
-      <div style="height: 85%;">
-        <v-img :src="src" cover height="100%" width="100%" />
-      </div>
-      <div style="display: flex; justify-content: space-between; align-items: center; height: 15%;" class="px-2 ">
-        <p>{{ title }}</p>
-        <p>35€</p>
-      </div>
-    </v-card>
+  <v-card tile elevation="0" class="bg-transparent" :to="'/description/1'"
+    style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: visible;">
+    <div class="discount bg-primary">
+      <h5>-50%</h5>
+    </div>
+    <div style="height: 85%;">
+      <v-img :src="src" cover height="100%" width="100%" />
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; height: 15%;" class="px-2">
+      <p>{{ title }}</p>
+      <p>35€</p>
+    </div>
+  </v-card>
 
-  </router-link>
 
 </template>
 
 <style lang="scss" scoped>
 .discount {
   position: absolute;
-  width: 20%;
-  height: 15%;
-  top: 0;
-  right: 0;
+  min-width: 60px;
+  min-height: 35px;
+  width: 10%;
+  height: 10%;
+  right: -10px;
+  top: -10px;
   z-index: 10;
+  border-radius: 10px;
+  border: rgb(46, 46, 46) 2px solid;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+
 }
 </style>

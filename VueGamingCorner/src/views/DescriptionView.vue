@@ -194,7 +194,7 @@ const rating = ref(4.5)
                                 <v-icon>mdi-tag-arrow-down</v-icon>
                                 <h5 class="ml-2" style="text-decoration: line-through;">70€</h5>
                             </v-col>
-                            <v-col cols="auto"class="mr-2">
+                            <v-col cols="auto" class="mr-2">
                                 <h5 class="text-primary">-50%</h5>
                             </v-col>
                             <v-col cols="auto" class="ml-2">
@@ -243,48 +243,47 @@ const rating = ref(4.5)
                             <v-divider class="my-3"></v-divider>
                             <v-container>
                                 <v-row dense>
-                                    <v-col cols="12">
+                                    <v-col cols="12" sm="5">
                                         <strong>Género:</strong>
                                     </v-col>
+                                    <v-col cols="12" sm="7">
+                                        <div class="tags">
+                                            <v-chip class="mr-2" color="blue-darken-3">UN JUGADOR</v-chip>
+                                            <v-chip class="mr-2" color="blue-darken-3">AVENTURA</v-chip>
+                                            <v-chip color="blue-darken-3">ACCIÓN</v-chip>
+                                        </div>
+                                    </v-col>
 
-                                    <v-col cols="12" sm="6">
+                                    <v-col cols="12" sm="5">
                                         <strong>Fecha de lanzamiento:</strong>
                                     </v-col>
-                                    <v-col cols="12" sm="6">
+                                    <v-col cols="12" sm="7">
                                         24 de octubre de 2024
                                     </v-col>
 
-                                    <v-col cols="12" sm="6">
+                                    <v-col cols="12" sm="5">
                                         <strong>Desarrollador:</strong>
                                     </v-col>
-                                    <v-col cols="12" sm="6">
+                                    <v-col cols="12" sm="7">
                                         Raven Software Treyarch
                                     </v-col>
 
-                                    <v-col cols="12" sm="6">
+                                    <v-col cols="12" sm="5">
                                         <strong>Distribuidor:</strong>
                                     </v-col>
-                                    <v-col cols="12" sm="6">
+                                    <v-col cols="12" sm="7">
                                         Activision
                                     </v-col>
 
-                                    <v-col cols="12" sm="6">
+                                    <v-col cols="12" sm="5">
                                         <strong>Instalación:</strong>
                                     </v-col>
-                                    <v-col cols="12" sm="6">
+                                    <v-col cols="12" sm="7">
                                         Cómo activar tu producto
                                     </v-col>
                                 </v-row>
                             </v-container>
 
-                            <v-divider class="my-3"></v-divider>
-                            <div class="tags">
-                                <v-chip class="mr-2" color="blue-darken-3">UN JUGADOR</v-chip>
-                                <v-chip class="mr-2" color="blue-darken-3">UN JUGADOR</v-chip>
-                                <v-chip color="blue-darken-3">UN JUGADOR</v-chip>
-                            </div>
-                            <v-img class="pegi-logo" src="https://www.pegi.info/themes/custom/pegi/public/pegi18.png"
-                                height="50" contain></v-img>
                         </v-card-text>
                     </v-card>
 
