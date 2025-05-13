@@ -9,6 +9,7 @@ public interface IUserService
     // GetAll(int id);
     void Add(UserCreateDTO userCreateDTO);
     UserDTO Get(int id);
+    UserDTO GetByEmail(string email);
     void Update(int id, UserUpdateDTO userUpdateDTO);
     void Delete(int id);
     UserDTO Login(string email, string password);

@@ -40,7 +40,7 @@ public class Console_
     [Required]
     public string ImageURL { get; set; }
 
-    public List<Transaction> Transactions { get; set; }
+    //public List<Transaction> Transactions { get; set; }
 
 
     public Console_() { }

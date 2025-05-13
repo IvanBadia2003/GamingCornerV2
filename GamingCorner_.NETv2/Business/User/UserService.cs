@@ -26,12 +26,31 @@ public class UserService : IUserService
     public UserDTO Get(int id)
     {
         var user = _userRepository.Get(id);
+        if (user == null)
+        {
+            throw new KeyNotFoundException($"User con Id {id} no encontrada.");
+        }
+
+        return user;
+    }
+
+    public UserDTO GetByEmail(string email)
+    {
+        var user = _userRepository.GetByEmail(email);
         return user;
     }
 
 
     public void Add(UserCreateDTO userCreateDTO)
     {
+
+        var existingUser = _userRepository.GetByEmail(userCreateDTO.Email);
+        
+        if (existingUser != null)
+        {
+            throw new InvalidOperationException("El correo electrónico ya está registrado.");
+        }
+        
         var user = new User();
         var mappedUser = user.mapFromCreateDto(userCreateDTO);
         _userRepository.Add(mappedUser);

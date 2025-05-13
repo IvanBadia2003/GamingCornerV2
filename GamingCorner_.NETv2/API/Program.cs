@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using GamingCorner.Models;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -17,10 +19,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:5173") 
+                          policy.WithOrigins("http://localhost:5173")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader()
-                                .AllowCredentials(); 
+                                .AllowCredentials();
                       });
 });
 
@@ -52,7 +54,15 @@ builder.Services.AddScoped<IPlatformRepository, PlatformEFRepository>();
 builder.Services.AddScoped<IConsoleService, ConsoleService>();
 builder.Services.AddScoped<IConsoleRepository, ConsoleEFRepository>();
 
-
+// Autenticación con cookies
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "MyApp.Auth";
+        //options.LoginPath = "/User/login"; // ruta que redirige si no está autenticado
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(1); // duración
+        options.SlidingExpiration = false; // NO renueva duración si sigue activo
+    });
 
 // builder.Services.AddScoped<IIngredienteService, IngredienteService>();
 // builder.Services.AddScoped<IIngredientesRepository, IngredienteEFRepository>();
@@ -83,12 +93,13 @@ var app = builder.Build();
     app.UseHttpsRedirection();
 }*/
 
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseCors(MyAllowSpecificOrigins);
 
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 app.MapControllers();
 app.Run();

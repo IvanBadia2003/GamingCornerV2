@@ -41,7 +41,7 @@ public class Videogame
     public decimal Price { get; set; }
 
     public string ImageURL { get; set; }
-    public List<Transaction> Transactions { get; set; }
+    //public List<Transaction> Transactions { get; set; }
 
     public Videogame() { }
 

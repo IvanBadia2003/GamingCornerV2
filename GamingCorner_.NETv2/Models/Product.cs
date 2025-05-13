@@ -27,7 +27,7 @@ public class Product
     public string ImageURL { get; set; }
 
     // public List<VideogameGender> ListVideogameGender { get; set; }
-    public List<Transaction> Transactions { get; set; }
+    //public List<Transaction> Transactions { get; set; }
 
 
     public Product() { }

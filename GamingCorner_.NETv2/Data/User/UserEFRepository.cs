@@ -83,6 +83,33 @@ public class UserEFRepository : IUserRepository
             return null;
         }
     }
+    
+    //Obtener un usuario por su email
+    public UserDTO GetByEmail(string email)
+    {
+        var user = _context.Users
+            .Where(user => user.Email == email)
+            .FirstOrDefault();
+
+        if (user != null)
+        {
+            var userDto = new UserDTO
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                Address = user.Address,
+                Email = user.Email,
+                Password = user.Password,
+                PhoneNumber = user.PhoneNumber,
+                Admin = user.Admin,
+            };
+            return userDto;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
 
     public void Update(User user)

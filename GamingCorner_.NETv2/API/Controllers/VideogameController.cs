@@ -1,5 +1,6 @@
 using GamingCorner.Business;
 using GamingCorner.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamingCorner.Controllers;
@@ -65,6 +66,7 @@ public class VideogameController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public IActionResult Delete(int id)
     {
         var videogame = _videogameService.Get(id);
