@@ -1,111 +1,204 @@
-namespace GamingCorner.Data;
-
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using GamingCorner.Models;
-using System.Text.Json;
-using System.Data.SqlClient;
-using System.Data;
-using GamingCorner.Data;
+using GamingCorner.Models.DTOs.ProductDTOs;
 using Microsoft.EntityFrameworkCore;
 
-public class ProductEFRepository : IProductRepository
+namespace GamingCorner.Data
 {
-
-
-    private readonly GamingCornerContext _context;
-
-    public ProductEFRepository(GamingCornerContext context)
+    public class ProductEFRepository : IProductEFRepository
     {
+        private readonly GamingCornerContext _context;
 
-        _context = context;
-    }
-
-    public List<ProductDTO> GetAll()
-    {
-        var products = _context.Products
-            .Where(p => p.Available == true)
-            .ToList();
-
-        if (products != null)
+        public ProductEFRepository(GamingCornerContext context)
         {
-            var productDto = products.Select(p => new ProductDTO
+            _context = context;
+        }
+
+
+        /// <summary>
+        /// Obtener todos los productos
+        /// </summary>
+        /// <returns></returns>
+        public List<ProductDTOBase> GetAll()
+        {
+
+            // Obtenemos todos los productos
+            var products = _context.Products.ToList();
+
+            // Si no está vacío
+            if (products != null)
             {
-                ProductId = p.ProductId,
-                Name = p.Name,
-                Description = p.Description,
-                Available = p.Available,
-                Price = p.Price,
-                ImageURL = p.ImageURL,
-            }).ToList();
-            return productDto;
-        }
-        else
-        {
-            return null;
-        }
-    }
+                // Mapeamos las propiedades al DTO
+                var productDto = products.Select(v => new ProductDTOBase
+                {
+                    Id = v.Id
+                }).ToList();
 
-    public void Add(Product product)
-    {
-        _context.Products.Add(product);
-        SaveChanges();
-    }
-
-    public ProductDTO Get(int id)
-    {
-        var product = _context.Products
-            .Where(product => product.ProductId == id)
-            .Where(p => p.Available == true)
-            .FirstOrDefault();
-
-        if (product != null)
-        {
-            var productDTO = new ProductDTO
+                // Devolvemos la lista mapeada
+                return productDto;
+            }
+            else
             {
-                ProductId = product.ProductId,
-                Name = product.Name,
-                Description = product.Description,
-                Available =product.Available,
-                Price = product.Price,
-                ImageURL = product.ImageURL,
-            };
-            return productDTO;
+                return null;
+            }
         }
-        else
-        {
-            return null;
-        }
-    }
 
-    public void Update(Product product)
-    {
-        var existingProduct = _context.Products.Find(product.ProductId);
+        /// <summary>
+        /// Añadir un producto
+        /// </summary>
+        /// <param name="product"></param>
+        public void Add(Product product)
+        {
+            // Añadimos el producto
+            _context.Products.Add(product);
 
-        if (existingProduct != null)
-        {
-            _context.Entry(existingProduct).CurrentValues.SetValues(product);
-            _context.SaveChanges();
-        }
-    }
-
-    public void Delete(int id)
-    {
-        var productDto = Get(id);
-        if (productDto == null)
-        {
-            throw new KeyNotFoundException("Product not found.");
-        }
-        var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
-        if (product != null)
-        {
-            _context.Products.Remove(product);
+            // Guardamos
             SaveChanges();
         }
 
-    }
 
-    public void SaveChanges()
-    {
-        _context.SaveChanges();
-    }
+        /// <summary>
+        /// Obtener un producto por su ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ProductDTOBase Get(int id)
+        {
+            // Obtenemos el producto por ID incluyendo el videojuego y la consola
+            var product = _context.Products
+                .Include(p => p.Console)
+                .Include(p => p.Videogame)
+                .FirstOrDefault(p => p.Id == id);
 
+            // Si el producto no existe
+            if (product == null)
+                return null;
+
+            // si el producto es un juego 
+            if (product.Videogame != null)
+            {
+                // Mapeamos las propiedades al DTO y lo devolvemos
+                return new ProductVideogameDTO
+                {
+                    Id = product.Id,
+                    Sales = product.Sales,
+                    Name = product.Videogame.Name,
+                    Pegi = product.Videogame.Pegi,
+                    Description = product.Videogame.Description,
+                    Requisitos1 = product.Videogame.Requisitos1,
+                    Requisitos2 = product.Videogame.Requisitos2,
+                    Stock = product.Videogame.Stock,
+                    Distributor = product.Videogame.Distributor,
+                    ReleaseDate = product.Videogame.ReleaseDate,
+                    Developer = product.Videogame.Developer,
+                    Discount = product.Videogame.Discount,
+                    VideogameId = product.Videogame.Id,
+                    //PlatformId =v.PlatformId,
+                    //GenderId =v.GenderId,
+                    Price = product.Videogame.Price,
+                    PrincipalImageURL = product.Videogame.PrincipalImageURL
+                };
+
+            }
+
+            // Si el producto es una consola
+            if (product.Console != null)
+            {
+                // Mapeamos las propiedades al DTO y lo devolvemos
+                return new ProductConsoleDTO
+                {
+                    Id = product.Id,
+                    Sales = product.Sales,
+                    Name = product.Console.Name,
+                    Description = product.Console.Description,
+                    Stock = product.Console.Stock,
+                    ReleaseDate = product.Console.ReleaseDate,
+                    Discount = product.Console.Discount,
+                    Brand = product.Console.Brand,
+                    ConsoleId = product.Console.Id,
+                    Specifications = product.Console.Specifications,
+                    //PlatformId =v.PlatformId,
+                    //GenderId =v.GenderId,
+                    Price = product.Console.Price,
+                    PrincipalImageURL = product.Console.PrincipalImageURL
+                };
+
+            }
+
+            // Si no es ni Videojuego ni consola ni producto de segunda mano
+            return null;
+            
+        }
+
+
+        /// <summary>
+        /// Actualizar un producto
+        /// </summary>
+        /// <param name="product"></param>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public void Update(Product product)
+        {
+            // Buscamos el producto por ID
+            var existingProduct = _context.Products.Find(product.Id);
+
+            // Si existe
+            if (existingProduct != null)
+            {
+                // Verifica si el nuevo PlatformId existe en la tabla Platforms
+                //if (!_context.Platforms.Any(p => p.PlatformId == videogame.PlatformId))
+                //{
+                //    throw new Exception("El PlatformId proporcionado no existe.");
+                //}
+
+                // Asegúrate de que el PlatformId no sea NULL
+                //if (videogame.PlatformId == null)
+                //{
+                //    throw new Exception("El PlatformId no puede ser nulo.");
+                //}
+
+                // Actualizamos las propiedades
+                _context.Entry(existingProduct).CurrentValues.SetValues(product);
+
+                // Guardamos
+                _context.SaveChanges();
+            }
+            // Si no existe 
+            else
+            {
+                throw new KeyNotFoundException("Producto no encontrado");
+            }
+        }
+
+        /// <summary>
+        /// Eliminar un prodcuto
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public void Delete(int id)
+        {
+            // Obtenemos el producto por ID
+            var product = _context.Products.FirstOrDefault(v => v.Id == id);
+
+            // Si no existe lanzamos excepción
+            if (product == null)
+                throw new KeyNotFoundException("Producto no encontrado.");
+            
+            // Eliminamos el producto
+            _context.Products.Remove(product);
+            
+            //Guardamos
+            SaveChanges();
+            
+
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+    }
 }

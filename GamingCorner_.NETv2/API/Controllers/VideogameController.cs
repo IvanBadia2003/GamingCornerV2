@@ -16,6 +16,7 @@ public class VideogameController : ControllerBase
         _videogameService = videogameService;
     }
 
+
     [HttpGet]
     public ActionResult<List<VideogameDTO>> GetAll() => _videogameService.GetAll();
 
@@ -57,11 +58,15 @@ public class VideogameController : ControllerBase
         try
         {
             _videogameService.Update(id, videogameUpdateDTO);
-            return NoContent();
+            return Ok();
         }
-        catch (KeyNotFoundException)
+        catch (KeyNotFoundException ex) 
         {
-            return NotFound();
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
         }
     }
 

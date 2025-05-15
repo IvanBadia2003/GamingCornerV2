@@ -70,13 +70,13 @@ public class PlatformEFRepository : IPlatformRepository
         public List<Videogame> GetVideogamesByPlatform (int id)
         {
             return _context.Videogames
-                           .Where(v => v.PlatformId == id)
+                           //.Where(v => v.PlatformId == id)
                            .ToList();    
         }
-        public List<Console_> GetConsolesByPlatform (int id)
+        public List<Console> GetConsolesByPlatform (int id)
         {
             return _context.Consoles
-                           .Where(v => v.ConsoleId == id)
+                           //.Where(v => v.ConsoleId == id)
                            .ToList();    
         }
 

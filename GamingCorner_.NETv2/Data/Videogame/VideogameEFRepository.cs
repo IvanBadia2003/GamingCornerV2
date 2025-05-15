@@ -19,29 +19,42 @@ public class VideogameEFRepository : IVideogameRepository
         _context = context;
     }
 
+    /// <summary>
+    /// Obtenemos lista con todos los videojuegos
+    /// </summary>
+    /// <returns></returns>
     public List<VideogameDTO> GetAll()
     {
-        var videogames = _context.Videogames
-            .ToList();
+        // Obtenemos todos los videojuegos incluyendo su producto
+        var videogames = _context.Videogames.Include(v => v.Product).ToList();
 
+        // si existe
         if (videogames != null)
         {
+            // Mapeamos la entidad al DTO
             var videogameDto = videogames.Select(v => new VideogameDTO
             {
-                VideogameId = v.VideogameId,
+                Id = v.Id,
                 Name = v.Name,
                 Pegi = v.Pegi,
-                Code = v.Code,
                 Description = v.Description,
                 Requisitos1 = v.Requisitos1,
                 Requisitos2 = v.Requisitos2,
                 Stock = v.Stock,
-                PlatformId =v.PlatformId,
-                Available = v.Available,
-                GenderId =v.GenderId,
+                Distributor = v.Distributor,
+                ReleaseDate = v.ReleaseDate,
+                Developer = v.Developer,
+                Discount = v.Discount,
+                ProductId = v.ProductId,
+                //PlatformId =v.PlatformId,
+                //GenderId =v.GenderId,
                 Price = v.Price,
-                ImageURL = v.ImageURL,
+                PrincipalImageURL = v.PrincipalImageURL,
+                Sales = v.Product.Sales
+
             }).ToList();
+
+            // Devolvemos la lista con los DTO
             return videogameDto;
         }
         else
@@ -50,36 +63,65 @@ public class VideogameEFRepository : IVideogameRepository
         }
     }
 
+    /// <summary>
+    /// Añadimos un videojuego
+    /// </summary>
+    /// <param name="videogame"></param>
     public void Add(Videogame videogame)
     {
+        //Primero se crea el producto
+        var producto = new Product();
+        _context.Products.Add(producto);
+        SaveChanges();
+
+        //Segundo se crea el juego con el id del producto
+        videogame.ProductId = producto.Id;
         _context.Videogames.Add(videogame);
         SaveChanges();
     }
 
+
+    /// <summary>
+    /// Obtenemos un videojuego por su ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public VideogameDTO Get(int id)
     {
+
+        // Obtenemos el videojuego incluyendo su producto
         var videogame = _context.Videogames
-            .Where(videogame => videogame.VideogameId == id)
+            .Where(videogame => videogame.Id == id)
+            .Include(v => v.Product)
             .FirstOrDefault();
 
+        // si existe el juego
         if (videogame != null)
         {
+
+            // Mapeamos la entidad al DTO
             var videogameDto = new VideogameDTO
             {
-                VideogameId = videogame.VideogameId,
+                Id = videogame.Id,
                 Name = videogame.Name,
                 Pegi = videogame.Pegi,
-                Code = videogame.Code,
                 Description = videogame.Description,
                 Requisitos1 = videogame.Requisitos1,
                 Requisitos2 = videogame.Requisitos2,
                 Stock = videogame.Stock,
-                Available =videogame.Available,
-                GenderId =videogame.GenderId,
-                PlatformId =videogame.PlatformId,
+                Distributor = videogame.Distributor,
+                ReleaseDate = videogame.ReleaseDate,
+                Developer = videogame.Developer,
+                Discount = videogame.Discount,
+                ProductId = videogame.ProductId,
+                //PlatformId =v.PlatformId,
+                //GenderId =v.GenderId,
                 Price = videogame.Price,
-                ImageURL = videogame.ImageURL,
+                PrincipalImageURL = videogame.PrincipalImageURL,
+                Sales = videogame.Product.Sales
             };
+
+            // Devolvemos el DTO
             return videogameDto;
         }
         else
@@ -88,34 +130,46 @@ public class VideogameEFRepository : IVideogameRepository
         }
     }
 
+
+    /// <summary>
+    /// Actualizamos el videojuego
+    /// </summary>
+    /// <param name="videogame"></param>
+    /// <exception cref="KeyNotFoundException"></exception>
     public void Update(Videogame videogame)
-{
-    var existingVideogame = _context.Videogames.Find(videogame.VideogameId);
-
-    if (existingVideogame != null)
     {
-        // Verifica si el nuevo PlatformId existe en la tabla Platforms
-        if (!_context.Platforms.Any(p => p.PlatformId == videogame.PlatformId))
+        // Buscamos el videojuego por su ID
+        var existingVideogame = _context.Videogames.Find(videogame.Id);
+
+        // Si existe
+        if (existingVideogame != null)
         {
-            throw new Exception("El PlatformId proporcionado no existe.");
-        }
+            // Verifica si el nuevo PlatformId existe en la tabla Platforms
+            //if (!_context.Platforms.Any(p => p.PlatformId == videogame.PlatformId))
+            //{
+            //    throw new Exception("El PlatformId proporcionado no existe.");
+            //}
 
-        // Asegúrate de que el PlatformId no sea NULL
-        if (videogame.PlatformId == null)
+            // Asegúrate de que el PlatformId no sea NULL
+            //if (videogame.PlatformId == null)
+            //{
+            //    throw new Exception("El PlatformId no puede ser nulo.");
+            //}
+
+            _context.Entry(existingVideogame).CurrentValues.SetValues(videogame);
+            _context.SaveChanges();
+        }
+        else
         {
-            throw new Exception("El PlatformId no puede ser nulo.");
+            throw new KeyNotFoundException("Videogame not found.");
         }
-
-        _context.Entry(existingVideogame).CurrentValues.SetValues(videogame);
-        _context.SaveChanges();
     }
-    else
-    {
-        throw new KeyNotFoundException("Videogame not found.");
-    }
-}
 
-
+    /// <summary>
+    /// Borramos un juego
+    /// </summary>
+    /// <param name="id"></param>
+    /// <exception cref="KeyNotFoundException"></exception>
     public void Delete(int id)
     {
         var videogameDto = Get(id);
@@ -123,7 +177,7 @@ public class VideogameEFRepository : IVideogameRepository
         {
             throw new KeyNotFoundException("Videogame not found.");
         }
-        var videogame = _context.Videogames.FirstOrDefault(v => v.VideogameId == id);
+        var videogame = _context.Videogames.FirstOrDefault(v => v.Id == id);
         if (videogame != null)
         {
             _context.Videogames.Remove(videogame);

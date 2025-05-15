@@ -5,34 +5,39 @@ using System.Reflection.Metadata;
 
 namespace GamingCorner.Models;
 
-public class ConsoleCreateDTO
+public class SecondHandProductCreateDTO
 {
 
 
+
+    /// <summary>
+    /// ID del producto de segunda mano
+    /// </summary>
+    public int Id { get; set; }
     
     /// <summary>
-    /// Nombre de la consola
+    /// Nombre del producto de segunda mano
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// Descripción de la consola
+    /// Descripción del producto de segunda mano
     /// </summary>
     public string Description { get; set; }
 
 
     /// <summary>
-    /// Cantidad de stock de la consola
+    /// Cantidad de stock del producto de segunda mano
     /// </summary>
     public int Stock { get; set; }
 
     /// <summary>
-    /// Porcentaje de descuento sobre el precio de la consola
+    /// Porcentaje de descuento sobre el precio del producto de segunda mano
     /// </summary>
     public int Discount { get; set; }
 
     /// <summary>
-    /// Precio de la consola
+    /// Precio del producto de segunda mano
     /// </summary>
     public decimal Price { get; set; }
 
@@ -40,32 +45,19 @@ public class ConsoleCreateDTO
     //public int GenderId { get; set; }
 
     /// <summary>
-    /// Imagen Principal de la consola
+    /// Imagen Principal del producto de segunda mano
     /// </summary>
     public string? PrincipalImageURL { get; set; }
 
     /// <summary>
-    /// Fecha de lanzamiento de la consola
+    /// Fecha de lanzamiento del producto de segunda mano
     /// </summary>
     public DateTime ReleaseDate { get; set; }
 
     /// <summary>
-    /// Especificaciones de la consola
+    /// Está revisado el producto de segunda mano
     /// </summary>
-    public string Specifications { get; set; }
+    public bool isChecked{ get; set; }
 
-    /// <summary>
-    /// Marca de la consola (Sony, Microsoft, Nintendo...)
-    /// </summary>
-    public string Brand { get; set; }
 
 }
-
-
-
-
-
-
- 
-
-

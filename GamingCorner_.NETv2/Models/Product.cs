@@ -9,56 +9,35 @@ public class Product
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int ProductId { get; set; }
+    public int Id { get; set; }
 
-    [Required]
-    public string Name { get; set; }
-
-    [Required]
-    public string Description { get; set; }
-
-    [Required]
-    public decimal Price { get; set; }
-
-    [Required]
-    public bool Available { get; set; }
-
-    [Required]
-    public string ImageURL { get; set; }
-
-    // public List<VideogameGender> ListVideogameGender { get; set; }
-    //public List<Transaction> Transactions { get; set; }
-
+    public int? Sales {  get; set; }
+    public Videogame? Videogame { get; set; }
+    public Console? Console { get; set; }
+    public SecondHandProduct? SecondHandProduct { get; set; }
 
     public Product() { }
 
-    public Product(string name, string description, bool available, decimal price, string imageURL)
+    public Product(int? sales = 0, Videogame? videogame = null, Console? console = null, SecondHandProduct? secondHandProduct = null)
     {
-        Name = name;
-        Description = description;
-        Available = available;
-        Price = price;
-        ImageURL = imageURL;
+        Sales = sales;
+        Videogame = videogame;
+        Console = console;
+        SecondHandProduct = secondHandProduct;
+
     }
 
-    public Product mapFromCreateDto(ProductCreateDTO productCreateDTO)
+    public Product mapFromCreateDto(ProductDTOBase dto)
     {
-        if (productCreateDTO == null)
-        {
-            // Puedes lanzar una excepción aquí o manejar el caso de DTO nulo según tu lógica
-            throw new ArgumentNullException(nameof(productCreateDTO));
-        }
+        if (dto == null)
+            throw new ArgumentNullException(nameof(dto));
 
-        var product = new Product
-        {
-            Name = productCreateDTO.Name,
-            Description = productCreateDTO.Description,
-            Available = productCreateDTO.Available,
-            Price = productCreateDTO.Price,
-            ImageURL = productCreateDTO.ImageURL
-        };
+        return new Product(
+            
+            dto.Sales
 
-        return product;
+        );
     }
-
 }
+
+

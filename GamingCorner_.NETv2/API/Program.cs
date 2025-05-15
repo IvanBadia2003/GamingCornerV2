@@ -36,14 +36,17 @@ var connectionString = builder.Configuration.GetConnectionString("ServerDB");
 builder.Services.AddScoped<IVideogameService, VideogameService>();
 builder.Services.AddScoped<IVideogameRepository, VideogameEFRepository>();
 
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductEFRepository, ProductEFRepository>();
+
 builder.Services.AddScoped<IGenderService, GenderService>();
 builder.Services.AddScoped<IGenderRepository, GenderEFRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserEFRepository>();
 
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
+builder.Services.AddScoped<ISecondHandProductService, SecondHandProductService>();
+builder.Services.AddScoped<ISecondHandProductRepository, SecondHandProductEFRepository>();
 
 // builder.Services.AddScoped<IVideogameGenderService, VideogameGenderService>();
 // builder.Services.AddScoped<IVideogameGenderRepository, VideogameGenderEFRepository>();
@@ -60,7 +63,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.Cookie.Name = "MyApp.Auth";
         //options.LoginPath = "/User/login"; // ruta que redirige si no está autenticado
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(1); // duración
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(5); // duración
         options.SlidingExpiration = false; // NO renueva duración si sigue activo
     });
 
@@ -72,7 +75,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 //     .LogTo(Console.WriteLine, LogLevel.Information));
 builder.Services.AddDbContext<GamingCornerContext>(Options =>
         Options.UseSqlServer(connectionString)
-        .LogTo(Console.WriteLine, LogLevel.Information));
+        .LogTo(System.Console.WriteLine, LogLevel.Information));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

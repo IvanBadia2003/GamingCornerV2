@@ -5,19 +5,69 @@ using System.Reflection.Metadata;
 
 namespace GamingCorner.Models;
 
-public class VideogameCreateDTO
-{
-    public string? Name { get; set; }
-    public int Pegi { get; set; }
-    public string? Code { get; set; }
-    public string? Description { get; set; }
-    public string? Requisitos1 { get; set; }
-    public string? Requisitos2 { get; set; }
-    public int Stock { get; set; }
-    public bool Available { get; set; }
-    public decimal Price { get; set; }
-    public int PlatformId { get; set; }
-    public int GenderId { get; set; }
-    public string? ImageURL { get; set; }
 
+public class VideogameCreateDTO
+{    
+    /// <summary>
+    /// Nombre del juego
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
+    /// Pegi del juego
+    /// </summary>
+    public int Pegi { get; set; }
+
+    /// <summary>
+    /// Descripción del juego
+    /// </summary>
+    public string Description { get; set; }
+
+    /// <summary>
+    /// Requisitos Minimos del juego
+    /// </summary>
+    public string? Requisitos1 { get; set; }
+
+    /// <summary>
+    /// Requisitos Recomendados del juego
+    /// </summary>
+    public string? Requisitos2 { get; set; }
+
+    /// <summary>
+    /// Cantidad de stock del juego
+    /// </summary>
+    public int Stock { get; set; }
+
+    /// <summary>
+    /// Porcentaje de descuento sobre el precio del juego
+    /// </summary>
+    public int Discount { get; set; }
+
+    /// <summary>
+    /// Precio del juego
+    /// </summary>
+    public decimal Price { get; set; }
+
+    //public int PlatformId { get; set; }
+    //public int GenderId { get; set; }
+
+    /// <summary>
+    /// Imagen Principal del juego
+    /// </summary>
+    public string? PrincipalImageURL { get; set; }
+
+    /// <summary>
+    /// Fecha de lanzamiento del juego
+    /// </summary>
+    public DateTime ReleaseDate { get; set; }
+
+    /// <summary>
+    /// Distribuidor del juego
+    /// </summary>
+    public string Distributor { get; set; }
+
+    /// <summary>
+    /// Desarrollador del juego
+    /// </summary>
+    public string Developer { get; set; }
 }

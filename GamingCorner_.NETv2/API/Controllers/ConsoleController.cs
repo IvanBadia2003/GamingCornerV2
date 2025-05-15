@@ -22,48 +22,52 @@ public class ConsoleController : ControllerBase
     [Route("{id}")]
     public ActionResult<ConsoleDTO> Get(int id)
     {
-        var console = _consoleService.Get(id);
+        //var console = _consoleService.Get(id);
 
-        if (console == null)
-        {
-            return NotFound();
-        }
-        else
-        {
-            return console;
-        }
+        //if (console == null)
+        //{
+        //    return NotFound();
+        //}
+        //else
+        //{
+        //    return console;
+        //}
+        return Ok();
+
     }
 
-    
+
 
     [HttpPost]
     public IActionResult Create([FromBody] ConsoleCreateDTO consoleCreateDTO)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        _consoleService.Add(consoleCreateDTO);
+        //if (!ModelState.IsValid)
+        //{
+        //    return BadRequest(ModelState);
+        //}
+        //_consoleService.Add(consoleCreateDTO);
         return Ok();
     }
 
     [HttpPut("{id}")]
     public IActionResult Update(int id, [FromBody] ConsoleUpdateDTO consoleUpdateDTO)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        //if (!ModelState.IsValid)
+        //{
+        //    return BadRequest(ModelState);
+        //}
 
-        try
-        {
-            _consoleService.Update(id, consoleUpdateDTO);
-            return NoContent();
-        }
-        catch (KeyNotFoundException)
-        {
-            return NotFound();
-        }
+        //try
+        //{
+        //    _consoleService.Update(id, consoleUpdateDTO);
+        //    return NoContent();
+        //}
+        //catch (KeyNotFoundException)
+        //{
+        //    return NotFound();
+        //}
+        return Ok();
+
     }
 
     [HttpDelete("{id}")]

@@ -69,7 +69,7 @@
         public List<Videogame> GetVideogamesByGender (int id)
         {
             return _context.Videogames
-                           .Where(v => v.GenderId == id)
+                           //.Where(v => v.GenderId == id)
                            .ToList();    
         }
 
