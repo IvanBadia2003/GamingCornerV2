@@ -14,7 +14,7 @@ public class Platform
     public string? Name { get; set; }
 
     public List<Videogame> videogames {get; set;} = new List<Videogame>();
-    public List<Console_> Consoles {get; set;} = new List<Console_>();
+    public List<Console> Consoles {get; set;} = new List<Console>();
 
     public Platform() { }
 

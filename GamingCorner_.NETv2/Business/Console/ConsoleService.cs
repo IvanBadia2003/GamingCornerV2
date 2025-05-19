@@ -29,10 +29,10 @@ using GamingCorner.Models;
     }
 
 
-    public void Add(ConsoleCreateDTO consoleCreateDTO)
+    public void Add(int productId, ConsoleCreateDTO consoleCreateDTO)
     {
-        var console = new Console_();
-        var mappedConsole = console.mapFromCreateDto(consoleCreateDTO);
+        var console = new Console();
+        var mappedConsole = console.mapFromCreateDto(productId, consoleCreateDTO);
         _consoleRepository.Add(mappedConsole);
     }
 
@@ -47,7 +47,7 @@ using GamingCorner.Models;
         var console = consoleDto.ToConsole();
         console.Price = consoleUpdateDTO.Price;
         console.Stock = consoleUpdateDTO.Stock;
-        console.Available = consoleUpdateDTO.Available;
+        //console.Available = consoleUpdateDTO.Available;
         _consoleRepository.Update(console);
     }
 

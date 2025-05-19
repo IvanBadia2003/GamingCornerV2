@@ -30,7 +30,7 @@ public class User
     // public List<Console_> Consoles { get; set; } = new List<Console_>();
 
     public List<Videogame> Videogames { get; set; } = new List<Videogame>();
-    public List<Transaction> Transactions { get; set; }
+   // public List<Transaction> Transactions { get; set; }
 
 
     public User() { }

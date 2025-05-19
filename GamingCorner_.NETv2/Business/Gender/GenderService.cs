@@ -39,15 +39,15 @@ using GamingCorner.Models;
 
         return videogames.Select(v => new VideogameDTO
         {
-            VideogameId = v.VideogameId,
+            //VideogameId = v.Id,
             Name = v.Name,
-            PlatformId = v.PlatformId,
+            //PlatformId = v.PlatformId,
             Price = v.Price,
             Stock = v.Stock,
             Description = v.Description,
             Requisitos1 = v.Requisitos1,
             Requisitos2 = v.Requisitos2,
-            ImageURL = v.ImageURL
+            //mageURL = v.ImageURL
         }).ToList();
     }
 

@@ -9,104 +9,86 @@ public class Videogame
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int VideogameId { get; set; }
+    public int Id { get; set; }
 
+    [Required] 
     public string Name { get; set; }
-
+    [Required] 
     public int Pegi { get; set; }
-    
-    public string? Code { get; set; }
-
+    [Required] 
     public string Description { get; set; }
-
+    [Required] 
     public int Stock { get; set; }
-
-    public bool Available { get; set; }
+    [Required] 
+    public decimal Price { get; set; }
+    [Required] 
+    public int Discount { get; set; }
+    [Required] 
+    public DateTime ReleaseDate { get; set; }
+    [Required] 
+    public string Developer { get; set; }
+    [Required] 
+    public string Distributor { get; set; }
+    [Required] 
+    public string PrincipalImageURL { get; set; }
 
     public string? Requisitos1 { get; set; }
     public string? Requisitos2 { get; set; }
 
-    public int PlatformId { get; set; }
+    [ForeignKey("Product")]
+    public int ProductId { get; set; }
 
-    public Platform Platform { get; set; }
-    
-    public int GenderId { get; set; }
-
-    public Gender Gender { get; set; }
-    
-    public int? UserId { get; set; }
-
-    public User? User { get; set; }
-
-    public decimal Price { get; set; }
-
-    public string ImageURL { get; set; }
-    public List<Transaction> Transactions { get; set; }
+    public Product Product { get; set; }
 
     public Videogame() { }
 
-    public Videogame(string name, int pegi, string description, int stock, bool available, int platformId, int genderId, decimal price, string imageURL, string code, string requisitos1, string requisitos2)
+    public Videogame(
+        string name,
+        int pegi,
+        string description,
+        int stock,
+        decimal price,
+        int discount,
+        DateTime releaseDate,
+        string developer,
+        string distributor,
+        string principalImageURL,
+        string? requisitos1 = null,
+        string? requisitos2 = null
+    )
     {
         Name = name;
         Pegi = pegi;
-        Code = code;
         Description = description;
+        Stock = stock;
+        Price = price;
+        Discount = discount;
+        ReleaseDate = releaseDate;
+        Developer = developer;
+        Distributor = distributor;
+        PrincipalImageURL = principalImageURL;
         Requisitos1 = requisitos1;
         Requisitos2 = requisitos2;
-        Stock = stock;
-        Available = available;
-        PlatformId = platformId;
-        GenderId = genderId;
-        Price = price;
-        ImageURL = imageURL;
     }
 
-    public Videogame mapFromCreateDto(VideogameCreateDTO videogameCreateDTO)
+    public Videogame mapFromCreateDto(VideogameCreateDTO dto)
     {
-        if (videogameCreateDTO == null)
-        {
-            // Puedes lanzar una excepción aquí o manejar el caso de DTO nulo según tu lógica
-            throw new ArgumentNullException(nameof(videogameCreateDTO));
-        }
+        if (dto == null)
+            throw new ArgumentNullException(nameof(dto));
 
-        var videogame = new Videogame
-        {
-            Name = videogameCreateDTO.Name,
-            Pegi = videogameCreateDTO.Pegi,
-            Code = videogameCreateDTO.Code,
-            Description = videogameCreateDTO.Description,
-            Requisitos1 = videogameCreateDTO.Requisitos1,
-            Requisitos2 = videogameCreateDTO.Requisitos2,
-            Stock = videogameCreateDTO.Stock,
-            Available = videogameCreateDTO.Available,
-            PlatformId = videogameCreateDTO.PlatformId,
-            GenderId = videogameCreateDTO.GenderId,
-            Price = videogameCreateDTO.Price,
-            ImageURL = videogameCreateDTO.ImageURL
-        };
-
-        return videogame;
+        return new Videogame(
+            dto.Name,
+            dto.Pegi,
+            dto.Description,
+            dto.Stock,
+            dto.Price,
+            dto.Discount,
+            dto.ReleaseDate,
+            dto.Developer,
+            dto.Distributor,
+            dto.PrincipalImageURL,
+            dto.Requisitos1,
+            dto.Requisitos2
+        );
     }
-
-    // public VideogameDTO MapToDTO()
-    // {
-    //     var videogameDto = new VideogameDTO
-    //     {
-    //         VideogameId = this.VideogameId,
-    //         Name = this.Name,
-    //         Pegi = this.Pegi,
-    //         Description = this.Description,
-    //         Stock = this.Stock,
-    //         Available = this.Available,
-    //         Platform = this.Platform,
-    //         Price = this.Price,
-    //         ImageURL = this.ImageURL,
-    //         ListVideogameGender = this.ListVideogameGender.Select(g => new VideogameGenderDTO
-    //         {
-    //             GenderId = g.GenderId,
-    //             VideogameId = g.VideogameId
-    //         }).ToList()
-    //     };
-    //     return videogameDto;
-    // }
 }

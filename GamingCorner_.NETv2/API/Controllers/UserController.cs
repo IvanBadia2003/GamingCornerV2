@@ -1,7 +1,10 @@
 using System.Security.Claims;
 using GamingCorner.Business;
 using GamingCorner.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GamingCorner.Controllers;
 
@@ -48,6 +51,10 @@ public class UserController : ControllerBase
             _userService.Add(userCreateDTO);
             return Ok();
         }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
         catch (Exception ex)
         {
             return StatusCode(500, $"Internal server error: {ex.Message}");
@@ -88,7 +95,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")] // Ruta del endpoint para el inicio de sesión
-    public IActionResult Login([FromBody] UserLoginDTO userLoginDTO)
+    public async Task<IActionResult> Login([FromBody] UserLoginDTO userLoginDTO)
     {
         if (!ModelState.IsValid)
         {
@@ -105,14 +112,57 @@ public class UserController : ControllerBase
                 return Unauthorized(new { message = "Credenciales inválidas. Por favor, verifique su correo y contraseña." }); // Devuelve un Unauthorized con mensaje si las credenciales son incorrectas
             }
 
+            var role = user.Admin ? "Admin" : "User";
+
             // Devuelve un Ok con el objeto UserDTO si el inicio de sesión es exitoso
-            return Ok(user);
+            // Claims del usuario
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Role, role),
+                new Claim("UserId", user.UserId.ToString())
+            };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            // Crear la cookie
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            return Ok(new { message = "Sesión iniciada", user });
         }
         catch (Exception ex)
         {
             // Captura cualquier error inesperado y devuelve un InternalServerError con el mensaje de la excepción
             return StatusCode(500, new { message = "Ocurrió un error interno en el servidor. Inténtelo nuevamente más tarde.", details = ex.Message });
         }
+    }
+
+    [HttpGet("me")]
+    [Authorize]
+    public IActionResult Me()
+    {
+        try
+        {
+            var UserId = int.Parse(User.FindFirst("UserId")?.Value);
+            var user = Get(UserId);
+            return Ok(user);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync();
+        return Ok("Sesión cerrada");
     }
 
 }

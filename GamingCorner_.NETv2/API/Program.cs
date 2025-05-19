@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using GamingCorner.Models;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -17,10 +19,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:5173") 
+                          policy.WithOrigins("http://localhost:5173")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader()
-                                .AllowCredentials(); 
+                                .AllowCredentials();
                       });
 });
 
@@ -34,14 +36,17 @@ var connectionString = builder.Configuration.GetConnectionString("ServerDB");
 builder.Services.AddScoped<IVideogameService, VideogameService>();
 builder.Services.AddScoped<IVideogameRepository, VideogameEFRepository>();
 
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductEFRepository, ProductEFRepository>();
+
 builder.Services.AddScoped<IGenderService, GenderService>();
 builder.Services.AddScoped<IGenderRepository, GenderEFRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserEFRepository>();
 
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
+builder.Services.AddScoped<ISecondHandProductService, SecondHandProductService>();
+builder.Services.AddScoped<ISecondHandProductRepository, SecondHandProductEFRepository>();
 
 // builder.Services.AddScoped<IVideogameGenderService, VideogameGenderService>();
 // builder.Services.AddScoped<IVideogameGenderRepository, VideogameGenderEFRepository>();
@@ -52,7 +57,15 @@ builder.Services.AddScoped<IPlatformRepository, PlatformEFRepository>();
 builder.Services.AddScoped<IConsoleService, ConsoleService>();
 builder.Services.AddScoped<IConsoleRepository, ConsoleEFRepository>();
 
-
+// Autenticación con cookies
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "MyApp.Auth";
+        //options.LoginPath = "/User/login"; // ruta que redirige si no está autenticado
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(5); // duración
+        options.SlidingExpiration = false; // NO renueva duración si sigue activo
+    });
 
 // builder.Services.AddScoped<IIngredienteService, IngredienteService>();
 // builder.Services.AddScoped<IIngredientesRepository, IngredienteEFRepository>();
@@ -62,7 +75,7 @@ builder.Services.AddScoped<IConsoleRepository, ConsoleEFRepository>();
 //     .LogTo(Console.WriteLine, LogLevel.Information));
 builder.Services.AddDbContext<GamingCornerContext>(Options =>
         Options.UseSqlServer(connectionString)
-        .LogTo(Console.WriteLine, LogLevel.Information));
+        .LogTo(System.Console.WriteLine, LogLevel.Information));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -83,12 +96,13 @@ var app = builder.Build();
     app.UseHttpsRedirection();
 }*/
 
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseCors(MyAllowSpecificOrigins);
 
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 app.MapControllers();
 app.Run();

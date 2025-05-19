@@ -39,15 +39,15 @@ using GamingCorner.Models;
 
         return videogames.Select(v => new VideogameDTO
         {
-            VideogameId = v.VideogameId,
+            //VideogameId = v.Id,
             Name = v.Name,
-            PlatformId = v.PlatformId,
+            //PlatformId = v.PlatformId,
             Price = v.Price,
             Stock = v.Stock,
             Description = v.Description,
             Requisitos1 = v.Requisitos1,
             Requisitos2 = v.Requisitos2,
-            ImageURL = v.ImageURL
+            //ImageURL = v.ImageURL
         }).ToList();
     }
     public List<ConsoleDTO> GetConsolesByPlatform(int id)
@@ -61,13 +61,12 @@ using GamingCorner.Models;
 
         return consoles.Select(v => new ConsoleDTO
         {
-            ConsoleId = v.ConsoleId,
+            Id = v.Id,
             Name = v.Name,
             Specifications = v.Specifications,
             Price = v.Price,
             Stock = v.Stock,
-            Available = v.Available,
-            ImageURL = v.ImageURL
+            //ImageURL = v.ImageURL
         }).ToList();
     }
 

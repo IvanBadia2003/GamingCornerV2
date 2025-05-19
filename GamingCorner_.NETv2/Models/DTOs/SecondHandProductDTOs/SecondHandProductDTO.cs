@@ -5,7 +5,7 @@ using System.Reflection.Metadata;
 
 namespace GamingCorner.Models;
 
-public class ProductDTO
+public class SecondHandProductDTO
 {
     [Key]
     public int ProductId { get; set; }
@@ -27,16 +27,16 @@ public class ProductDTO
  
     // public List<TransactionDTO> Transactions { get; set; } 
 
-     public Product ToProduct()
+     public SecondHandProduct ToProduct()
     {
-        return new Product
+        return new SecondHandProduct
         {
-            ProductId = this.ProductId,
+            Id = this.ProductId,
             Name = this.Name,
             Price = this.Price,
             Description = this.Description,
-            Available = this.Available,
-            ImageURL = this.ImageURL
+            //Available = this.Available,
+            //ImageURL = this.ImageURL
         };
     }
 

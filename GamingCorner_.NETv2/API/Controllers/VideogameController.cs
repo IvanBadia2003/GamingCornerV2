@@ -1,5 +1,6 @@
 using GamingCorner.Business;
 using GamingCorner.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamingCorner.Controllers;
@@ -14,6 +15,7 @@ public class VideogameController : ControllerBase
     {
         _videogameService = videogameService;
     }
+
 
     [HttpGet]
     public ActionResult<List<VideogameDTO>> GetAll() => _videogameService.GetAll();
@@ -56,15 +58,20 @@ public class VideogameController : ControllerBase
         try
         {
             _videogameService.Update(id, videogameUpdateDTO);
-            return NoContent();
+            return Ok();
         }
-        catch (KeyNotFoundException)
+        catch (KeyNotFoundException ex) 
         {
-            return NotFound();
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
         }
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public IActionResult Delete(int id)
     {
         var videogame = _videogameService.Get(id);

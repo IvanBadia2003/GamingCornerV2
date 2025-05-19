@@ -6,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace GamingCorner.Models;
 
-public class ProductUpdateDTO
+public class SecondHandProductUpdateDTO
 {
     [Required]
     public bool Available { get; set; }

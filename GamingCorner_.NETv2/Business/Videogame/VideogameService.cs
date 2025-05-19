@@ -16,19 +16,37 @@ public class VideogameService : IVideogameService
         _videogameRepository = videogameRepository;
 
     }
+
+    /// <summary>
+    /// Obtener lista de todos los videojuegos
+    /// </summary>
+    /// <returns></returns>
     public List<VideogameDTO> GetAll()
     {
         var videogames = _videogameRepository.GetAll();
+ 
         return videogames;
     }
 
+    /// <summary>
+    /// Obtener videojuego por su ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public VideogameDTO Get(int id)
     {
         var videogame = _videogameRepository.Get(id);
+        if (videogame == null)
+        {
+            throw new KeyNotFoundException($"Videogame con Id {id} no encontrada.");
+        }
         return videogame;
     }
 
-
+    /// <summary>
+    /// Añadir videojuego
+    /// </summary>
+    /// <param name="videogameCreateDTO"></param>
     public void Add(VideogameCreateDTO videogameCreateDTO)
     {
         var videogame = new Videogame();
@@ -36,6 +54,12 @@ public class VideogameService : IVideogameService
         _videogameRepository.Add(mappedVideogame);
     }
 
+    /// <summary>
+    /// Actualizar videojuego
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="videogameUpdateDTO"></param>
+    /// <exception cref="KeyNotFoundException"></exception>
     public void Update(int id, VideogameUpdateDTO videogameUpdateDTO)
     {
         var videogameDto = _videogameRepository.Get(id);
@@ -46,11 +70,15 @@ public class VideogameService : IVideogameService
 
         var videogame = videogameDto.ToVideogame();
         videogame.Stock = videogameUpdateDTO.Stock;
-        videogame.Available = videogameUpdateDTO.Available;
+        //videogame.Available = videogameUpdateDTO.Available;
         videogame.Price = videogameUpdateDTO.Price;
         _videogameRepository.Update(videogame);
     }
 
+    /// <summary>
+    /// Borrar videojuego
+    /// </summary>
+    /// <param name="id"></param>
     public void Delete(int id)
     {
         _videogameRepository.Delete(id);
