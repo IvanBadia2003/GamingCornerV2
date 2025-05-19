@@ -7,13 +7,6 @@ namespace GamingCorner.Models;
 
 public class SecondHandProductCreateDTO
 {
-
-
-
-    /// <summary>
-    /// ID del producto de segunda mano
-    /// </summary>
-    public int Id { get; set; }
     
     /// <summary>
     /// Nombre del producto de segunda mano
@@ -21,7 +14,7 @@ public class SecondHandProductCreateDTO
     public string Name { get; set; }
 
     /// <summary>
-    /// Descripción del producto de segunda mano
+    /// Descripciï¿½n del producto de segunda mano
     /// </summary>
     public string Description { get; set; }
 
@@ -29,12 +22,17 @@ public class SecondHandProductCreateDTO
     /// <summary>
     /// Cantidad de stock del producto de segunda mano
     /// </summary>
-    public int Stock { get; set; }
+    //public int Stock { get; set; }
+
+    /// <summary>
+    /// Cantidad de stock del producto de segunda mano
+    /// </summary>
+    public bool Available { get; set; }
 
     /// <summary>
     /// Porcentaje de descuento sobre el precio del producto de segunda mano
     /// </summary>
-    public int Discount { get; set; }
+    //public int Discount { get; set; }
 
     /// <summary>
     /// Precio del producto de segunda mano
@@ -47,7 +45,7 @@ public class SecondHandProductCreateDTO
     /// <summary>
     /// Imagen Principal del producto de segunda mano
     /// </summary>
-    public string? PrincipalImageURL { get; set; }
+    public string? ImageURL { get; set; }
 
     /// <summary>
     /// Fecha de lanzamiento del producto de segunda mano
@@ -55,7 +53,7 @@ public class SecondHandProductCreateDTO
     public DateTime ReleaseDate { get; set; }
 
     /// <summary>
-    /// Está revisado el producto de segunda mano
+    /// Estï¿½ revisado el producto de segunda mano
     /// </summary>
     public bool isChecked{ get; set; }
 

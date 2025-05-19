@@ -16,7 +16,7 @@ public class ConsoleCreateDTO
     public string Name { get; set; }
 
     /// <summary>
-    /// Descripción de la consola
+    /// Descripciï¿½n de la consola
     /// </summary>
     public string Description { get; set; }
 

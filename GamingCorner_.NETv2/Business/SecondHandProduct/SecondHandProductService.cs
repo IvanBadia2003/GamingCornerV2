@@ -25,14 +25,19 @@ public class SecondHandProductService : ISecondHandProductService
     public SecondHandProductDTO Get(int id)
     {
         var product = _productRepository.Get(id);
+        if (product == null)
+        {
+            throw new KeyNotFoundException($"Product con Id {id} no encontrada.");
+        }
         return product;
     }
 
 
-    public void Add(int productId, SecondHandProductCreateDTO productCreateDTO)
+    //public void Add(int productId, SecondHandProductCreateDTO productCreateDTO)
+    public void Add(SecondHandProductCreateDTO productCreateDTO)
     {
         var product = new SecondHandProduct();
-        var mappedProduct = product.mapFromCreateDto(productId, productCreateDTO);
+        var mappedProduct = product.mapFromCreateDto(productCreateDTO);
         _productRepository.Add(mappedProduct);
     }
 

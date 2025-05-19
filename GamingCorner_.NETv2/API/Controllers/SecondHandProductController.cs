@@ -1,5 +1,6 @@
 using GamingCorner.Business;
 using GamingCorner.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamingCorner.Controllers;
@@ -37,36 +38,39 @@ public class SecondHandProductController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] SecondHandProductCreateDTO productCreateDTO)
     {
-        //if (!ModelState.IsValid)
-        //{
-        //    return BadRequest(ModelState);
-        //}
-        //_productService.Add(productCreateDTO);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        _productService.Add(productCreateDTO);
         return Ok();
     }
 
     [HttpPut("{id}")]
     public IActionResult Update(int id, [FromBody] SecondHandProductUpdateDTO productUpdateDTO)
     {
-        //if (!ModelState.IsValid)
-        //{
-        //    return BadRequest(ModelState);
-        //}
+        if (!ModelState.IsValid)
+        {
+           return BadRequest(ModelState);
+        }
 
-        //try
-        //{
-        //    _productService.Update(id, productUpdateDTO);
-        //    return NoContent();
-        //}
-        //catch (KeyNotFoundException)
-        //{
-        //    return NotFound();
-        //}
-        return Ok();
-
+        try
+        {
+           _productService.Update(id, productUpdateDTO);
+           return Ok();
+        }
+        catch (KeyNotFoundException)
+        {
+           return NotFound();
+        }
+        catch (Exception ex)
+        {
+           return BadRequest(ex.Message);
+        }
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public IActionResult Delete(int id)
     {
         var product = _productService.Get(id);

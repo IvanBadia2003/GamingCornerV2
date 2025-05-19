@@ -33,6 +33,13 @@ namespace GamingCorner.Data
                 .OnDelete(DeleteBehavior.Restrict); // No se podrá borrar si está el juego creado
 
 
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.SecondHandProduct)
+                .WithOne(c => c.Product)
+                .HasForeignKey<SecondHandProduct>(c => c.ProductId)
+                .OnDelete(DeleteBehavior.Restrict); // No se podrá borrar si está el juego creado
+
+
             //modelBuilder.Entity<Product>()
             //.HasOne(p => p.SecondHandProduct)
             //.WithOne(s => s.Product)
@@ -60,6 +67,9 @@ namespace GamingCorner.Data
             modelBuilder.Entity<Models.Console>()
                 .HasKey(c => new { c.Id });
 
+            modelBuilder.Entity<SecondHandProduct>()
+                .HasKey(p => new { p.Id });
+
             modelBuilder.Entity<Platform>()
                 .HasKey(p => new { p.PlatformId });
 
@@ -84,9 +94,6 @@ namespace GamingCorner.Data
 
             modelBuilder.Entity<Gender>()
                 .HasKey(ge => new { ge.GenderId });
-
-            modelBuilder.Entity<SecondHandProduct>()
-                .HasKey(p => new { p.Id });
 
 
 

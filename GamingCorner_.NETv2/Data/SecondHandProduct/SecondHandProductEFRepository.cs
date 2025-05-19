@@ -1,5 +1,4 @@
 namespace GamingCorner.Data;
-
 using GamingCorner.Models;
 using System.Text.Json;
 using System.Data.SqlClient;
@@ -21,20 +20,19 @@ public class SecondHandProductEFRepository : ISecondHandProductRepository
 
     public List<SecondHandProductDTO> GetAll()
     {
-        var products = _context.SecondHandProducts
+        var products = _context.SecondHandProducts.Include(p => p.Product).ToList();
             //.Where(p => p.Available == true)
-            .ToList();
 
         if (products != null)
         {
             var productDto = products.Select(p => new SecondHandProductDTO
             {
-                ProductId = p.Id,
+                Id = p.Id,
                 Name = p.Name,
                 Description = p.Description,
                 //Available = p.Available,
                 Price = p.Price,
-                //ImageURL = p.ImageURL,
+                ImageURL = p.ImageURL,
             }).ToList();
             return productDto;
         }
@@ -46,6 +44,13 @@ public class SecondHandProductEFRepository : ISecondHandProductRepository
 
     public void Add(SecondHandProduct product)
     {
+        //Primero se crea el producto
+        var producto = new Product();
+        _context.Products.Add(producto);
+        SaveChanges();
+
+        //Segundo se crea el producto de segunda mano con el id del producto
+        product.ProductId = producto.Id;
         _context.SecondHandProducts.Add(product);
         SaveChanges();
     }
@@ -54,6 +59,7 @@ public class SecondHandProductEFRepository : ISecondHandProductRepository
     {
         var product = _context.SecondHandProducts
             .Where(product => product.Id == id)
+            .Include(p => p.Product)
             //.Where(p => p.Available == true)
             .FirstOrDefault();
 
@@ -66,7 +72,7 @@ public class SecondHandProductEFRepository : ISecondHandProductRepository
                 Description = product.Description,
                 //Available =product.Available,
                 Price = product.Price,
-                //ImageURL = product.ImageURL,
+                ImageURL = product.ImageURL,
             };
             return productDTO;
         }
@@ -84,6 +90,10 @@ public class SecondHandProductEFRepository : ISecondHandProductRepository
         {
             _context.Entry(existingProduct).CurrentValues.SetValues(product);
             _context.SaveChanges();
+        }
+        else
+        {
+            throw new KeyNotFoundException("Product not found.");
         }
     }
 

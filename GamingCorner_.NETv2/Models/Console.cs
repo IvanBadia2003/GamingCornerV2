@@ -31,15 +31,15 @@ public class Console
 
     public string Brand { get; set; }
 
+
     [ForeignKey("Product")]
     public int ProductId { get; set; }
     public Product Product { get; set; }
 
     public Console() { }
 
-    public Console(int id, string name, string description, int discount, DateTime releaseDate, string specifications, int stock, decimal price, string principalImageURL, string brand) 
+    public Console(string name, string description, int discount, DateTime releaseDate, string specifications, int stock, decimal price, string? principalImageURL, string brand) 
     {
-        Id = id;
         Name = name;
         Description = description;
         Discount = discount;
@@ -52,7 +52,7 @@ public class Console
 
     }
 
-    public Console mapFromCreateDto(int productId, ConsoleCreateDTO consoleCreateDTO)
+    public Console mapFromCreateDto(ConsoleCreateDTO consoleCreateDTO)
     {
         if (consoleCreateDTO == null)
         {
@@ -61,7 +61,7 @@ public class Console
         }
 
         return new Console(
-            productId,
+
             consoleCreateDTO.Name,
             consoleCreateDTO.Description,
             consoleCreateDTO.Discount,

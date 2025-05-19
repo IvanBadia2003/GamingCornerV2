@@ -101,23 +101,15 @@ public class ConsoleEFRepository : IConsoleRepository
     public void Update(Console console)
     {
         var existingConsole = _context.Consoles.Find(console.Id);
+
         if (existingConsole != null)
         {
-
-            //if (!_context.Platforms.Any(p => p.PlatformId == console.PlatformId))
-            //{
-            //    throw new Exception("El PlatformId proporcionado no existe.");
-            //}
-
-            // Asegúrate de que el PlatformId no sea NULL
-            //if (console.PlatformId == null)
-            //{
-            //    throw new Exception("El PlatformId no puede ser nulo.");
-            //}
-
             _context.Entry(existingConsole).CurrentValues.SetValues(console);
             _context.SaveChanges();
-
+        }
+        else
+        {
+            throw new KeyNotFoundException("Product not found.");
         }
     }
 

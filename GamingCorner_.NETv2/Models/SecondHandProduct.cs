@@ -7,21 +7,19 @@ namespace GamingCorner.Models;
 
 public class SecondHandProduct
 {
-
-
-    [Key, ForeignKey("Product")]
+    //[Key, ForeignKey("Product")]
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
     [Required]
     public string Name { get; set; }
     [Required]
     public string Description { get; set; }
-    [Required]
-    public int Stock { get; set; }
+
     [Required]
     public decimal Price { get; set; }
-    [Required]
-    public int Discount { get; set; }
+
     [Required]
     public DateTime ReleaseDate { get; set; }
 
@@ -29,8 +27,10 @@ public class SecondHandProduct
     public bool IsChecked { get; set; }
 
     [Required]
-    public string PrincipalImageURL { get; set; }
+    public string? ImageURL { get; set; }
 
+    [ForeignKey("Product")]
+    public int ProductId { get; set; }
     public Product Product { get; set; }
 
     // public List<VideogameGender> ListVideogameGender { get; set; }
@@ -39,20 +39,23 @@ public class SecondHandProduct
 
     public SecondHandProduct() { }
 
-    public SecondHandProduct(int id, string name, string description, bool isChecked, decimal price, string principalImageURL, int stock, int discount, DateTime releaseDate)
+    //public SecondHandProduct(int id, string name, string description, bool isChecked, decimal price, string principalImageURL, int stock, int discount, DateTime releaseDate)
+    public SecondHandProduct(string name, string description, bool isChecked, decimal price, string? imageURL, DateTime releaseDate)
     {
-        Id = id;
+        //Id = id;
         Name = name;
         Description = description;
-        Discount = discount;
+        //Discount = discount;
         ReleaseDate = releaseDate;
-        Stock = stock;
+        //Stock = stock;
+        //Available = available;
         Price = price;
         IsChecked = isChecked;
-        PrincipalImageURL = principalImageURL;
+        ImageURL = imageURL;
     }
 
-    public SecondHandProduct mapFromCreateDto(int productId, SecondHandProductCreateDTO productCreateDTO)
+    //public SecondHandProduct mapFromCreateDto(int productId, SecondHandProductCreateDTO productCreateDTO)
+    public SecondHandProduct mapFromCreateDto(SecondHandProductCreateDTO productCreateDTO)
     {
         if (productCreateDTO == null)
         {
@@ -61,14 +64,15 @@ public class SecondHandProduct
         }
 
         return new SecondHandProduct(
-            productId,
+            //productId,
             productCreateDTO.Name,
             productCreateDTO.Description,
             productCreateDTO.isChecked,
             productCreateDTO.Price,
-            productCreateDTO.PrincipalImageURL,
-            productCreateDTO.Stock,
-            productCreateDTO.Discount,
+            //productCreateDTO.Available,
+            productCreateDTO.ImageURL,
+            //productCreateDTO.Stock,
+            //productCreateDTO.Discount,
             productCreateDTO.ReleaseDate
         );        
     }

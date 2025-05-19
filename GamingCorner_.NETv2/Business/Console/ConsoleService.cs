@@ -29,10 +29,10 @@ using GamingCorner.Models;
     }
 
 
-    public void Add(int productId, ConsoleCreateDTO consoleCreateDTO)
+    public void Add(ConsoleCreateDTO consoleCreateDTO)
     {
         var console = new Console();
-        var mappedConsole = console.mapFromCreateDto(productId, consoleCreateDTO);
+        var mappedConsole = console.mapFromCreateDto(consoleCreateDTO);
         _consoleRepository.Add(mappedConsole);
     }
 

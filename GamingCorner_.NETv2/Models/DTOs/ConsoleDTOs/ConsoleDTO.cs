@@ -70,11 +70,13 @@ public class ConsoleDTO
     /// Marca de la consola (Sony, Microsoft, Nintendo...)
     /// </summary>
     public string Brand { get; set; }
+    public int? Sales { get; set; }
+
 
     /// <summary>
     /// Ventas de la consola
     /// </summary>
-    public int? Sales { get; set; }
+
     // public List<ConsoleDTO> Consoles { get; set; }Ç
 
 
@@ -83,13 +85,18 @@ public class ConsoleDTO
         return new Console
         {
             Id = this.Id,
+            ProductId = this.ProductId,
             Name = this.Name,
-            Specifications = this.Specifications,
-            //PlatformId = this.PlatformId,
+            Description = this.Description,
             Stock = this.Stock,
-            //Available = this.Available,
+            Discount = this.Discount,
             Price = this.Price,
-            //ImageURL = this.ImageURL
+            PrincipalImageURL = this.PrincipalImageURL,
+            Specifications = this.Specifications,
+            ReleaseDate = this.ReleaseDate,
+            Brand = this.Brand,
+            //PlatformId = this.PlatformId,
+            //Available = this.Available,
         };
     }
 }
