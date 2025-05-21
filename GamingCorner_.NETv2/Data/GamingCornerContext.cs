@@ -39,6 +39,19 @@ namespace GamingCorner.Data
                 .HasForeignKey<SecondHandProduct>(c => c.ProductId)
                 .OnDelete(DeleteBehavior.Restrict); // No se podrá borrar si está el juego creado
 
+            modelBuilder.Entity<VideogameGender>()
+                .HasKey(v => new { v.VideogameId, v.GenderId });
+
+            // modelBuilder.Entity<VideogameGender>()
+            //     .HasOne(v => v.Videogame)
+            //     .WithMany(vl => vl.ListVideogameGender)
+            //     .HasForeignKey(vli => vli.VideogameId);
+
+            // modelBuilder.Entity<VideogameGender>()
+            //     .HasOne(g => g.Gender)
+            //     .WithMany(vl => vl.ListVideogameGender)
+            //     .HasForeignKey(vli => vli.GenderId);
+
 
             //modelBuilder.Entity<Product>()
             //.HasOne(p => p.SecondHandProduct)
@@ -137,6 +150,14 @@ namespace GamingCorner.Data
                 new Models.Console { Id = 3, Name = "Xbox 360", Specifications = "CPU: IBM PowerPC Tri-Core Xenon a 3.2GHz; GPU: ATI Xenos, 240 GFLOPs; Memoria: 512 MB GDDR3 a 700 MHz; Almacenamiento: Disco duro de 20 GB/60 GB/120 GB (según modelo); Peso: Aprox. 3.5 Kg; Entrada/Salida: 3 puertos USB 2.0; Red: 1 puerto Ethernet (10/100), Wi-Fi opcional con adaptador externo (en modelos antiguos); Alimentación: AC 100-240V, 50/60Hz; Consumo de energía: Aprox. 175W; Salida AV: Salida HDMI™, Salida por componentes, Salida por cable AV estándar", Price = 265, Stock = 5, PrincipalImageURL = "https://i.ebayimg.com/images/g/oBUAAOSwVgljSZS8/s-l400.jpg", Brand = "Microsoft", Description = "Consola casi buena", Discount = 22, ProductId = 6, ReleaseDate = new DateTime(2023, 2, 10) }
             );
 
+            modelBuilder.Entity<VideogameGender>().HasData(
+                new VideogameGender { VideogameId = 1, GenderId =1 },
+                new VideogameGender { VideogameId = 1, GenderId =2 },
+                new VideogameGender { VideogameId = 2, GenderId =2 },
+                new VideogameGender { VideogameId = 2, GenderId =3 },
+                new VideogameGender { VideogameId = 3, GenderId =1 }
+            );
+
 
             //modelBuilder.Entity<Videogame>().HasData(
             //    new Videogame { VideogameId = 1, Name = "Rocket League", Description = "Rocket League es un videojuego que combina fútbol con vehículos propulsados por cohetes, desarrollado por Psyonix. Los jugadores controlan autos que pueden saltar y volar brevemente para golpear un balón gigante e intentar marcar goles en la portería del equipo contrario. El juego cuenta con modos tanto en solitario como multijugador, tanto en línea como local, y ofrece partidas competitivas y casuales. Con su jugabilidad rápida, mecánicas simples pero desafiantes, y una comunidad activa, Rocket League se ha convertido en un fenómeno popular en el mundo de los eSports y el gaming casual.", Stock = 3, Pegi = 12, Available = true, Price = 15, ImageURL = "https://images.igdb.com/igdb/image/upload/t_cover_big/co5w0w.webp", Requisitos1 = "Windows 7; Intel Core 2 Duo E4600; 2 GB RAM; NVIDIA GeForce 8800; 7 GB disponibles; 11", Requisitos2 = "OS: Windows 10; Procesador: Intel Core i5-2550K; Memoria: 4 GB RAM; Gráfica: NVIDIA GeForce GTX 660; Almacenamiento: 7 GB disponibles; DirectX: 11", UserId = 1, PlatformId = 1, GenderId = 1, Code = "code1" },
@@ -183,7 +204,7 @@ namespace GamingCorner.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Gender> Genders { get; set; }
-        // public DbSet<VideogameGender> VideogameGenders { get; set; }
+        public DbSet<VideogameGender> VideogameGenders { get; set; }
         public DbSet<Platform> Platforms { get; set; }
 
     }

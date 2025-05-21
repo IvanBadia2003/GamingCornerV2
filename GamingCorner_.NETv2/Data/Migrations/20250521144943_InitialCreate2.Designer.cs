@@ -4,6 +4,7 @@ using GamingCorner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamingCorner.Data.Migrations
 {
     [DbContext(typeof(GamingCornerContext))]
-    partial class GamingCornerContextModelSnapshot : ModelSnapshot
+    [Migration("20250521144943_InitialCreate2")]
+    partial class InitialCreate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -490,44 +492,25 @@ namespace GamingCorner.Data.Migrations
 
             modelBuilder.Entity("GamingCorner.Models.VideogameGender", b =>
                 {
-                    b.Property<int>("VideogameId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("GenderId")
                         .HasColumnType("int");
 
-                    b.HasKey("VideogameId", "GenderId");
+                    b.Property<int>("VideogameId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("GenderId");
 
-                    b.ToTable("VideogameGenders");
+                    b.HasIndex("VideogameId");
 
-                    b.HasData(
-                        new
-                        {
-                            VideogameId = 1,
-                            GenderId = 1
-                        },
-                        new
-                        {
-                            VideogameId = 1,
-                            GenderId = 2
-                        },
-                        new
-                        {
-                            VideogameId = 2,
-                            GenderId = 2
-                        },
-                        new
-                        {
-                            VideogameId = 2,
-                            GenderId = 3
-                        },
-                        new
-                        {
-                            VideogameId = 3,
-                            GenderId = 1
-                        });
+                    b.ToTable("VideogameGenders");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Console", b =>

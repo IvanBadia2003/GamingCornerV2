@@ -4,6 +4,7 @@ using GamingCorner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamingCorner.Data.Migrations
 {
     [DbContext(typeof(GamingCornerContext))]
-    partial class GamingCornerContextModelSnapshot : ModelSnapshot
+    [Migration("20250521145402_InitialCreate3")]
+    partial class InitialCreate3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -496,6 +498,12 @@ namespace GamingCorner.Data.Migrations
                     b.Property<int>("GenderId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.HasKey("VideogameId", "GenderId");
 
                     b.HasIndex("GenderId");
@@ -506,27 +514,32 @@ namespace GamingCorner.Data.Migrations
                         new
                         {
                             VideogameId = 1,
-                            GenderId = 1
+                            GenderId = 1,
+                            Id = 1
                         },
                         new
                         {
                             VideogameId = 1,
-                            GenderId = 2
+                            GenderId = 2,
+                            Id = 1
                         },
                         new
                         {
                             VideogameId = 2,
-                            GenderId = 2
+                            GenderId = 2,
+                            Id = 1
                         },
                         new
                         {
                             VideogameId = 2,
-                            GenderId = 3
+                            GenderId = 3,
+                            Id = 1
                         },
                         new
                         {
                             VideogameId = 3,
-                            GenderId = 1
+                            GenderId = 1,
+                            Id = 1
                         });
                 });
 

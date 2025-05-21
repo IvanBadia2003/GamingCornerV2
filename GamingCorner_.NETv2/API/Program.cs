@@ -48,8 +48,8 @@ builder.Services.AddScoped<IUserRepository, UserEFRepository>();
 builder.Services.AddScoped<ISecondHandProductService, SecondHandProductService>();
 builder.Services.AddScoped<ISecondHandProductRepository, SecondHandProductEFRepository>();
 
-// builder.Services.AddScoped<IVideogameGenderService, VideogameGenderService>();
-// builder.Services.AddScoped<IVideogameGenderRepository, VideogameGenderEFRepository>();
+builder.Services.AddScoped<IVideogameGenderService, VideogameGenderService>();
+builder.Services.AddScoped<IVideogameGenderRepository, VideogameGenderEFRepository>();
 
 builder.Services.AddScoped<IPlatformService, PlatformService>();
 builder.Services.AddScoped<IPlatformRepository, PlatformEFRepository>();
@@ -57,14 +57,14 @@ builder.Services.AddScoped<IPlatformRepository, PlatformEFRepository>();
 builder.Services.AddScoped<IConsoleService, ConsoleService>();
 builder.Services.AddScoped<IConsoleRepository, ConsoleEFRepository>();
 
-// Autenticación con cookies
+// Autenticaciï¿½n con cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.Cookie.Name = "MyApp.Auth";
-        //options.LoginPath = "/User/login"; // ruta que redirige si no está autenticado
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(5); // duración
-        options.SlidingExpiration = false; // NO renueva duración si sigue activo
+        //options.LoginPath = "/User/login"; // ruta que redirige si no estï¿½ autenticado
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(5); // duraciï¿½n
+        options.SlidingExpiration = false; // NO renueva duraciï¿½n si sigue activo
     });
 
 // builder.Services.AddScoped<IIngredienteService, IngredienteService>();
