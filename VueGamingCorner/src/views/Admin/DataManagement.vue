@@ -1,7 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import AddProductDialogComponent from '@/components/Admin/AddProductDialogComponent.vue'
 import DataTableComponent from '@/components/DataTableComponent.vue'
+
+import { useProductStore } from '@/stores/ProductStore';
+import { useGenderStore } from '@/stores/GenderStore';
+
+const genderStore = useGenderStore();
+const productStore = useProductStore();
+
+onMounted(() => {
+  productStore.getAllVideogames();
+    genderStore.getAllGenders()
+});
+
 
 const tab = ref('juegos')
 const dialogAbierto = ref(false)
@@ -15,6 +27,7 @@ const gameHeaders = [
   { title: 'Nombre', key: 'name' },
   { title: 'Plataforma', key: 'platform' },
   { title: 'Precio', key: 'price' },
+  { title: 'Discount', key: 'discount' },
   { title: 'Stock', key: 'stock' },
   { title: 'Acciones', key: 'actions', sortable: false },
 ]
@@ -35,13 +48,7 @@ const usedHeaders = [
   { title: 'Acciones', key: 'actions', sortable: false },
 ]
 
-// Datos simulados
-const games = [
-  { id: 1, name: 'Elden Ring', platform: 'PC', price: '59.99 €', stock: 10, co: 10 },
-  { id: 2, name: 'God of War', platform: 'PlayStation', price: '49.99 €', stock: 5, co: 5 },
-  { id: 3, name: 'Halo Infinite', platform: 'Xbox', price: '39.99 €', stock: 8, co: 8 },
-  { id: 4, name: 'The Legend of Zelda', platform: 'Nintendo', price: '59.99 €', stock: 12, co: 12 },
-]
+
 
 const consoles = [
   { id: 1, name: 'PlayStation 5', brand: 'Sony', price: '499 €', stock: 8 },
@@ -109,7 +116,7 @@ const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name
     <v-window v-model="tab" class="mt-4">
       <!-- JUEGOS -->
       <v-window-item value="juegos">
-        <DataTableComponent :headers="gameHeaders" :items="games" title="Juegos" icon="mdi-controller"
+        <DataTableComponent :headers="gameHeaders" :items="productStore.videogames" title="Juegos" icon="mdi-controller"
           add-label="Añadir juego" search-key="name" :on-add="añadirJuego" :on-edit="editarJuego"
           :on-delete="eliminarJuego" />
 

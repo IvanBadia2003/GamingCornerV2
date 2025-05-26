@@ -3,8 +3,10 @@ import { computed, ref } from 'vue';
 import { useTheme } from 'vuetify';
 import { useThemeStore } from '@/stores/themeStore'
 import { useAuthStore } from '@/stores/AuthStore'
+import { useProductStore } from '@/stores/ProductStore'
 import IconLogo from '@/components/icons/IconLogo.vue'
 const auth = useAuthStore()
+const productStore = useProductStore()
 
 const theme = useTheme()
 
@@ -28,8 +30,8 @@ const toggleTheme = () => {
 }
 
 const platforms = [
-    { name: 'Juegos', route: '/catalog' },
-    { name: 'Consolas', route: '/catalog' },
+    { name: 'Juegos', route: '/catalog', type: 'videogame' },
+    { name: 'Consolas', route: '/catalog', type: 'console' },
     { name: 'Segunda Mano', route: '/catalog' }
 ];
 </script>
@@ -83,7 +85,7 @@ const platforms = [
                     </v-menu>
                 </div>
                 <v-btn v-if=" toggleMenu" v-for="platform in platforms" :key="platform.name" :to="platform.route" class="mx-0"
-                    variant="text" color="white">
+                    variant="text" color="white" @click="productStore.getProductsToCatalog(platform.type as string)">
                     {{ platform.name }}
                 </v-btn>
             </v-col>

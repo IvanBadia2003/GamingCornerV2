@@ -43,7 +43,7 @@
     <!-- Fila 4: 3 tarjetas -->
     <v-row>
       <v-col cols="12" sm="4" md="4">
-        <CardComponent title="Rayman" src="https://i.ytimg.com/vi/eDp60sL5Vi4/maxresdefault.jpg"/>
+        <CardComponent title="Rayman" src="https://i.ytimg.com/vi/6NtyhdfsdNw/hq720.jpg?sqp=-oaymwEXCK4FEIIDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCtP2JCfPlONLjoQXwt4bZ_CRyYeA"/>
       </v-col>
       <v-col cols="12" sm="4" md="4">
         <CardComponent title="Crash Bandicoot" src="https://i.ytimg.com/vi/rSDBMVDXDh4/maxresdefault.jpg"/>

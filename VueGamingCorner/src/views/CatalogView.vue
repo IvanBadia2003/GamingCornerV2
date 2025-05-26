@@ -1,19 +1,29 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useDisplay } from 'vuetify'
+import { useProductStore } from '@/stores/ProductStore';
 
 import CardComponent from '@/components/CardComponent.vue'
+
+const productStore = useProductStore();
+
+onMounted(() => {
+  productStore.getAllVideogames();
+  productStore.getAllConsoles();
+
+});
 
 const { mdAndUp } = useDisplay() //será true si la pantalla está en md, lg o xl
 
 
 const showFilters = ref(false);
+const showStores = ref(false);
 const search = ref('');
 const selectedCategory = ref(null);
 const selectedPlatform = ref(null);
 
 const categories = ['Acción', 'Aventura', 'RPG', 'Deportes', 'Carreras'];
-const platforms = ['PlayStation', 'Xbox', 'Nintendo', 'PC'];
+const platforms = [ 'PC', 'Xbox', 'Nintendo', 'PlayStation'];
 const stores = ['Steam', 'Epic Games', 'Ubisoft'];
 
 
@@ -68,12 +78,22 @@ function onClick() {
 
     <v-row justify="center" class="mb-10 mt-5">
       <v-btn-toggle rounded="xl">
-        <v-btn v-for="(store, index) in stores" :key="index" :size="mdAndUp ? 'large' : 'default'"
+        <v-btn v-for="(store, index) in platforms" :key="index" :size="mdAndUp ? 'large' : 'default'"
+          :min-width="mdAndUp ? 150 : undefined" @click="showStores = true">
+          {{ store }}
+        </v-btn>
+      </v-btn-toggle>
+    </v-row>
+    <v-expand-transition>  
+      <v-row justify="center" class="mb-10 mt-5" v-if="showStores">
+        <v-btn-toggle rounded="xl">
+          <v-btn v-for="(store, index) in stores" :key="index" :size="mdAndUp ? 'large' : 'default'"
           :min-width="mdAndUp ? 150 : undefined">
           {{ store }}
         </v-btn>
       </v-btn-toggle>
     </v-row>
+  </v-expand-transition>
 
     <!-- Fila de búsqueda y acciones -->
     <v-row align="center" justify="space-between" class="mb-4">
@@ -131,10 +151,10 @@ function onClick() {
     </v-expand-transition>
 
 
-    <!-- Grid de Productos -->
+    <!-- Grid de Videojuegos -->
     <v-row>
-      <v-col v-for="product in filteredProducts" :key="product.id" cols="6" xs="6" md="4">
-        <CardComponent title="Resident Evil" :src="product.image" />
+      <v-col v-for="product in productStore.products" :key="product.id" cols="6" xs="6" md="4">
+        <CardComponent :title="product.name" :src="product.principalImageURL" :discount="product.discount" :price="product.price" :productId="product.productId" />
       </v-col>
     </v-row>
   </v-container>

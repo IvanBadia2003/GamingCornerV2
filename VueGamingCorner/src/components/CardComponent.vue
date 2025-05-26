@@ -1,24 +1,28 @@
 <script setup lang="ts">
+import { id } from 'vuetify/locale';
 import PrincipalImage from './Images/PrincipalImage.vue';
 
-defineProps({
-  title: String,
-  text: String,
-  src: String
-});
+defineProps<{
+  title: string
+  src: string
+  discount: number
+  price: number
+  productId: number
+}>()
+
 </script>
 <template>
-  <v-card tile elevation="0" class="bg-transparent" :to="'/description/1'"
+  <v-card tile elevation="0" class="bg-transparent" :to="'/description/' + productId"
     style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: visible;">
     <div class="discount bg-primary">
-      <h5>-50%</h5>
+      <h5>-{{ discount }}%</h5>
     </div>
     <div style="height: 85%;">
       <v-img :src="src" cover height="100%" width="100%" />
     </div>
     <div style="display: flex; justify-content: space-between; align-items: center; height: 15%;" class="px-2">
       <p>{{ title }}</p>
-      <p>35€</p>
+      <p>{{ (price - (price * discount / 100)).toFixed(2) }}€</p>
     </div>
   </v-card>
 
