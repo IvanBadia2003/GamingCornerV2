@@ -4,7 +4,7 @@ import ProfileView from '../views/ProfileView.vue'
 import ColorPaletteView from '../views/ColorPaletteView.vue'
 import DescriptionView from '../views/DescriptionView.vue'
 import CartView from '../views/CartView.vue'
-import CatalogView from '@/views/CatalogView.vue'
+import CatalogView from '../views/CatalogView.vue'
 import LoginView from '../views/AuthView.vue'
 import AdminView from '../views/AdminView.vue'
 import AdminEconomyView from '../views/Admin/EconomyView.vue'
@@ -88,6 +88,16 @@ const router = createRouter({
       component: LoginView,
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    // Si el usuario usa el botón "atrás", restaura la posición anterior
+    if (savedPosition) {
+      return savedPosition
+    } 
+    // Si no hay una posición guardada, desplaza a la parte superior de la página 
+    else {
+      return { top: 0 }
+    }
+  }
 })
 
 router.beforeEach((to, from, next) => {

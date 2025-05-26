@@ -25,7 +25,9 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
     try {
       const response = await axios.post('http://localhost:5000/User/login', { email, password }, { withCredentials: true })
-      user.value = response.data
+      user.value = response.data.user
+      console.log('Usuario logueado:', user.value);
+      
       router.push('/')
     } catch (err: any) {
       error.value = err.response?.data?.message || 'Error al iniciar sesión'
@@ -54,7 +56,7 @@ export const useAuthStore = defineStore('auth', () => {
   // Logout
   const logout = async () => {
     try {
-      await axios.post('/api/auth/logout', {}, { withCredentials: true })
+      await axios.post('http://localhost:5000/User/logout', {}, { withCredentials: true })
     } catch (err) {
       // No pasa nada si falla
     } finally {
@@ -65,8 +67,8 @@ export const useAuthStore = defineStore('auth', () => {
   // Cargar usuario actual (por cookie)
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get('/api/auth/me', { withCredentials: true })
-      //user.value = response.data
+      const response = await axios.get('http://localhost:5000/User/me', { withCredentials: true })
+      user.value = response.data
     } catch {
       user.value = null
     }
