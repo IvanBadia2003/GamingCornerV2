@@ -7,11 +7,7 @@ import CardComponent from '@/components/CardComponent.vue'
 
 const productStore = useProductStore();
 
-onMounted(() => {
-  productStore.getAllVideogames();
-  productStore.getAllConsoles();
 
-});
 
 const { mdAndUp } = useDisplay() //será true si la pantalla está en md, lg o xl
 

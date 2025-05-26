@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed, reactive } from 'vue'
 import axios from 'axios'
 import router from '@/router'
+import { useAuthStore } from './AuthStore'
 
 // Interfaz del producto
 interface Product {
@@ -49,18 +50,33 @@ export interface VideogameCreate {
 
 // Interfaz de la consola
 export interface Console extends Product {
-    id: number // ID del videojuego
-    name: string // Nombre del videojuego
-    description: string //Descripción del juego
-    specifications?: string //Requisitos mínimos del juego
-    stock: number //Cantidad de stock del juego
-    discount: number //Porcentaje de descuento sobre el precio del juego
-    price: number //Precio del juego
+    id: number // ID de la consola
+    name: string // Nombre de la consola
+    description: string //Descripción de la consola
+    specifications?: string //Especificaciones de la consola
+    stock: number //Cantidad de stock de la consola
+    discount: number //Porcentaje de descuento sobre el precio de la consola
+    price: number //Precio de la consola
     // platformId?: number
     // genderId?: number
-    principalImageURL?: string //Imagen principal del juego
-    releaseDate: Date //Fecha de lanzamiento del juego 
-    brand: string  //Distribuidor del juego
+    principalImageURL?: string //Imagen principal de la consola
+    releaseDate: Date //Fecha de lanzamiento de la consola
+    brand: string  //Distribuidor de la consola
+
+}
+// Interfaz de la consola
+export interface ConsoleCreate  {
+    name: string // Nombre de la consola
+    description: string //Descripción de la consola
+    stock: number //Cantidad de stock de la consola
+    discount: number //Porcentaje de descuento sobre el precio de la consola
+    price: number //Precio de la consola
+    // platformId?: number
+    // genderId?: number
+    principalImageURL?: string //Imagen principal de la consola
+    releaseDate: Date //Fecha de lanzamiento de la consola
+    specifications?: string //Especificaciones de la consola
+    brand: string  //Distribuidor de la consola
 
 }
 
@@ -101,7 +117,7 @@ export const useProductStore = defineStore('ProductStore', () => {
     })
 
 
-    // Obtener todos los videojuegos
+    // Obtener todos los productos para el catálogo
     const getProductsToCatalog = async (type: string) => {
         try {
 
@@ -197,6 +213,19 @@ export const useProductStore = defineStore('ProductStore', () => {
         }
     }
 
+
+    async function deleteVideogame(id: number) {
+        try {
+            //TENGO QUE VER COMO USARLO  useAuthStore().fetchCurrentUser
+            const response = await fetch('http://localhost:5000/Videogame/' + id, {
+                method: 'DELETE',
+            });
+            console.log("Eliminar videojuego " + id + " hecho desde ProductStore.ts");
+            alert(`videojuego: ${id} eliminado con éxito` + response.ok);
+        } catch (error) {
+            console.error('Error al eliminar:', error);
+        }
+    }
     /************ FIN VIDEOJUEGOS **********/
 
 
@@ -210,6 +239,61 @@ export const useProductStore = defineStore('ProductStore', () => {
 
         } catch (err) {
             error.value = 'Error al obtener los videojuegos'
+        }
+    }
+
+        // Requisitos recomendados del videojuego
+        const specificationsConsole = computed(() => {
+            // Decimos que el producto es un videojuego
+            const console = product as Console
+    
+            // Verificamos que el producto no sea nulo y que sea un objeto
+            if (!product || typeof product !== 'object') return []
+    
+            // Verificamos que el producto tenga la propiedad requisitos2 y que sea una cadena
+            if ('specifications' in product && typeof product.specifications === 'string') {
+    
+                // Obtenemos los requisitos mínimos
+                const specificationsConsole = console.specifications?.split(';').map(r => r.trim()) ?? []
+    
+                // Mapeamos los requisitos a un formato más legible
+                return specificationsTags.map((tag, index) => ({
+                    tag,
+                    valor: specificationsConsole[index] ?? 'Desconocido'
+                }))
+            }
+        })
+
+    async function createConsole(game: ConsoleCreate) {
+        try {
+            const response = await fetch('http://localhost:5000/Console', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(game),
+            });
+            if (response.ok) {
+                alert('Consola creada exitosamente.' + response);
+                console.log('Consola creada exitosamente.' + response);
+            } else {
+                console.error('Error al crear el juego:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error al crear el juego:', error);
+        }
+    }
+
+
+    async function deleteConsole(id: number) {
+        try {
+            const response = await fetch('http://localhost:5000/Console/' + id, {
+                method: 'DELETE',
+            });
+            console.log("Eliminar consola " + id + " hecho desde ProductStore.ts");
+            alert(`Consola: ${id} eliminado con éxito` + response.ok);
+        } catch (error) {
+            console.error('Error al eliminar:', error);
         }
     }
     /************ FIN CONSOLAS **********/
@@ -228,6 +312,10 @@ export const useProductStore = defineStore('ProductStore', () => {
         createGame,
         consoles,
         getProductsToCatalog,
-        products
+        products,
+        createConsole,
+        specificationsConsole,
+        deleteConsole,
+        deleteVideogame
     }
 })

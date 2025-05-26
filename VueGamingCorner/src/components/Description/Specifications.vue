@@ -44,11 +44,11 @@ const productStore = useProductStore();
         <div v-else-if="'brand' in productStore.product">
             <h3>ESPECIFICACIONES</h3>
             <v-row dense>
-                <template v-for="(item, index) in productStore.recommendedRequirements" :key="'spec-' + index">
-                    <v-col cols="5">
+                <template v-for="(item, index) in productStore.specificationsConsole" :key="'spec-' + index">
+                    <v-col cols="3">
                         <strong>{{ item.tag.toUpperCase() }}:</strong>
                     </v-col>
-                    <v-col cols="7">
+                    <v-col cols="3">
                         {{ item.valor }}
                     </v-col>
                 </template>
