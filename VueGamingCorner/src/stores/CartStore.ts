@@ -1,7 +1,11 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import axios from 'axios'
 import router from '@/router'
+import { de } from 'vuetify/locale'
+import type { Videogame } from './ProductStore'
+import type { Console } from './ProductStore'
+import { useProductStore } from './ProductStore'
 
 ///PARA QUE FUNCIONEN LAS COOCKIES///
 interface CookieStore {
@@ -24,14 +28,18 @@ declare var cookieStore: CookieStore
 
 
 export const useCartStore = defineStore('CartStore', () => {
-    // Estado
-    const products = ref<[]>([])
+
+
+    const cartProducts = reactive<Console[] | Videogame[]>([])          // Productos del carrito de la base de datos
+    const cartCountCookies = ref<number>(0);                     // Cantidad de productos en la cookie
+
     const error = ref<string | null>(null)
     const cookieName = "cartCookie";
 
-    const product = ref<null>()
+    const cartProduct = reactive<Videogame | Console>({ productId: 0, sales: '' } as Videogame | Console)
 
     async function addToCartCookie(productId: number) {
+        debugger
         const time = 5 * 60 * 1000; // 5 minutos
 
         try {
@@ -54,28 +62,51 @@ export const useCartStore = defineStore('CartStore', () => {
                 value: JSON.stringify(currentCart),
                 expires: Date.now() + time
             });
+
+            await updateCartCount();
+
         } catch (error) {
             console.error("Error al actualizar la cookie del carrito:", error);
         }
     }
 
-    const getCartItems = async (): Promise<number[]> => {
-        const cookie = await cookieStore.get(cookieName);
-        if (!cookie?.value) return [];
-      
+    const updateCartCount = async () => {
+        
         try {
-          return JSON.parse(cookie.value);
+            const cookie = await cookieStore.get(cookieName);
+            const cart = cookie?.value ? JSON.parse(cookie.value) : [];
+            cartCountCookies.value = cart.length;
         } catch {
-          return [];
+            cartCountCookies.value = 0;
         }
-      }
+    };
 
+    const getCartProducts = async () => {
+        debugger
+        try {
+            const cookie = await cookieStore.get(cookieName);
+            const IdsCartCookie = cookie?.value ? JSON.parse(cookie.value) : [];
+            cartProducts.splice(0, cartProducts.length); // Limpiar el array antes de agregar nuevos productos
+            for (const Id of IdsCartCookie) {
+                const response = await axios.get('http://localhost:5000/Product/' + Id)
+                cartProducts.push(response.data); // Agregar el producto al array
+            }
+
+            console.log(cartProducts);
+            
+        } catch (err) {
+            error.value = 'Error al obtener los productos del carrito';
+        }
+    }
+
+    
 
     return {
         addToCartCookie,
-        products,
-        product,
+        cartProducts,
+        cartProduct,
         error,
-        getCartItems
+        updateCartCount,
+        getCartProducts
     }
 })

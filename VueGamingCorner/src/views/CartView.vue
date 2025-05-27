@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { useCartStore } from '@/stores/CartStore';
+import { computed, onMounted, ref } from 'vue';
 
 const quantity = ref(1);
 
@@ -15,9 +16,16 @@ const panel2 = ref([0])
 const useSameAddress = ref(true)
 
 const wishList = ref([])
+const cartStore = useCartStore();
 
 const codigoActivacion = 'ABCD-1234-EFGH-5678' // Ejemplo de código
 const mostrarCodigo = ref(false)
+
+onMounted(() => {
+    // Cargar la lista de deseos desde el store
+    cartStore.getCartProducts()
+});
+
 </script>
 
 <template>
@@ -43,13 +51,13 @@ const mostrarCodigo = ref(false)
                         <v-row>
                             <v-col cols="12">
                                 <h3>CESTA</h3>
-                                <v-card class="cart-item pa-4 mb-5" elevation="2" v-for="(item, index) in 1"
-                                    :key="index">
+                                <v-card class="cart-item pa-4 mb-5" elevation="2"
+                                    v-for="(item, index) in cartStore.cartProducts" :key="index">
                                     <v-row align="center">
                                         <!-- Imagen del producto -->
                                         <v-col cols="4">
                                             <v-img
-                                                src="https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/aqZdSwWyy9JcQ66BxHDKrky6.jpg"
+                                                :src="item.principalImageURL"
                                                 class="product-image rounded-lg" cover></v-img>
                                         </v-col>
 
@@ -63,7 +71,7 @@ const mostrarCodigo = ref(false)
                                                     </v-avatar>
                                                 </v-col>
                                                 <v-col cols="10">
-                                                    <p>Crash Bandicoot </p>
+                                                    <p>{{ item.name }} </p>
                                                 </v-col>
                                                 <v-col cols="12">
                                                     <p>steam</p>
@@ -76,7 +84,8 @@ const mostrarCodigo = ref(false)
                                             <v-row class="align-center">
                                                 <v-col cols="5" class="text-center">
 
-                                                    <p>36€</p>
+                                                    <p>{{ ((item.price as number) - ((item.price as
+                                                        number) * (item.discount as number) / 100)).toFixed(2) }}€</p>
                                                 </v-col>
                                                 <v-col cols="7" class="text-center">
                                                     <v-select v-model="quantity" :items="[1, 2, 3, 4, 5]"
@@ -448,8 +457,8 @@ const mostrarCodigo = ref(false)
 }
 
 .blur-text {
-  filter: blur(5px);
-  user-select: none;
-  transition: filter 0.3s ease-in-out;
+    filter: blur(5px);
+    user-select: none;
+    transition: filter 0.3s ease-in-out;
 }
 </style>

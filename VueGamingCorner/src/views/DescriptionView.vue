@@ -12,6 +12,7 @@ import pegi7 from '@/assets/Pegi/Pegi7.svg'
 import pegi12 from '@/assets/Pegi/Pegi12.svg'
 import pegi16 from '@/assets/Pegi/Pegi16.svg'
 import pegi18 from '@/assets/Pegi/Pegi18.svg'
+import { useCartStore } from '@/stores/CartStore';
 
 
 onMounted(() => {
@@ -30,6 +31,7 @@ const pegiMap: Record<number, string> = {
 const route = useRoute()
 
 const productStore = useProductStore();
+const cartStore = useCartStore();
 const loading = ref(false)
 const dialog = ref(false)
 const review = ref('')
@@ -40,9 +42,11 @@ const isGame = computed(() => {
 })
 
 
-function reserve() {
+function reserve(productId: number) {
     loading.value = true
     setTimeout(() => (loading.value = false), 2000)
+    cartStore.addToCartCookie(productId)
+
 }
 
 
@@ -243,7 +247,7 @@ const rating = ref(4.5)
                                 @click="reserve"></v-btn>
                             <router-link to="/cart">
                                 <v-btn color="deep-purple-lighten-2" text="Comprar Ahora" border
-                                    @click="reserve"></v-btn></router-link>
+                                    @click="reserve(productStore.product?.id)"></v-btn></router-link>
                         </v-card-actions>
 
                     </v-card>

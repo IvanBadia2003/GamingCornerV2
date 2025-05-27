@@ -7,10 +7,12 @@ import { useProductStore } from '@/stores/ProductStore'
 import IconLogo from '@/components/icons/IconLogo.vue'
 const auth = useAuthStore()
 const productStore = useProductStore()
+const cartStore = useCartStore()
 
 const theme = useTheme()
 
 import { useDisplay } from 'vuetify'
+import { useCartStore } from '@/stores/CartStore';
 const { xs, sm, mdAndUp } = useDisplay()
 
 // Para ordenadores
@@ -20,6 +22,8 @@ const showMobileMenu = computed(() => xs.value || sm.value)
 const toggleMenuManual = ref(false)
 
 const toggleMenu = computed(() => mdAndUp.value || toggleMenuManual.value)
+
+const cartCount = computed(() => cartStore.updateCartCount())
 
 const toggleTheme = () => {
     const current = theme.global.name.value
@@ -47,7 +51,7 @@ const platforms = [
             <v-col  cols="6" sm="6" md="6" class="d-flex flex-column flex-md-row justify-center align-center my-2">
                 <div v-if="showMobileMenu && toggleMenu">
                     <v-btn icon :to="'/cart'" color="white" class="me-4">
-                        <v-badge :content="71" color="background" overlap>
+                        <v-badge :content="cartCount" color="background" overlap>
                             <v-icon icon="mdi-cart" size="x-large"></v-icon>
                         </v-badge>
                     </v-btn>
@@ -92,7 +96,7 @@ const platforms = [
 
             <v-col v-if="showFullMenu" cols="3" sm="3" md="3" class="d-flex justify-end align-center px-10 ">
                 <v-btn icon :to="'/cart'" color="white" class="me-4">
-                    <v-badge :content="71" color="background" overlap>
+                    <v-badge :content="cartCount" color="background" overlap>
                         <v-icon icon="mdi-cart" size="x-large"></v-icon>
                     </v-badge>
                 </v-btn>
