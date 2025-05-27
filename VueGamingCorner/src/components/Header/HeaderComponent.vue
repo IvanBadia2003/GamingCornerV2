@@ -1,18 +1,26 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useTheme } from 'vuetify';
 import { useThemeStore } from '@/stores/themeStore'
 import { useAuthStore } from '@/stores/AuthStore'
 import { useProductStore } from '@/stores/ProductStore'
+import { useDisplay } from 'vuetify'
+import { useCartStore } from '@/stores/CartStore';
+
 import IconLogo from '@/components/icons/IconLogo.vue'
+import { storeToRefs } from 'pinia';
 const auth = useAuthStore()
 const productStore = useProductStore()
+
 const cartStore = useCartStore()
+const { cartCountCookies } = storeToRefs(cartStore) //Si no lo hago así, no sale el valor actualizado de cartCountCookies
+
+onMounted(() => {
+  cartStore.updateCartCount();
+});
 
 const theme = useTheme()
 
-import { useDisplay } from 'vuetify'
-import { useCartStore } from '@/stores/CartStore';
 const { xs, sm, mdAndUp } = useDisplay()
 
 // Para ordenadores
@@ -22,8 +30,6 @@ const showMobileMenu = computed(() => xs.value || sm.value)
 const toggleMenuManual = ref(false)
 
 const toggleMenu = computed(() => mdAndUp.value || toggleMenuManual.value)
-
-const cartCount = computed(() => cartStore.updateCartCount())
 
 const toggleTheme = () => {
     const current = theme.global.name.value
@@ -51,7 +57,7 @@ const platforms = [
             <v-col  cols="6" sm="6" md="6" class="d-flex flex-column flex-md-row justify-center align-center my-2">
                 <div v-if="showMobileMenu && toggleMenu">
                     <v-btn icon :to="'/cart'" color="white" class="me-4">
-                        <v-badge :content="cartCount" color="background" overlap>
+                        <v-badge :content="cartCountCookies" color="background" overlap>
                             <v-icon icon="mdi-cart" size="x-large"></v-icon>
                         </v-badge>
                     </v-btn>
@@ -96,7 +102,7 @@ const platforms = [
 
             <v-col v-if="showFullMenu" cols="3" sm="3" md="3" class="d-flex justify-end align-center px-10 ">
                 <v-btn icon :to="'/cart'" color="white" class="me-4">
-                    <v-badge :content="cartCount" color="background" overlap>
+                    <v-badge :content="cartCountCookies" color="background" overlap>
                         <v-icon icon="mdi-cart" size="x-large"></v-icon>
                     </v-badge>
                 </v-btn>
@@ -114,7 +120,7 @@ const platforms = [
                         <v-list-item :to="'/orders'">
                             <v-list-item-title>Mis pedidos</v-list-item-title>
                         </v-list-item>
-                        <v-list-item :to="'/admin'" v-if="auth.user?.admin">
+                        <v-list-item :to="'/admin'" v-if="auth.user.admin">
                             <v-list-item-title>Pantalla Admin</v-list-item-title>
                         </v-list-item>
                         <v-list-item>

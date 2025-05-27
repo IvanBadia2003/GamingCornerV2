@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import axios from 'axios'
 import router from '@/router'
+import { de } from 'vuetify/locale'
 
 interface User {
   id: number
@@ -13,8 +14,13 @@ interface User {
 
 export const useAuthStore = defineStore('auth', () => {
   // Estado
-  const user = ref<User | null>(null)
-  const isAuthenticated = computed(() => user.value !== null)
+  const user = reactive<User>({
+    id: 0,
+    username: '',
+    email: '',
+    admin: false,
+  })
+  const isAuthenticated = computed(() => user.email === '' ? false : true)
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -25,13 +31,13 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
     try {
       const response = await axios.post('http://localhost:5000/User/login', { email, password }, { withCredentials: true })
-      user.value = response.data.user
-      console.log('Usuario logueado:', user.value);
-      
+      Object.assign(user, response.data.user);
+      console.log('Usuario logueado:', user);
+
       router.push('/')
     } catch (err: any) {
       error.value = err.response?.data?.message || 'Error al iniciar sesión'
-      user.value = null
+      Object.assign(user, null);
     } finally {
       loading.value = false
     }
@@ -43,11 +49,11 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
     try {
       const response = await axios.post('http://localhost:5000/User', { name, email, password }, { withCredentials: true })
-      user.value = response.data
+      Object.assign(user, response.data.user);
       router.push('/login')
     } catch (err: any) {
       error.value = err.response?.data?.message || 'Error al registrarse'
-      user.value = null
+      Object.assign(user, null);
     } finally {
       loading.value = false
     }
@@ -60,17 +66,18 @@ export const useAuthStore = defineStore('auth', () => {
     } catch (err) {
       // No pasa nada si falla
     } finally {
-      user.value = null
+      Object.assign(user, null);
     }
   }
 
   // Cargar usuario actual (por cookie)
   const fetchCurrentUser = async () => {
+    debugger
     try {
       const response = await axios.get('http://localhost:5000/User/me', { withCredentials: true })
-      user.value = response.data
+      Object.assign(user, response.data.value);
     } catch {
-      user.value = null
+      Object.assign(user, null);
     }
   }
 

@@ -60,7 +60,7 @@ function getComponent(tabName: string) {
                         <v-row justify="center">
                             <v-col cols="12">
 
-                                <p>{{ auth.user?.email }}</p>
+                                <p>{{ auth.user.email }}</p>
                                 <p>16 de noviembre</p>
                             </v-col>
                         </v-row>

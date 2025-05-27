@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/AuthStore';
 import { useCartStore } from '@/stores/CartStore';
 import { computed, onMounted, ref } from 'vue';
+
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const quantity = ref(1);
 
@@ -17,6 +21,7 @@ const useSameAddress = ref(true)
 
 const wishList = ref([])
 const cartStore = useCartStore();
+const authStore = useAuthStore();
 
 const codigoActivacion = 'ABCD-1234-EFGH-5678' // Ejemplo de código
 const mostrarCodigo = ref(false)
@@ -401,21 +406,25 @@ onMounted(() => {
                     <!-- Precios -->
                     <v-row class="mb-3">
                         <v-col cols="6" class="text-body-1 text-primary-darken-1">Precio oficial</v-col>
-                        <v-col cols="6" class="text-body-1 text-secondary text-right">70e</v-col>
+                        <v-col cols="6" class="text-body-1 text-secondary text-right">{{ cartStore.totalCartOficialPrice }}€</v-col>
 
                         <v-col cols="6" class="text-body-1 text-secondary">Descuento</v-col>
-                        <v-col cols="6" class="text-body-1 text-success text-right">-35€</v-col>
+                        <v-col cols="6" class="text-body-1 text-success text-right">-{{ cartStore.totalCartDiscountPrice }}€</v-col>
 
                         <v-col cols="6" class="text-h6 font-weight-bold">Subtotal</v-col>
-                        <v-col cols="6" class="text-h6 font-weight-bold text-right">35€</v-col>
+                        <v-col cols="6" class="text-h6 font-weight-bold text-right">{{ cartStore.totalCartPrice }}€</v-col>
                     </v-row>
 
                     <!-- Botón de pago -->
+                    <v-btn block class="payment-btn" height="50" :to="{ name: 'login' }"
+                        v-if="!authStore.isAuthenticated">
+                        Inicia sesión para continuar <v-icon>mdi-login</v-icon>
+                    </v-btn>
                     <v-btn block class="payment-btn" height="50" @click="currentStep = 2; step1completed = true"
-                        v-if="currentStep === 1">
+                        v-if="currentStep === 1 && authStore.isAuthenticated">
                         Proceder con el pago <v-icon>mdi-chevron-right</v-icon>
                     </v-btn>
-                    <v-btn block class="payment-btn" height="50" @click="currentStep = 3; step2completed = true" v-else>
+                    <v-btn v-else-if="currentStep === 2" block class="payment-btn" height="50" @click="currentStep = 3; step2completed = true" >
                         Proceder con el pago <v-icon>mdi-chevron-right</v-icon>
                     </v-btn>
 
@@ -423,7 +432,8 @@ onMounted(() => {
                     <v-divider class="my-4"></v-divider>
 
                     <!-- Botón "Continuar comprando" -->
-                    <div class="d-flex justify-center align-center text-secondary" v-if="currentStep === 1">
+                    <div class="d-flex justify-center align-center text-secondary" v-if="currentStep === 1"
+                    @click="router.back()">
                         <v-icon size="20">mdi-arrow-left</v-icon>
                         <span class="ml-2 text-body-2">Continuar comprando</span>
                     </div>

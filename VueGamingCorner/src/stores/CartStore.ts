@@ -75,7 +75,7 @@ export const useCartStore = defineStore('CartStore', () => {
         try {
             const cookie = await cookieStore.get(cookieName);
             const cart = cookie?.value ? JSON.parse(cookie.value) : [];
-            cartCountCookies.value = cart.length;
+            return cart.length;
         } catch {
             cartCountCookies.value = 0;
         }
@@ -99,7 +99,28 @@ export const useCartStore = defineStore('CartStore', () => {
         }
     }
 
-    
+    // Variable en la que se almacena el precio oficial total del carrito
+    const totalCartOficialPrice = computed(() => {
+        return cartProducts.reduce((total, product) => {
+            return total + (product.price ?? 0);
+        }, 0);
+    });
+
+    // Variable en la que se almacena el precio con el descuento total del carrito
+    const totalCartPrice = computed(() => {
+        return cartProducts.reduce((total, product) => {
+            const price = product.price ?? 0;
+            const discount = product.discount ?? 0;
+            const finalPrice = price - (price * discount / 100);
+            return total + finalPrice;
+        }, 0);
+    });
+
+    // Variable en la que se almacena el precio descontado del total del carrito
+    const totalCartDiscountPrice = computed(() => {
+        return (totalCartOficialPrice.value-totalCartPrice.value).toFixed(2);
+    });
+
 
     return {
         addToCartCookie,
@@ -107,6 +128,10 @@ export const useCartStore = defineStore('CartStore', () => {
         cartProduct,
         error,
         updateCartCount,
-        getCartProducts
+        getCartProducts,
+        totalCartOficialPrice,
+        totalCartPrice,
+        totalCartDiscountPrice,
+        cartCountCookies
     }
 })
