@@ -56,7 +56,7 @@ namespace GamingCorner.Models
         public decimal Price { get; set; }
 
         //public int PlatformId { get; set; }
-        //public int GenderId { get; set; }
+        public List<GenderDTO>? Genders { get; set; }
 
         /// <summary>
         /// Imagen Principal del juego

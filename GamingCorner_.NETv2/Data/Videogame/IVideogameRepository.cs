@@ -14,7 +14,7 @@ public interface IVideogameRepository
     /// Añadir un videojuego
     /// </summary>
     /// <param name="videogame"></param>
-    void Add(Videogame videogame);
+    Videogame Add(Videogame videogame);
 
     /// <summary>
     /// Obtener un videojuego por ID

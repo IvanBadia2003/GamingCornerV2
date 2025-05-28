@@ -49,7 +49,11 @@ public class VideogameCreateDTO
     public decimal Price { get; set; }
 
     //public int PlatformId { get; set; }
-    //public int GenderId { get; set; }
+    
+    /// <summary>
+    /// Géneros que tiene el juego
+    /// </summary>
+    public List<int> GenderId { get; set; }
 
     /// <summary>
     /// Imagen Principal del juego
@@ -70,4 +74,5 @@ public class VideogameCreateDTO
     /// Desarrollador del juego
     /// </summary>
     public string Developer { get; set; }
+
 }

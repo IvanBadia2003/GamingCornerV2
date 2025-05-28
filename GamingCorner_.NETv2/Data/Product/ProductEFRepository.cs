@@ -72,6 +72,8 @@ namespace GamingCorner.Data
             var product = _context.Products
                 .Include(p => p.Console)
                 .Include(p => p.Videogame)
+                    .ThenInclude(v => v.VideogameGenders)
+                        .ThenInclude(vg => vg.Gender)
                 .FirstOrDefault(p => p.Id == id);
 
             // Si el producto no existe
@@ -98,9 +100,13 @@ namespace GamingCorner.Data
                     Discount = product.Videogame.Discount,
                     VideogameId = product.Videogame.Id,
                     //PlatformId =v.PlatformId,
-                    //GenderId =v.GenderId,
                     Price = product.Videogame.Price,
-                    PrincipalImageURL = product.Videogame.PrincipalImageURL
+                    PrincipalImageURL = product.Videogame.PrincipalImageURL,
+                    Genders = product.Videogame.VideogameGenders.Select(vg => new GenderDTO
+                    {
+                        GenderId = vg.Gender.GenderId,
+                        Name = vg.Gender.Name
+                    }).ToList()
                 };
 
             }

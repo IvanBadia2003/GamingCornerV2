@@ -67,7 +67,7 @@ public class VideogameEFRepository : IVideogameRepository
     /// Añadimos un videojuego
     /// </summary>
     /// <param name="videogame"></param>
-    public void Add(Videogame videogame)
+    public Videogame Add(Videogame videogame)
     {
         //Primero se crea el producto
         var producto = new Product();
@@ -78,6 +78,8 @@ public class VideogameEFRepository : IVideogameRepository
         videogame.ProductId = producto.Id;
         _context.Videogames.Add(videogame);
         SaveChanges();
+
+        return videogame;
     }
 
 

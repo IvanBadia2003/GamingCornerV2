@@ -16,7 +16,7 @@ public interface IVideogameService
     /// Crear un nuevo juego
     /// </summary>
     /// <param name="videogameCreateDTO"></param>
-    void Add(VideogameCreateDTO videogameCreateDTO);
+    VideogameDTO Add(VideogameCreateDTO videogameCreateDTO);
 
     /// <summary>
     /// Obtener un juego por su ID

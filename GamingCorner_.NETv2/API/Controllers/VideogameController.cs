@@ -10,10 +10,12 @@ namespace GamingCorner.Controllers;
 public class VideogameController : ControllerBase
 {
     private readonly IVideogameService _videogameService;
+    private readonly IVideogameGenderService _videogameGenderService;
 
-    public VideogameController(IVideogameService videogameService)
+    public VideogameController(IVideogameService videogameService, IVideogameGenderService videogameGenderService)
     {
         _videogameService = videogameService;
+        _videogameGenderService = videogameGenderService;
     }
 
 
@@ -43,7 +45,19 @@ public class VideogameController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        _videogameService.Add(videogameCreateDTO);
+        VideogameDTO videogameCreated = _videogameService.Add(videogameCreateDTO);
+
+
+        foreach (var genderId in videogameCreateDTO.GenderId)
+        {
+            VideogameGenderCreateDTO videogameGenderDto = new VideogameGenderCreateDTO
+            {
+                GenderId = genderId,
+                VideogameId = videogameCreated.Id
+            };
+
+            _videogameGenderService.Add(videogameGenderDto);
+        }
         return Ok();
     }
 
@@ -60,7 +74,7 @@ public class VideogameController : ControllerBase
             _videogameService.Update(id, videogameUpdateDTO);
             return Ok();
         }
-        catch (KeyNotFoundException ex) 
+        catch (KeyNotFoundException ex)
         {
             return NotFound(ex.Message);
         }

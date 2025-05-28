@@ -47,11 +47,12 @@ public class VideogameService : IVideogameService
     /// Añadir videojuego
     /// </summary>
     /// <param name="videogameCreateDTO"></param>
-    public void Add(VideogameCreateDTO videogameCreateDTO)
+    public VideogameDTO Add(VideogameCreateDTO videogameCreateDTO)
     {
         var videogame = new Videogame();
         var mappedVideogame = videogame.mapFromCreateDto(videogameCreateDTO);
-        _videogameRepository.Add(mappedVideogame);
+        var videogameCreated = _videogameRepository.Add(mappedVideogame);
+        return videogameCreated.mapToReadDto();
     }
 
     /// <summary>

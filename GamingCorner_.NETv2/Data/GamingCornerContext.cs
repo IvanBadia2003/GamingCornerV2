@@ -89,7 +89,7 @@ namespace GamingCorner.Data
             modelBuilder.Entity<Platform>()
                .HasMany(p => p.products)
                .WithOne(c => c.Platform)
-               .HasForeignKey(c => c.Platform)
+               .HasForeignKey(c => c.PlatformId)
                .OnDelete(DeleteBehavior.Restrict); // Mantén o usa Restrict
 
             //modelBuilder.Entity<Platform>()

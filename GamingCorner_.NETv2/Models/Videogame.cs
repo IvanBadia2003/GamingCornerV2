@@ -40,6 +40,9 @@ public class Videogame
 
     public Product Product { get; set; }
 
+    public ICollection<VideogameGender> VideogameGenders { get; set; }
+
+
     public Videogame() { }
 
     public Videogame(
@@ -90,5 +93,27 @@ public class Videogame
             dto.Requisitos1,
             dto.Requisitos2
         );
+    }
+
+    public VideogameDTO mapToReadDto()
+    {
+        return new VideogameDTO
+        {
+            Id = this.Id,
+            ProductId = this.ProductId,
+            Name = this.Name,
+            Pegi = this.Pegi,
+            Description = this.Description,
+            Requisitos1 = this.Requisitos1,
+            Requisitos2 = this.Requisitos2,
+            Stock = this.Stock,
+            Discount = this.Discount,
+            Price = this.Price,
+            PrincipalImageURL = this.PrincipalImageURL,
+            ReleaseDate = this.ReleaseDate,
+            Distributor = this.Distributor,
+            Developer = this.Developer,
+            Sales = this.Product?.Sales ?? 0 // Ejemplo si quieres incluir datos del Product
+        };
     }
 }
