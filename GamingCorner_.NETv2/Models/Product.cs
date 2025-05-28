@@ -12,15 +12,16 @@ public class Product
     public int Id { get; set; }
 
     public int? Sales {  get; set; }
+    public Platform? Platform {  get; set; }
+    public int? PlatformId {  get; set; }
     public Videogame? Videogame { get; set; }
     public Console? Console { get; set; }
     public SecondHandProduct? SecondHandProduct { get; set; }
 
-    public Product() { }
-
-    public Product(int? sales = 0, Videogame? videogame = null, Console? console = null, SecondHandProduct? secondHandProduct = null)
+    public Product(int? platformId = null, int? sales = 0, Videogame? videogame = null, Console? console = null, SecondHandProduct? secondHandProduct = null)
     {
         Sales = sales;
+        PlatformId = platformId;
         Videogame = videogame;
         Console = console;
         SecondHandProduct = secondHandProduct;
@@ -34,7 +35,8 @@ public class Product
 
         return new Product(
             
-            dto.Sales
+            dto.Sales,
+            dto.PlatformId
 
         );
     }

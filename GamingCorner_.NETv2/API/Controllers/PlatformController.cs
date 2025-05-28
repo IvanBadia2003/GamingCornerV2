@@ -34,34 +34,34 @@ public class PlatformController : ControllerBase
         }
     }
 
-    [HttpGet]
-    [Route("{id}/videogames")]
-    public ActionResult<List<VideogameDTO>> GetVideogamesByPlatform(int id)
-    {
-        var videogames = _platformService.GetVideogamesByPlatform(id);
+    // [HttpGet]
+    // [Route("{id}/videogames")]
+    // public ActionResult<List<VideogameDTO>> GetVideogamesByPlatform(int id)
+    // {
+    //     var videogames = _platformService.GetVideogamesByPlatform(id);
 
-        if (videogames == null || videogames.Count == 0)
-        {
-            return NotFound();
-        }
-        return Ok(videogames);
-
-
-    }
-    [HttpGet]
-    [Route("{id}/consoles")]
-    public ActionResult<List<ConsoleDTO>> GetConsolesByPlatform(int id)
-    {
-        var consoles = _platformService.GetConsolesByPlatform(id);
-
-        if (consoles == null || consoles.Count == 0)
-        {
-            return NotFound();
-        }
-        return Ok(consoles);
+    //     if (videogames == null || videogames.Count == 0)
+    //     {
+    //         return NotFound();
+    //     }
+    //     return Ok(videogames);
 
 
-    }
+    // }
+    // [HttpGet]
+    // [Route("{id}/consoles")]
+    // public ActionResult<List<ConsoleDTO>> GetConsolesByPlatform(int id)
+    // {
+    //     var consoles = _platformService.GetConsolesByPlatform(id);
+
+    //     if (consoles == null || consoles.Count == 0)
+    //     {
+    //         return NotFound();
+    //     }
+    //     return Ok(consoles);
+
+
+    // }
 
     [HttpPost]
     public IActionResult Create([FromBody] PlatformCreateDTO platformCreateDTO)

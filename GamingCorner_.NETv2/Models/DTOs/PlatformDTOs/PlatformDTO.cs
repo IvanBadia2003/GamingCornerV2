@@ -12,5 +12,17 @@ public class PlatformDTO
 
     [Required]
     public string? Name { get; set; }
+    [Required]
+    public string? PrincipalImageURL { get; set; }
+
+    public Platform ToPlatform()
+    {
+        return new Platform
+        {
+            PlatformId = this.PlatformId,
+            Name = this.Name,
+            PrincipalImageURL = this.PrincipalImageURL
+        };
+    }
 
 }

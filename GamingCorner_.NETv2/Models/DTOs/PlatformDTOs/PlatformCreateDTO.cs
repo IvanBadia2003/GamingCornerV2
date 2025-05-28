@@ -7,9 +7,9 @@ namespace GamingCorner.Models;
 
 public class PlatformCreateDTO
 {
-
-
     [Required]
     public string? Name { get; set; }
+    [Required]
+    public string? PrincipalImageURL { get; set; }
 
 }

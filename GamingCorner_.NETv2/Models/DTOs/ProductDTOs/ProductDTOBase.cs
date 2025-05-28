@@ -17,13 +17,15 @@ namespace GamingCorner.Models
         /// Ventas del producto
         /// </summary>
         public int? Sales { get; set; }
+        public int? PlatformId { get; set; }
 
         public Product ToProduct()
         {
             return new Product
             {
                 Id = this.Id,
-                Sales = this.Sales 
+                Sales = this.Sales, 
+                PlatformId = this.PlatformId 
                
             };
         }

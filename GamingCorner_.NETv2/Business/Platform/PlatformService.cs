@@ -28,47 +28,47 @@ using GamingCorner.Models;
         return platform;
     }
     
-    public List<VideogameDTO> GetVideogamesByPlatform(int id)
-    {
-        var videogames = _platformRepository.GetVideogamesByPlatform(id);
+    // public List<VideogameDTO> GetVideogamesByPlatform(int id)
+    // {
+    //     var videogames = _platformRepository.GetVideogamesByPlatform(id);
 
-        if (videogames == null || !videogames.Any())
-        {
-            return null;
-        }
+    //     if (videogames == null || !videogames.Any())
+    //     {
+    //         return null;
+    //     }
 
-        return videogames.Select(v => new VideogameDTO
-        {
-            //VideogameId = v.Id,
-            Name = v.Name,
-            //PlatformId = v.PlatformId,
-            Price = v.Price,
-            Stock = v.Stock,
-            Description = v.Description,
-            Requisitos1 = v.Requisitos1,
-            Requisitos2 = v.Requisitos2,
-            //ImageURL = v.ImageURL
-        }).ToList();
-    }
-    public List<ConsoleDTO> GetConsolesByPlatform(int id)
-    {
-        var consoles = _platformRepository.GetConsolesByPlatform(id);
+    //     return videogames.Select(v => new VideogameDTO
+    //     {
+    //         //VideogameId = v.Id,
+    //         Name = v.Name,
+    //         //PlatformId = v.PlatformId,
+    //         Price = v.Price,
+    //         Stock = v.Stock,
+    //         Description = v.Description,
+    //         Requisitos1 = v.Requisitos1,
+    //         Requisitos2 = v.Requisitos2,
+    //         //ImageURL = v.ImageURL
+    //     }).ToList();
+    // }
+    // public List<ConsoleDTO> GetConsolesByPlatform(int id)
+    // {
+    //     var consoles = _platformRepository.GetConsolesByPlatform(id);
 
-        if (consoles == null || !consoles.Any())
-        {
-            return null;
-        }
+    //     if (consoles == null || !consoles.Any())
+    //     {
+    //         return null;
+    //     }
 
-        return consoles.Select(v => new ConsoleDTO
-        {
-            Id = v.Id,
-            Name = v.Name,
-            Specifications = v.Specifications,
-            Price = v.Price,
-            Stock = v.Stock,
-            //ImageURL = v.ImageURL
-        }).ToList();
-    }
+    //     return consoles.Select(v => new ConsoleDTO
+    //     {
+    //         Id = v.Id,
+    //         Name = v.Name,
+    //         Specifications = v.Specifications,
+    //         Price = v.Price,
+    //         Stock = v.Stock,
+    //         //ImageURL = v.ImageURL
+    //     }).ToList();
+    // }
 
 
     public void Add(PlatformCreateDTO platformCreateDTO)

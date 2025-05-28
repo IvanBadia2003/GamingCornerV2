@@ -9,7 +9,7 @@ public interface IPlatformService
     // GetAll(int id);
     void Add(PlatformCreateDTO platformCreateDTO);
     PlatformDTO Get(int id);
-    List<VideogameDTO> GetVideogamesByPlatform(int id);
-    List<ConsoleDTO> GetConsolesByPlatform(int id);
+    // List<VideogameDTO> GetVideogamesByPlatform(int id);
+    // List<ConsoleDTO> GetConsolesByPlatform(int id);
     void Delete(int id);
 }

@@ -12,17 +12,12 @@ public class Platform
     public int PlatformId { get; set; }
 
     public string? Name { get; set; }
+    
+    public string? PrincipalImageURL { get; set; }
 
-    public List<Videogame> videogames {get; set;} = new List<Videogame>();
-    public List<Console> Consoles {get; set;} = new List<Console>();
+    public List<Product> products { get; set; } = new List<Product>();
 
     public Platform() { }
-
-    public Platform(string name)
-    {
-        Name = name;
-    }
-
     public Platform mapFromCreateDto(PlatformCreateDTO platformCreateDTO)
     {
         if (platformCreateDTO == null)
@@ -34,8 +29,10 @@ public class Platform
         var platform = new Platform
         {
            Name = platformCreateDTO.Name,
+           PrincipalImageURL = platformCreateDTO.PrincipalImageURL,
         };
 
         return platform;
     }
+
 }

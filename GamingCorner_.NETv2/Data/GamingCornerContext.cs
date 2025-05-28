@@ -86,6 +86,12 @@ namespace GamingCorner.Data
             modelBuilder.Entity<Platform>()
                 .HasKey(p => new { p.PlatformId });
 
+            modelBuilder.Entity<Platform>()
+               .HasMany(p => p.products)
+               .WithOne(c => c.Platform)
+               .HasForeignKey(c => c.Platform)
+               .OnDelete(DeleteBehavior.Restrict); // Mantén o usa Restrict
+
             //modelBuilder.Entity<Platform>()
             //    .HasMany(p => p.Consoles)
             //    .WithOne(c => c.Platform)
@@ -120,12 +126,12 @@ namespace GamingCorner.Data
 
 
             modelBuilder.Entity<Platform>().HasData(
-                new Platform { PlatformId = 1, Name = "Steam" },
-                new Platform { PlatformId = 2, Name = "Play Station" },
-                new Platform { PlatformId = 3, Name = "Xbox" },
-                new Platform { PlatformId = 4, Name = "Switch" },
-                new Platform { PlatformId = 5, Name = "Ubisoft" },
-                new Platform { PlatformId = 6, Name = "Epic Games" }
+                new Platform { PlatformId = 1, Name = "Steam", PrincipalImageURL = "" },
+                new Platform { PlatformId = 2, Name = "Play Station", PrincipalImageURL = "" },
+                new Platform { PlatformId = 3, Name = "Xbox", PrincipalImageURL = "" },
+                new Platform { PlatformId = 4, Name = "Switch", PrincipalImageURL = "" },
+                new Platform { PlatformId = 5, Name = "Ubisoft", PrincipalImageURL = "" },
+                new Platform { PlatformId = 6, Name = "Epic Games", PrincipalImageURL = "" }
             );
 
             modelBuilder.Entity<Product>().HasData(
