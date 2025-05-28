@@ -29,6 +29,15 @@ namespace GamingCorner.Business
         ProductDTOBase Get(int id);
 
         /// <summary>
+        /// Obtener productos similares
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        List<ProductDTOBase> GetSimilarProducts(int id);
+
+
+
+        /// <summary>
         /// Actualizar un producto
         /// </summary>
         /// <param name="id"></param>

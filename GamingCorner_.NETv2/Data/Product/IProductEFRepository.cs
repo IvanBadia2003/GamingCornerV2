@@ -21,7 +21,14 @@ namespace GamingCorner.Data
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        ProductDTOBase Get(int id);
+        Product Get(int id);
+
+        /// <summary>
+        /// Obtener un productos similares 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        List<Product> GetSimilarProducts(int id);
 
         /// <summary>
         /// Actualizar un producto
