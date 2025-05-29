@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamingCorner.Data.Migrations
 {
     [DbContext(typeof(GamingCornerContext))]
-    [Migration("20250521150143_InitialCreate5")]
-    partial class InitialCreate5
+    [Migration("20250529174214_InitialCreate2")]
+    partial class InitialCreate2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,9 +47,6 @@ namespace GamingCorner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PlatformId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -71,8 +68,6 @@ namespace GamingCorner.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PlatformId");
 
                     b.HasIndex("ProductId")
                         .IsUnique();
@@ -167,6 +162,30 @@ namespace GamingCorner.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("GamingCorner.Models.OrderHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Total")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OrderHeaders");
+                });
+
             modelBuilder.Entity("GamingCorner.Models.Platform", b =>
                 {
                     b.Property<int>("PlatformId")
@@ -178,6 +197,9 @@ namespace GamingCorner.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PrincipalImageURL")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("PlatformId");
 
                     b.ToTable("Platforms");
@@ -186,32 +208,38 @@ namespace GamingCorner.Data.Migrations
                         new
                         {
                             PlatformId = 1,
-                            Name = "Steam"
+                            Name = "Steam",
+                            PrincipalImageURL = ""
                         },
                         new
                         {
                             PlatformId = 2,
-                            Name = "Play Station"
+                            Name = "Play Station",
+                            PrincipalImageURL = ""
                         },
                         new
                         {
                             PlatformId = 3,
-                            Name = "Xbox"
+                            Name = "Xbox",
+                            PrincipalImageURL = ""
                         },
                         new
                         {
                             PlatformId = 4,
-                            Name = "Switch"
+                            Name = "Switch",
+                            PrincipalImageURL = ""
                         },
                         new
                         {
                             PlatformId = 5,
-                            Name = "Ubisoft"
+                            Name = "Ubisoft",
+                            PrincipalImageURL = ""
                         },
                         new
                         {
                             PlatformId = 6,
-                            Name = "Epic Games"
+                            Name = "Epic Games",
+                            PrincipalImageURL = ""
                         });
                 });
 
@@ -223,10 +251,15 @@ namespace GamingCorner.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("PlatformId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Sales")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlatformId");
 
                     b.ToTable("Products");
 
@@ -399,9 +432,6 @@ namespace GamingCorner.Data.Migrations
                     b.Property<int>("Pegi")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PlatformId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -428,8 +458,6 @@ namespace GamingCorner.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PlatformId");
 
                     b.HasIndex("ProductId")
                         .IsUnique();
@@ -534,10 +562,6 @@ namespace GamingCorner.Data.Migrations
 
             modelBuilder.Entity("GamingCorner.Models.Console", b =>
                 {
-                    b.HasOne("GamingCorner.Models.Platform", null)
-                        .WithMany("Consoles")
-                        .HasForeignKey("PlatformId");
-
                     b.HasOne("GamingCorner.Models.Product", "Product")
                         .WithOne("Console")
                         .HasForeignKey("GamingCorner.Models.Console", "ProductId")
@@ -545,6 +569,27 @@ namespace GamingCorner.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("GamingCorner.Models.OrderHeader", b =>
+                {
+                    b.HasOne("GamingCorner.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GamingCorner.Models.Product", b =>
+                {
+                    b.HasOne("GamingCorner.Models.Platform", "Platform")
+                        .WithMany("products")
+                        .HasForeignKey("PlatformId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Platform");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.SecondHandProduct", b =>
@@ -560,10 +605,6 @@ namespace GamingCorner.Data.Migrations
 
             modelBuilder.Entity("GamingCorner.Models.Videogame", b =>
                 {
-                    b.HasOne("GamingCorner.Models.Platform", null)
-                        .WithMany("videogames")
-                        .HasForeignKey("PlatformId");
-
                     b.HasOne("GamingCorner.Models.Product", "Product")
                         .WithOne("Videogame")
                         .HasForeignKey("GamingCorner.Models.Videogame", "ProductId")
@@ -586,7 +627,7 @@ namespace GamingCorner.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("GamingCorner.Models.Videogame", "Videogame")
-                        .WithMany()
+                        .WithMany("VideogameGenders")
                         .HasForeignKey("VideogameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -598,9 +639,7 @@ namespace GamingCorner.Data.Migrations
 
             modelBuilder.Entity("GamingCorner.Models.Platform", b =>
                 {
-                    b.Navigation("Consoles");
-
-                    b.Navigation("videogames");
+                    b.Navigation("products");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Product", b =>
@@ -615,6 +654,11 @@ namespace GamingCorner.Data.Migrations
             modelBuilder.Entity("GamingCorner.Models.User", b =>
                 {
                     b.Navigation("Videogames");
+                });
+
+            modelBuilder.Entity("GamingCorner.Models.Videogame", b =>
+                {
+                    b.Navigation("VideogameGenders");
                 });
 #pragma warning restore 612, 618
         }

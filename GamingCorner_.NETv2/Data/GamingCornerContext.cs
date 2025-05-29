@@ -206,8 +206,7 @@ namespace GamingCorner.Data
         public DbSet<Videogame> Videogames { get; set; }
         public DbSet<Models.Console> Consoles { get; set; }
         public DbSet<SecondHandProduct> SecondHandProducts { get; set; }
-
-
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Gender> Genders { get; set; }
         public DbSet<VideogameGender> VideogameGenders { get; set; }

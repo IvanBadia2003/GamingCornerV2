@@ -160,6 +160,30 @@ namespace GamingCorner.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("GamingCorner.Models.OrderHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Total")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OrderHeaders");
+                });
+
             modelBuilder.Entity("GamingCorner.Models.Platform", b =>
                 {
                     b.Property<int>("PlatformId")
@@ -543,6 +567,17 @@ namespace GamingCorner.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("GamingCorner.Models.OrderHeader", b =>
+                {
+                    b.HasOne("GamingCorner.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Product", b =>

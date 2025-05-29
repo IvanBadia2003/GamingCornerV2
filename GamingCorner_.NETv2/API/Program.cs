@@ -57,6 +57,9 @@ builder.Services.AddScoped<IPlatformRepository, PlatformEFRepository>();
 builder.Services.AddScoped<IConsoleService, ConsoleService>();
 builder.Services.AddScoped<IConsoleRepository, ConsoleEFRepository>();
 
+builder.Services.AddScoped<IOrderHeaderService, OrderHeaderService>();
+builder.Services.AddScoped<IOrderHeaderRepository, OrderHeaderEFRepository>();
+
 // Autenticaci�n con cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
