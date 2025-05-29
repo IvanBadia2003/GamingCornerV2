@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/AuthStore'
 
 import CardComponent from '@/components/CardComponent.vue'
 import PerfilTab from '@/components/Settings/PerfilTab.vue'
-import AddressesTab from '@/components/Settings/AddressesTab.vue'
+import AddressesTab from '@/components/Auth/AddressForm.vue'
 import PayTab from '@/components/Settings/PayTab.vue'
 import NotificationsTab from '@/components/Settings/NotificationsTab.vue'
 import SecurityTab from '@/components/Settings/SecurityTab.vue'

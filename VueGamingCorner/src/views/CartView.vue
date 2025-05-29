@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AddressForm from '@/components/Auth/AddressForm.vue';
 import { useAuthStore } from '@/stores/AuthStore';
 import { useCartStore } from '@/stores/CartStore';
 import { computed, onMounted, ref } from 'vue';
@@ -16,8 +17,6 @@ const currentStep = ref(1);
 
 const panel = ref([])
 const panel2 = ref([0])
-
-const useSameAddress = ref(true)
 
 const wishList = ref([])
 const cartStore = useCartStore();
@@ -159,113 +158,13 @@ onMounted(() => {
                                     <v-expansion-panel class="my-2">
                                         <v-expansion-panel-title>Usar mi dirección</v-expansion-panel-title>
                                         <v-expansion-panel-text>
-                                            <v-card class="pa-5">
-                                                <v-card-title>Dirección de Facturación</v-card-title>
-                                                <v-form>
-                                                    <v-row>
-                                                        <v-col cols="12" md="12">
-                                                            <v-text-field label="Dirección" required />
-                                                        </v-col>
-                                                        <v-col cols="12" md="4">
-                                                            <v-select label="País"
-                                                                :items="['España', 'México', 'Argentina', 'Chile', 'Colombia']"
-                                                                required />
-                                                        </v-col>
-                                                        <v-col cols="12" md="4">
-                                                            <v-text-field label="Ciudad" required />
-                                                        </v-col>
-                                                        <v-col cols="12" md="4">
-                                                            <v-text-field label="Código Postal" required />
-                                                        </v-col>
-                                                    </v-row>
-
-                                                    <v-checkbox v-model="useSameAddress"
-                                                        label="Usar la misma dirección para el envío" />
-
-                                                    <v-expand-transition>
-                                                        <div v-if="!useSameAddress">
-                                                            <v-card-title>Dirección de Envío</v-card-title>
-                                                            <v-row>
-                                                                <v-col cols="12" md="6">
-                                                                    <v-text-field label="Nombre Completo" required />
-                                                                </v-col>
-                                                                <v-col cols="12" md="6">
-                                                                    <v-text-field label="Dirección" required />
-                                                                </v-col>
-                                                                <v-col cols="12" md="4">
-                                                                    <v-text-field label="Ciudad" required />
-                                                                </v-col>
-                                                                <v-col cols="12" md="4">
-                                                                    <v-text-field label="Código Postal" required />
-                                                                </v-col>
-                                                                <v-col cols="12" md="4">
-                                                                    <v-select label="País"
-                                                                        :items="['España', 'México', 'Argentina', 'Chile', 'Colombia']"
-                                                                        required />
-                                                                </v-col>
-                                                            </v-row>
-                                                        </div>
-                                                    </v-expand-transition>
-
-
-                                                </v-form>
-                                            </v-card>
+                                            <AddressForm :with-transition="true"/>
                                         </v-expansion-panel-text>
                                     </v-expansion-panel>
                                     <v-expansion-panel class="my-2">
                                         <v-expansion-panel-title>Escribir dirección</v-expansion-panel-title>
                                         <v-expansion-panel-text>
-                                            <v-card class="pa-5">
-                                                <v-card-title>Dirección de Facturación</v-card-title>
-                                                <v-form>
-                                                    <v-row>
-                                                        <v-col cols="12" md="12">
-                                                            <v-text-field label="Dirección" required />
-                                                        </v-col>
-                                                        <v-col cols="12" md="4">
-                                                            <v-select label="País"
-                                                                :items="['España', 'México', 'Argentina', 'Chile', 'Colombia']"
-                                                                required />
-                                                        </v-col>
-                                                        <v-col cols="12" md="4">
-                                                            <v-text-field label="Ciudad" required />
-                                                        </v-col>
-                                                        <v-col cols="12" md="4">
-                                                            <v-text-field label="Código Postal" required />
-                                                        </v-col>
-                                                    </v-row>
-
-                                                    <v-checkbox v-model="useSameAddress"
-                                                        label="Usar la misma dirección para el envío" />
-
-                                                    <v-expand-transition>
-                                                        <div v-if="!useSameAddress">
-                                                            <v-card-title>Dirección de Envío</v-card-title>
-                                                            <v-row>
-                                                                <v-col cols="12" md="6">
-                                                                    <v-text-field label="Nombre Completo" required />
-                                                                </v-col>
-                                                                <v-col cols="12" md="6">
-                                                                    <v-text-field label="Dirección" required />
-                                                                </v-col>
-                                                                <v-col cols="12" md="4">
-                                                                    <v-text-field label="Ciudad" required />
-                                                                </v-col>
-                                                                <v-col cols="12" md="4">
-                                                                    <v-text-field label="Código Postal" required />
-                                                                </v-col>
-                                                                <v-col cols="12" md="4">
-                                                                    <v-select label="País"
-                                                                        :items="['España', 'México', 'Argentina', 'Chile', 'Colombia']"
-                                                                        required />
-                                                                </v-col>
-                                                            </v-row>
-                                                        </div>
-                                                    </v-expand-transition>
-
-
-                                                </v-form>
-                                            </v-card>
+                                            <AddressForm :with-transition="true"/>
                                         </v-expansion-panel-text>
                                     </v-expansion-panel>
                                 </v-expansion-panels>

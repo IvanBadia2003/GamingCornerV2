@@ -215,13 +215,14 @@ const rating = ref(4.5)
                             <v-divider :thickness="2" class="border-opacity-100" vertical></v-divider>
                             <v-list-item density="compact">
                                 <v-list-item-subtitle><v-icon> {{ productStore.product?.stock === 0 ? "mdi-close" :
-                                        "mdi-check" }}</v-icon> Stock</v-list-item-subtitle>
+                                    "mdi-check" }}</v-icon> Stock</v-list-item-subtitle>
                             </v-list-item>
                             <v-divider :thickness="2" class="border-opacity-100" vertical></v-divider>
                             <v-list-item density="compact">
                                 <v-list-item-subtitle>
                                     <v-avatar rounded="0" size="50">
-                                        <v-img alt="Steam" :src="pegiMap[(productStore.product as Videogame).pegi ?? 3]">
+                                        <v-img alt="Steam"
+                                            :src="pegiMap[(productStore.product as Videogame).pegi ?? 3]">
                                         </v-img>
                                     </v-avatar>
                                 </v-list-item-subtitle>
@@ -231,7 +232,7 @@ const rating = ref(4.5)
                             <v-col cols="auto" class="d-flex align-center">
                                 <v-icon>mdi-tag-arrow-down</v-icon>
                                 <h5 class="ml-2" style="text-decoration: line-through;">{{ productStore.product?.price
-                                    }}€</h5>
+                                }}€</h5>
                             </v-col>
                             <v-col cols="auto" class="mr-2">
                                 <h5 class="text-primary">-{{ productStore.product?.discount }}%</h5>
@@ -315,34 +316,17 @@ const rating = ref(4.5)
             <v-container class="content mt-0">
                 <v-col cols="12">
                     <h3>Productos similares</h3>
-                    <v-carousel height="auto" hide-delimiters style=" position: relative; ">
-                        <!-- Botón Anterior -->
-                        <template v-slot:prev="{ props }">
-                            <v-btn variant="elevated" class="custom-prev" @click="props.onClick"
-                                style="position: absolute;  left: 0;">
-                                ◀
-                            </v-btn>
-                        </template>
+                    <!-- Botón Anterior -->
 
-                        <!-- Botón Siguiente -->
-                        <template v-slot:next="{ props }">
-                            <v-btn variant="elevated" class="custom-next" @click="props.onClick"
-                                style="position: absolute;  right:  0;">
-                                ▶
-                            </v-btn>
-                        </template>
-                        <v-carousel-item v-for="(item, i) in 2" :key="i">
-                            <v-row style="width: 100%;">
-                                <v-col v-for="(item, i) in 4" :key="i" cols="6" lg="3">
+                    <v-row style="width: 100%;">
+                        <v-col v-for="(similarProduct, i) in productStore.similarsProducts" :key="i" cols="6" lg="3">
+                            <CardComponent :title="similarProduct.name" :discount="similarProduct.discount"
+                                :price="similarProduct.price" :product-id="similarProduct.id"
+                                src="https://media.vandal.net/m/4-2024/21/202442110133878_1.jpg" />
+                        </v-col>
 
-                                    <CardComponent title="Silent Hill"
-                                        src="https://media.vandal.net/m/4-2024/21/202442110133878_1.jpg" />
-                                </v-col>
+                    </v-row>
 
-                            </v-row>
-
-                        </v-carousel-item>
-                    </v-carousel>
                 </v-col>
             </v-container>
 
@@ -447,7 +431,7 @@ const rating = ref(4.5)
     height: 50vh;
     /* Ajusta la altura según necesites */
     z-index: 1;
-  mask-image: linear-gradient(black 50%, transparent);
+    mask-image: linear-gradient(black 50%, transparent);
 
 }
 

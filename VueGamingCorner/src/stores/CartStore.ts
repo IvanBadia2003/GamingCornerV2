@@ -71,11 +71,11 @@ export const useCartStore = defineStore('CartStore', () => {
     }
 
     const updateCartCount = async () => {
-        
+        debugger
         try {
             const cookie = await cookieStore.get(cookieName);
             const cart = cookie?.value ? JSON.parse(cookie.value) : [];
-            return cart.length;
+            cartCountCookies.value = cart.length;
         } catch {
             cartCountCookies.value = 0;
         }

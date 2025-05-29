@@ -5,20 +5,23 @@ import DataTableComponent from '@/components/DataTableComponent.vue'
 
 import { useProductStore } from '@/stores/ProductStore';
 import { useGenderStore } from '@/stores/GenderStore';
+import { usePlatformStore } from '@/stores/PlatformStore';
 
 const genderStore = useGenderStore();
 const productStore = useProductStore();
+const platformStore = usePlatformStore();
 
 onMounted(() => {
   productStore.getAllVideogames();
   productStore.getAllConsoles();
   genderStore.getAllGenders()
+  platformStore.getAllPlatforms()
 });
 
 
 const tab = ref('juegos')
 const dialogAbierto = ref(false)
-const formType = ref<'juego' | 'consola'>('juego')
+const formType = ref<'juego' | 'consola' | 'genero' | 'plataforma' >('juego') // Tipo de formulario: 'juego', 'consola' o null para géneros
 const isEditing = ref(false)
 const selectedItem = ref<any>(null)
 const search = ref('')
@@ -49,12 +52,20 @@ const usedHeaders = [
   { title: 'Acciones', key: 'actions', sortable: false },
 ]
 
+const genderHeaders = [
+  { title: 'Nombre', key: 'name' },
+]
+
+const platformHeaders = [
+  { title: 'Nombre', key: 'name' },
+]
+
 const usedProducts = [
   { id: 1, name: 'Nintendo Switch usada', seller: 'usuario123', condition: 'Usado', price: '180 €' },
   { id: 2, name: 'The Last of Us 2', seller: 'laura45', condition: 'Nuevo', price: '25 €' },
 ]
 
-// Acciones simuladas
+// Acciones para juegos
 function añadirJuego() {
   formType.value = 'juego'
   isEditing.value = false
@@ -71,7 +82,9 @@ function editarJuego(item: any) {
 function deleteVideogame(item: any) {
   productStore.deleteVideogame(item.id)
 }
+////////////////////////////////////
 
+// Acciones para consolas
 function añadirConsola() {
   formType.value = 'consola'
   isEditing.value = false
@@ -89,7 +102,52 @@ function editarConsola(item: any) {
 function eliminarConsola(item: any) {
   productStore.deleteConsole(item.id)
 }
+////////////////////////////////////
 
+
+// Acciones para generos
+function añadirGenero() {
+  formType.value = 'genero'
+  isEditing.value = false
+  selectedItem.value = null
+  dialogAbierto.value = true
+}
+
+function editarGenero(item: any) {
+  formType.value = 'genero'
+  isEditing.value = false
+  selectedItem.value = item
+  dialogAbierto.value = true
+  console.log('Editar consola: ', item)
+}
+function eliminarGenero(item: any) {
+  console.log('Eliminar género: ', item);
+  
+  //productStore.deleteConsole(item.id)
+}
+////////////////////////////////////
+
+// Acciones para plataformas
+function añadirPlataforma() {
+  formType.value = 'plataforma'
+  isEditing.value = false
+  selectedItem.value = null
+  dialogAbierto.value = true
+}
+
+function editarPlataforma(item: any) {
+  formType.value = 'plataforma'
+  isEditing.value = false
+  selectedItem.value = item
+  dialogAbierto.value = true
+  console.log('Editar consola: ', item)
+}
+function eliminarPlataforma(item: any) {
+  console.log('Eliminar género: ', item);
+  
+  //productStore.deleteConsole(item.id)
+}
+////////////////////////////////////
 
 const aprobarProducto = (item: any) => alert('Producto aprobado: ' + item.name)
 const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name)
@@ -109,6 +167,8 @@ const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name
       <v-tab value="juegos">Juegos</v-tab>
       <v-tab value="consolas">Consolas</v-tab>
       <v-tab value="segundaMano">Segunda Mano</v-tab>
+      <v-tab value="generos">Géneros</v-tab>
+      <v-tab value="plataformas">Plataformas</v-tab>
     </v-tabs>
 
     <v-window v-model="tab" class="mt-4">
@@ -142,6 +202,21 @@ const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name
             <v-icon @click="rechazarProducto(item)">mdi-close</v-icon>
           </template>
         </v-data-table>
+      </v-window-item>
+
+            <!-- GENEROS -->
+      <v-window-item value="generos">
+        <DataTableComponent :headers="genderHeaders" :items="genderStore.genders" title="Géneros" icon="mdi-controller"
+          add-label="Añadir género" search-key="name" :on-add="añadirGenero" :on-edit="editarGenero"
+          :on-delete="eliminarGenero" />
+
+      </v-window-item>
+            <!-- PLATAFORMAS -->
+      <v-window-item value="plataformas">
+        <DataTableComponent :headers="platformHeaders" :items="platformStore.platforms" title="Plataformas" icon="mdi-controller"
+          add-label="Añadir plataforma" search-key="name" :on-add="añadirPlataforma" :on-edit="editarPlataforma"
+          :on-delete="eliminarPlataforma" />
+
       </v-window-item>
     </v-window>
   </v-container>

@@ -12,9 +12,7 @@ const productStore = useProductStore();
         </v-col>
         <v-col cols="12" sm="7">
             <div class="tags">
-                <v-chip class="mr-2" color="blue-darken-3">UN JUGADOR</v-chip>
-                <v-chip class="mr-2" color="blue-darken-3">AVENTURA</v-chip>
-                <v-chip color="blue-darken-3">ACCIÓN</v-chip>
+                <v-chip v-for="(gender, index) in productStore.product?.genders" :key="index" class="mr-2" color="blue-darken-3">{{gender.name}}</v-chip>
             </div>
         </v-col>
 

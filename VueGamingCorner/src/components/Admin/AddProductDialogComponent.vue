@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
-import { useGenderStore } from '@/stores/GenderStore';
+import { useGenderStore, type GenderCreate } from '@/stores/GenderStore';
 import { useProductStore, type ConsoleCreate, type VideogameCreate } from '@/stores/ProductStore';
+import { usePlatformStore, type PlatformCreate } from '@/stores/PlatformStore';
 
 const genderStore = useGenderStore()
 const productStore = useProductStore()
+const platformStore = usePlatformStore()
 
 /* interface VideogameCreate {
     name: string // Nombre del videojuego
@@ -29,7 +31,7 @@ interface Gender {
 }
 
 const props = defineProps<{
-    type: 'juego' | 'consola'
+    type: 'juego' | 'consola' | 'genero' | 'plataforma'
     initialData?: Partial<FormDataType>
 }>()
 
@@ -57,7 +59,7 @@ interface FormDataType {
     price: number | null
     stock: number | null
     description: string
-    platform?: string | null
+    platform?: number | null
     brand?: string | null
     gender?: number[]
     images: (string)[]
@@ -77,6 +79,9 @@ const valid = ref(false) // Estado de validación del formulario
 const form = ref()
 const isGame = computed(() => props.type === 'juego')
 const isConsole = computed(() => props.type === 'consola')
+const isPlatform= computed(() => props.type === 'plataforma')
+const isGender = computed(() => props.type === 'genero')
+const isGenderOrPlatform = computed(() => props.type === 'genero' || 'plataforma') 
 const isEditing = computed(() => !!props.initialData) // Si hay datos iniciales, estamos editando
 const previewImages = ref<File[]>([]) // Imágenes para la vista previa
 
@@ -131,6 +136,7 @@ const rules = {
 const handleSubmit = async () => {
     const isValid = await form.value?.validate();
     const formDataVideogame: VideogameCreate = {
+        platformId: formData.value.platform || 0,
         name: formData.value.name,
         pegi: formData.value.pegi || 3,
         description: formData.value.description,
@@ -143,6 +149,7 @@ const handleSubmit = async () => {
         releaseDate: formData.value.releaseDate || new Date(),
         distributor: formData.value.distributor || '',
         developer: formData.value.developer || '',
+        genders: formData.value.gender || []
     }
     const formDataConsole: ConsoleCreate = {
         name: formData.value.name,
@@ -155,6 +162,13 @@ const handleSubmit = async () => {
         brand: formData.value.brand || '',
         specifications: specificationsConsole.value.map(items => items.map(i => `${i}`).join(', ')).join('; ')
     }
+    
+    const formDataGender: GenderCreate = {
+        name: formData.value.name,
+    }
+    const formDataPlatform: PlatformCreate = {
+        name: formData.value.name,
+    }
 
     if (!isValid) return;
 
@@ -165,20 +179,53 @@ const handleSubmit = async () => {
     //Si es videojuego y edición
     if (isEditing.value && isGame.value) {
         console.log('Formulario de edición listo:', formDataVideogame, isEditing.value)
+        emit('cancel')
+
     }
     //Si es videojuego y creación
     else if (!isEditing.value && isGame.value) {
         console.log('Formulario de creación listo:', formDataVideogame)
         productStore.createGame(formDataVideogame)
+        emit('cancel')
+
     }
     //Si es consola y edición
     else if (isEditing.value && isConsole.value) {
         console.log('Formulario de edición listo:', formDataConsole, isEditing.value)
+        emit('cancel')
+
     }
     //Si es consola y creación
     else if (!isEditing.value && isConsole.value) {
         console.log('Formulario de creación listo:', formDataConsole)
         productStore.createConsole(formDataConsole)
+        emit('cancel')
+
+    }
+    //Si es genero y creación
+    else if (!isEditing.value && isGender.value) {
+        console.log('Formulario de creación listo:', formDataGender)
+        genderStore.createGender(formDataGender)
+        emit('cancel')
+
+    }
+    //Si es genero y edición
+    else if (isEditing.value && isGender.value) {
+        console.log('Formulario de edición listo:', formDataGender, isEditing.value)
+        emit('cancel')
+
+    }
+    //Si es plataforma y creación
+    else if (!isEditing.value && isPlatform.value) {
+        console.log('Formulario de creación listo:', formDataPlatform)
+        platformStore.createPlatform(formDataPlatform)
+        emit('cancel')
+    }
+    //Si es plataforma y edición
+    else if (isEditing.value && isPlatform.value) {
+        console.log('Formulario de edición listo:', formDataPlatform, isEditing.value)
+        emit('cancel')
+
     }
 
     // Aquí puedes emitir el formulario o hacer algo con los datos
@@ -190,16 +237,16 @@ const handleSubmit = async () => {
 <template>
     <v-card class="pa-6">
         <v-card-title>
-            {{ isEditing ? 'Editar' : 'Añadir' }} {{ isGame ? 'Juego' : 'Consola' }}
+            {{ isEditing ? 'Editar' : 'Añadir' }} {{ isGame ? 'Juego' : isConsole ? 'Consola' : isGender ? 'Género' : isPlatform ? 'Plataforma' : 'Producto' }}
         </v-card-title>
 
         <v-card-text>
             <v-form ref="form" v-model="valid">
-                <v-text-field label="IMAGEN PROVISIONAL" v-model="formData.principalImageURL"
+                <v-text-field v-if="isGenderOrPlatform" label="IMAGEN PROVISIONAL" v-model="formData.principalImageURL"
                     :rules="[rules.required]" />
                 <!-- Campos comunes -->
-                <v-text-field label="Nombre" v-model="formData.name" :rules="[rules.required]" />
-                <v-row>
+                <v-text-field  label="Nombre" v-model="formData.name" :rules="[rules.required]" />
+                <v-row v-if="isGenderOrPlatform">
                     <v-col>
                         <v-text-field label="Precio (€)" type="number" v-model="formData.price"
                             :rules="[rules.required]" />
@@ -211,18 +258,19 @@ const handleSubmit = async () => {
 
                 </v-row>
 
-                <v-text-field label="Stock" type="number" v-model="formData.stock" :rules="[rules.required]" />
-                <v-textarea label="Descripción" v-model="formData.description" :rules="[rules.required]" />
+                <v-text-field v-if="isGenderOrPlatform" label="Stock" type="number" v-model="formData.stock" :rules="[rules.required]" />
+                <v-textarea v-if="isGenderOrPlatform" label="Descripción" v-model="formData.description" :rules="[rules.required]" />
                 <!-- Campos específicos -->
                 <v-text-field v-if="isGame" label="Desarrollador" type="text" v-model="formData.developer"
                     :rules="[rules.required]" />
                 <v-text-field v-if="isGame" label="Distribuidor" type="text" v-model="formData.distributor"
                     :rules="[rules.required]" />
 
-                <v-select v-if="isGame" label="Plataforma" :items="['PC', 'PlayStation', 'Xbox', 'Nintendo']"
-                    v-model="formData.platform" :rules="[rules.required]" />
-                <v-text-field v-model="formData.releaseDate" label="Fecha de lanzamiento" type="date"
-                    :rules="[rules.required]" />
+                <v-select v-if="isGame" label="Plataforma" :items="platformStore.platforms" 
+                    v-model="formData.platform" :rules="[rules.required]"  item-title="name"
+                    item-value="paltformId"/>
+                <v-text-field v-if="isGenderOrPlatform" v-model="formData.releaseDate" label="Fecha de lanzamiento" type="date"
+                    :rules="[rules.required]"/>
                 <v-select v-if="isGame" label="PEGI" :items="pegiOptions" v-model="formData.pegi"
                     :rules="[rules.required]" />
 
@@ -342,7 +390,7 @@ const handleSubmit = async () => {
 
 
                 <!-- Subida de imágenes -->
-                <div class="my-4">
+                <div v-if="isGenderOrPlatform" class="my-4">
                     <p>Subir imágenes (máx. 6):</p>
                     <v-file-input v-model="previewImages" accept="image/*" multiple show-size counter
                         :rules="[rules.maxImages]" label="Seleccionar imágenes" prepend-icon="mdi-camera" />
