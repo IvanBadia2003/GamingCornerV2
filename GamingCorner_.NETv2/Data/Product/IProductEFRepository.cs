@@ -14,7 +14,7 @@ namespace GamingCorner.Data
         /// Añadir un producto
         /// </summary>
         /// <param name="product"></param>
-        void Add(Product product);
+        Product Add(Product product);
 
         /// <summary>
         /// Obtener un producto por ID 

@@ -52,16 +52,13 @@ public class ConsoleEFRepository : IConsoleRepository
         }
     }
 
-    public void Add(Console console)
+    public Models.Console Add(Console console)
     {        //Primero se crea el producto
-        var producto = new Product();
-        _context.Products.Add(producto);
-        SaveChanges();
 
-        //Segundo se crea la consola con el id del producto
-        console.ProductId = producto.Id;
         _context.Consoles.Add(console);
         SaveChanges();
+
+        return console;
     }
 
     public ConsoleDTO Get(int id)

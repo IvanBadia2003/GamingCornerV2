@@ -12,8 +12,8 @@ public class Product
     public int Id { get; set; }
 
     public int? Sales {  get; set; }
-    public Platform? Platform {  get; set; }
     public int? PlatformId { get; set; }
+    public Platform? Platform {  get; set; }
     public Videogame? Videogame { get; set; }
     public Console? Console { get; set; }
     public SecondHandProduct? SecondHandProduct { get; set; }

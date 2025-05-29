@@ -51,13 +51,15 @@ namespace GamingCorner.Data
         /// Añadir un producto
         /// </summary>
         /// <param name="product"></param>
-        public void Add(Product product)
+        public Product Add(Product product)
         {
             // Añadimos el producto
             _context.Products.Add(product);
 
             // Guardamos
             SaveChanges();
+
+            return product;
         }
 
 
@@ -74,6 +76,7 @@ namespace GamingCorner.Data
                 .Include(p => p.Videogame)
                     .ThenInclude(v => v.VideogameGenders)
                         .ThenInclude(vg => vg.Gender)
+                .Include(p => p.Platform)
                 .FirstOrDefault(p => p.Id == id);
 
             return product;

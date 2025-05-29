@@ -64,7 +64,7 @@ namespace GamingCorner.Business
                     Developer = product.Videogame.Developer,
                     Discount = product.Videogame.Discount,
                     VideogameId = product.Videogame.Id,
-                    //PlatformId =v.PlatformId,
+                    PlatformId = product.PlatformId,
                     Price = product.Videogame.Price,
                     PrincipalImageURL = product.Videogame.PrincipalImageURL,
                     Genders = product.Videogame.VideogameGenders.Select(vg => new GenderDTO
@@ -92,8 +92,7 @@ namespace GamingCorner.Business
                     Brand = product.Console.Brand,
                     ConsoleId = product.Console.Id,
                     Specifications = product.Console.Specifications,
-                    //PlatformId =v.PlatformId,
-                    //GenderId =v.GenderId,
+                    PlatformId = product.PlatformId,
                     Price = product.Console.Price,
                     PrincipalImageURL = product.Console.PrincipalImageURL
                 };
@@ -110,72 +109,44 @@ namespace GamingCorner.Business
         /// <exception cref="KeyNotFoundException"></exception>
         public List<ProductDTOBase> GetSimilarProducts(int id)
         {
-            // Se obtiene los productos
             var similarProducts = _productEFRepository.GetSimilarProducts(id);
 
-            // Si no existe lanzar excepción
-            if (similarProducts == null)
-                throw new KeyNotFoundException($"Producto con el id {id} no encontrado");
+            List<ProductDTOBase> products = new List<ProductDTOBase>();
+            if (similarProducts == null || !similarProducts.Any())
+                throw new KeyNotFoundException($"Producto con el id {id} no encontrado o sin similares.");
 
             var isVideogame = similarProducts.First().Videogame != null;
-            var isConsole = similarProducts.First().Console!= null;
+            var isConsole = similarProducts.First().Console != null;
 
-            // Mapeamos cada producto a su DTO correspondiente
             if (isVideogame)
             {
-                List<ProductDTOBase> videogameList = similarProducts.Select(product => new ProductVideogameDTO
+                products = similarProducts.Select(product => new ProductDTOBase
                 {
                     Id = product.Id,
-                    Sales = product.Sales,
                     Name = product.Videogame.Name,
-                    Pegi = product.Videogame.Pegi,
-                    Description = product.Videogame.Description,
-                    Requisitos1 = product.Videogame.Requisitos1,
-                    Requisitos2 = product.Videogame.Requisitos2,
-                    Stock = product.Videogame.Stock,
-                    Distributor = product.Videogame.Distributor,
-                    ReleaseDate = product.Videogame.ReleaseDate,
-                    Developer = product.Videogame.Developer,
                     Discount = product.Videogame.Discount,
-                    VideogameId = product.Videogame.Id,
                     Price = product.Videogame.Price,
-                    PrincipalImageURL = product.Videogame.PrincipalImageURL,
-                    Genders = (product.Videogame.VideogameGenders ?? new List<VideogameGender>())
-                       .Where(vg => vg?.Gender != null)
-                       .Select(vg => new GenderDTO
-                       {
-                           GenderId = vg.Gender.GenderId,
-                           Name = vg.Gender.Name
-                       }).ToList()
-                }).Cast<ProductDTOBase>().ToList();
+                }).ToList<ProductDTOBase>();
 
-                return videogameList;
-            }  
-            
-            if (isConsole)
-            {
-                List<ProductDTOBase> consoleList = similarProducts.Select(product => new ProductConsoleDTO
-                {
-                    Id = product.Id,
-                    Sales = product.Sales,
-                    Name = product.Console.Name,
-                    Description = product.Console.Description,
-                    Stock = product.Console.Stock,
-                    ReleaseDate = product.Console.ReleaseDate,
-                    Discount = product.Console.Discount,
-                    Brand = product.Console.Brand,
-                    ConsoleId = product.Console.Id,
-                    Specifications = product.Console.Specifications,
-                    Price = product.Console.Price,
-                    PrincipalImageURL = product.Console.PrincipalImageURL
-                }).Cast<ProductDTOBase>().ToList();
-
-                return consoleList;
+                return products;
             }
 
-            return null;
+            if (isConsole)
+            {
+                products = similarProducts.Select(product => new ProductDTOBase
+                {
+                    Id = product.Id,
+                    Name = product.Console.Name,
+                    Discount = product.Console.Discount,
+                   Price = product.Console.Price,
+                }).ToList<ProductDTOBase>();
 
+                return products;
+            }
+
+            return new List<ProductDTOBase>(); // Nunca devuelvas null en listas, mejor una vacía
         }
+
 
         /// <summary>
         /// Añadir producto

@@ -61,7 +61,7 @@ namespace GamingCorner.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("SimilarProducts/{id}")]
+        [Route("Similar/{id}")]
         public ActionResult<List<ProductDTOBase>> GetSimilarProducts(int id)
         {
             try

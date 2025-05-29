@@ -9,11 +9,13 @@ public class VideogameService : IVideogameService
 {
 
     private readonly IVideogameRepository _videogameRepository;
+    private readonly IProductEFRepository _productRepository;
 
 
-    public VideogameService(IVideogameRepository videogameRepository)
+    public VideogameService(IVideogameRepository videogameRepository, IProductEFRepository productRepository)
     {
         _videogameRepository = videogameRepository;
+        _productRepository = productRepository;
 
     }
 
@@ -24,7 +26,7 @@ public class VideogameService : IVideogameService
     public List<VideogameDTO> GetAll()
     {
         var videogames = _videogameRepository.GetAll();
- 
+
         return videogames;
     }
 
@@ -49,7 +51,19 @@ public class VideogameService : IVideogameService
     /// <param name="videogameCreateDTO"></param>
     public VideogameDTO Add(VideogameCreateDTO videogameCreateDTO)
     {
-        var videogame = new Videogame();
+        var product = new Product()
+        {
+            PlatformId = videogameCreateDTO.PlatformId,
+            Sales = 0            
+        };
+
+        var entityProduct = _productRepository.Add(product);
+
+        var videogame = new Videogame()
+        {
+            ProductId = entityProduct.Id
+        };
+
         var mappedVideogame = videogame.mapFromCreateDto(videogameCreateDTO);
         var videogameCreated = _videogameRepository.Add(mappedVideogame);
         return videogameCreated.mapToReadDto();
@@ -64,7 +78,7 @@ public class VideogameService : IVideogameService
     public void Update(int id, VideogameUpdateDTO videogameUpdateDTO)
     {
         var videogameDto = _videogameRepository.Get(id);
-        if(videogameDto == null)
+        if (videogameDto == null)
         {
             throw new KeyNotFoundException($"Videogame con Id {id} no encontrada.");
         }
@@ -87,6 +101,6 @@ public class VideogameService : IVideogameService
 }
 
 
-    
-    
+
+
 

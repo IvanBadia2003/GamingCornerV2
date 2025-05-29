@@ -29,7 +29,7 @@ public class Platform
         var platform = new Platform
         {
            Name = platformCreateDTO.Name,
-           PrincipalImageURL = platformCreateDTO.PrincipalImageURL,
+           //PrincipalImageURL = platformCreateDTO.PrincipalImageURL,
         };
 
         return platform;

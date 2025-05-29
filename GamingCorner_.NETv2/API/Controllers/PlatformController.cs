@@ -71,7 +71,7 @@ public class PlatformController : ControllerBase
             return BadRequest(ModelState);
         }
         _platformService.Add(platformCreateDTO);
-        return Ok();
+        return Ok(platformCreateDTO);
     }
 
     [HttpDelete("{id}")]

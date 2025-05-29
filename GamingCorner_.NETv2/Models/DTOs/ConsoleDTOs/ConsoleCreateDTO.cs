@@ -59,6 +59,26 @@ public class ConsoleCreateDTO
     /// </summary>
     public string Brand { get; set; }
 
+    /// <summary>
+    /// Plataforma que tiene la consola
+    /// </summary>
+    public int PlatformId { get; set; }
+    
+    /// <summary>
+    /// Generacion de la consola
+    /// </summary>
+    public string Generation{ get; set; }
+    
+    /// <summary>
+    /// Colores que tiene la consola
+    /// </summary>
+    public string Colors{ get; set; }
+    
+    /// <summary>
+    /// Servicios que ofrece la consola
+    /// </summary>
+    public string Services{ get; set; }
+
 }
 
 

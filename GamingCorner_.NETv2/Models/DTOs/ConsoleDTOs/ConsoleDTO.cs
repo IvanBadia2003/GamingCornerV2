@@ -72,6 +72,20 @@ public class ConsoleDTO
     public string Brand { get; set; }
     public int? Sales { get; set; }
 
+    /// <summary>
+    /// Generacion de la consola
+    /// </summary>
+    public string Generation { get; set; }
+
+    /// <summary>
+    /// Colores que tiene la consola
+    /// </summary>
+    public string Colors { get; set; }
+
+    /// <summary>
+    /// Servicios que ofrece la consola
+    /// </summary>
+    public string Services { get; set; }
 
     /// <summary>
     /// Ventas de la consola
@@ -95,8 +109,10 @@ public class ConsoleDTO
             Specifications = this.Specifications,
             ReleaseDate = this.ReleaseDate,
             Brand = this.Brand,
-            //PlatformId = this.PlatformId,
-            //Available = this.Available,
+            Colors = this.Colors,
+            Services = this.Services,   
+            Generation = this.Generation,
+
         };
     }
 }

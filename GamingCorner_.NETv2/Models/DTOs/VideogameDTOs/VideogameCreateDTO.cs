@@ -54,6 +54,11 @@ public class VideogameCreateDTO
     /// Géneros que tiene el juego
     /// </summary>
     public List<int> GenderId { get; set; }
+    
+    /// <summary>
+    /// Plataforma que tiene el juego
+    /// </summary>
+    public int PlatformId { get; set; }
 
     /// <summary>
     /// Imagen Principal del juego

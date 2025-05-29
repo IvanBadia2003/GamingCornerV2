@@ -70,13 +70,7 @@ public class VideogameEFRepository : IVideogameRepository
     /// <param name="videogame"></param>
     public Videogame Add(Videogame videogame)
     {
-        //Primero se crea el producto
-        var producto = new Product();
-        _context.Products.Add(producto);
-        SaveChanges();
 
-        //Segundo se crea el juego con el id del producto
-        videogame.ProductId = producto.Id;
         _context.Videogames.Add(videogame);
         SaveChanges();
 

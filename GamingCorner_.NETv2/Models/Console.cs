@@ -28,6 +28,15 @@ public class Console
 
     [Required]
     public string PrincipalImageURL { get; set; }
+    
+    [Required]
+    public string Generation { get; set; }
+    
+    [Required]
+    public string Services{ get; set; }
+    
+    [Required]
+    public string Colors{ get; set; }
 
     public string Brand { get; set; }
 
@@ -38,7 +47,7 @@ public class Console
 
     public Console() { }
 
-    public Console(string name, string description, int discount, DateTime releaseDate, string specifications, int stock, decimal price, string? principalImageURL, string brand) 
+    public Console(string name, string description, int discount, DateTime releaseDate, string specifications, int stock, decimal price, string? principalImageURL, string brand, string generation, string services, string colors)
     {
         Name = name;
         Description = description;
@@ -49,29 +58,47 @@ public class Console
         Specifications = specifications;
         PrincipalImageURL = principalImageURL;
         Brand = brand;
-
+        Generation = generation;
+        Services = services;
+        Colors = colors;
     }
 
-    public Console mapFromCreateDto(ConsoleCreateDTO consoleCreateDTO)
+    public Console mapFromCreateDto(ConsoleCreateDTO dto)
     {
-        if (consoleCreateDTO == null)
+        if (dto == null)
+            throw new ArgumentNullException(nameof(dto));
+
+        return new Console
         {
-            // Puedes lanzar una excepción aquí o manejar el caso de DTO nulo según tu lógica
-            throw new ArgumentNullException(nameof(consoleCreateDTO));
-        }
+            Name = dto.Name,
+            Description = dto.Description,
+            Stock = dto.Stock,
+            Price = dto.Price,
+            Discount = dto.Discount,
+            ReleaseDate = dto.ReleaseDate,
+            Specifications = dto.Specifications,
+            PrincipalImageURL = dto.PrincipalImageURL,
+            Brand = dto.Brand,
+            Colors = dto.Colors,
+            Generation = dto.Generation,
+            Services = dto.Services
+        };
+    }
 
-        return new Console(
-
-            consoleCreateDTO.Name,
-            consoleCreateDTO.Description,
-            consoleCreateDTO.Discount,
-            consoleCreateDTO.ReleaseDate,
-            consoleCreateDTO.Specifications,
-            consoleCreateDTO.Stock,
-            consoleCreateDTO.Price,
-            consoleCreateDTO.PrincipalImageURL,
-            consoleCreateDTO.Brand
-            );
-
+    public ConsoleDTO mapToReadDto()
+    {
+        return new ConsoleDTO
+        {
+            Id = this.Id,
+            Name = this.Name,
+            Description = this.Description,
+            Stock = this.Stock,
+            Price = this.Price,
+            Discount = this.Discount,
+            ReleaseDate = this.ReleaseDate,
+            Specifications = this.Specifications,
+            PrincipalImageURL = this.PrincipalImageURL,
+            Brand = this.Brand
+        };
     }
 }

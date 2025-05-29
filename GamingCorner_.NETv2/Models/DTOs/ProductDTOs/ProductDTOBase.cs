@@ -17,6 +17,27 @@ namespace GamingCorner.Models
         /// Ventas del producto
         /// </summary>
         public int? Sales { get; set; }
+        
+        /// <summary>
+        /// Plataforma del producto
+        /// </summary>
+        public int? PlatformId { get; set; }
+        
+        /// <summary>
+        /// Nombre del producto
+        /// </summary>
+        public string? Name{ get; set; }
+        
+        /// <summary>
+        /// Precio del producto
+        /// </summary>
+        public decimal? Price{ get; set; }
+        
+        /// <summary>
+        /// Descuento del producto
+        /// </summary>
+        public int? Discount{ get; set; }
+        
         public Platform? Platform { get; set; }
 
         public Product ToProduct()
