@@ -43,4 +43,12 @@ public class VideogameGender
 
         return videogameGender;
     }
+    public VideogameGenderDTO MapToVideogameGenderDTO()
+    {
+        return new VideogameGenderDTO
+        {
+            GenderId = this.GenderId,
+            VideogameId = this.VideogameId
+        };
+    }
 }

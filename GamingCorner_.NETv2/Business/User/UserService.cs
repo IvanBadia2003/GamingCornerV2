@@ -3,7 +3,9 @@ namespace GamingCorner.Business;
 using GamingCorner.Data;
 using GamingCorner.Business;
 using GamingCorner.Models;
-
+using GamingCorner.Models.Enums.RolEnums;
+using GamingCorner.Models.Enums.UserStateEnum;
+using System.Data;
 
 public class UserService : IUserService
 {
@@ -25,13 +27,13 @@ public class UserService : IUserService
 
     public UserDTO Get(int id)
     {
-        var user = _userRepository.Get(id);
+        User user = _userRepository.Get(id);
         if (user == null)
         {
             throw new KeyNotFoundException($"User con Id {id} no encontrada.");
         }
 
-        return user;
+        return user.ToUserDTO();
     }
 
     public UserDTO GetByEmail(string email)
@@ -52,27 +54,35 @@ public class UserService : IUserService
         }
         
         var user = new User();
-        var mappedUser = user.mapFromCreateDto(userCreateDTO);
-        _userRepository.Add(mappedUser);
+        user = userCreateDTO.mapFromCreateDto();
+        user.Rol = RolEnum.User;
+        user.State = UserStateEnum.Active;
+        user.DateCreated = DateTime.Now;
+        user.Avatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+        _userRepository.Add(user);
     }
 
     public void Update(int id, UserUpdateDTO userUpdateDTO)
     {
-        var userDto = _userRepository.Get(id);
-        if (userDto == null)
+        User user = _userRepository.Get(id);
+        if (user == null)
         {
             throw new KeyNotFoundException($"User con Id {id} no encontrada.");
         }
 
-        var user = userDto.ToUser();
         user.Name = userUpdateDTO.Name;
         user.Address = userUpdateDTO.Address;
         user.Email = userUpdateDTO.Email;
         user.Password = userUpdateDTO.Password;
         user.PhoneNumber = userUpdateDTO.PhoneNumber;
+        user.Address = userUpdateDTO.Address;
+        user.Rol = (RolEnum)userUpdateDTO.Rol;
+        user.State = (UserStateEnum)userUpdateDTO.State;
+        
         _userRepository.Update(user);
     }
-
+    
+  
     public void Delete(int id)
     {
         _userRepository.Delete(id);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GamingCorner.Business;
 using GamingCorner.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -72,6 +73,17 @@ public class PlatformController : ControllerBase
         }
         _platformService.Add(platformCreateDTO);
         return Ok(platformCreateDTO);
+    }
+
+    [HttpGet("System/{id}")]
+    public ActionResult<List<PlatformDTO>> GetPlatformsBySystem(int id)
+    {
+        var platformDTOs = _platformService.GetplatformsBySystem(id);
+
+        if (platformDTOs == null || !platformDTOs.Any())
+            return NotFound();
+
+        return Ok(platformDTOs);
     }
 
     [HttpDelete("{id}")]

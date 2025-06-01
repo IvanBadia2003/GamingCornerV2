@@ -7,6 +7,7 @@
     using GamingCorner.Data;
     using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
+using GamingCorner.Models.Enums.SystemEnum;
 
 public class PlatformEFRepository : IPlatformRepository
     {
@@ -31,6 +32,36 @@ public class PlatformEFRepository : IPlatformRepository
                 {
                     PlatformId = p.PlatformId,
                     Name = p.Name,
+                    System = p.System,
+
+                }).ToList();
+                return platformDto;
+            }
+            else
+            {
+                return null;
+            }
+        }
+    
+
+    /// <summary>
+    /// Obtener plataformas por sistema
+    /// </summary>
+    /// <param name="system"></param>
+    /// <returns></returns>
+    public List<PlatformDTO> GetplatformsBySystem(int system)
+        {
+            var platforms = _context.Platforms.Where(p => p.System == (SystemEnum)system)
+                .ToList();
+
+            if (platforms != null)
+            {
+                var platformDto = platforms.Select(p => new PlatformDTO
+                {
+                    PlatformId = p.PlatformId,
+                    Name = p.Name,
+                    System = p.System,
+
                 }).ToList();
                 return platformDto;
             }
@@ -58,6 +89,7 @@ public class PlatformEFRepository : IPlatformRepository
                 {
                     PlatformId = platform.PlatformId,
                     Name = platform.Name,
+                    System = platform.System,
                 };
                 return platformDto;
             }

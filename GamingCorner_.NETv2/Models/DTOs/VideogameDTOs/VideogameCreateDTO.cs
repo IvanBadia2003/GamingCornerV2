@@ -56,6 +56,11 @@ public class VideogameCreateDTO
     public List<int> GenderId { get; set; }
     
     /// <summary>
+    /// Producto al que pertenece el juego
+    /// </summary>
+    public int ProductId{ get; set; }
+    
+    /// <summary>
     /// Plataforma que tiene el juego
     /// </summary>
     public int PlatformId { get; set; }

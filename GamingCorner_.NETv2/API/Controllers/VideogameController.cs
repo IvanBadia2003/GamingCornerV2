@@ -1,3 +1,4 @@
+using System.Linq;
 using GamingCorner.Business;
 using GamingCorner.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +22,9 @@ public class VideogameController : ControllerBase
 
     [HttpGet]
     public ActionResult<List<VideogameDTO>> GetAll() => _videogameService.GetAll();
+
+    [HttpPost("Filter")]
+    public ActionResult<List<VideogameDTO>> GetFiltered([FromBody] VideogameFilterDto filters) => _videogameService.GetFiltered(filters);
 
     [HttpGet]
     [Route("{id}")]
@@ -71,7 +75,34 @@ public class VideogameController : ControllerBase
 
         try
         {
+            //Hacemos el update del juego
             _videogameService.Update(id, videogameUpdateDTO);
+
+            //Obtenemos todos los generos que hay en la base de datos
+            List<VideogameGenderDTO> gendersInBD = _videogameGenderService.GetGendersByVideogameId(id).ToList();
+            //Obtenemos solamente los ids de los generos
+            List<int> gendersInDbIds = gendersInBD.Select(g => g.GenderId).ToList();
+            //Obtenemos los ids que se van a borrar
+            List<int> gendersToDelete = gendersInDbIds.Except(videogameUpdateDTO.GenderId).ToList();
+            //Obtenemos los ids que se van a añadir
+            List<int> gendersToAdd = videogameUpdateDTO.GenderId.Except(gendersInDbIds).ToList();
+            //Borramos los generos
+            foreach (var genderId in gendersToDelete)
+            {
+                _videogameGenderService.Delete(genderId, id);
+            }
+            //Añadimos los generosç
+            foreach (var genderId in gendersToAdd)
+            {
+                VideogameGenderCreateDTO videogameGenderDto = new VideogameGenderCreateDTO
+                {
+                    GenderId = genderId,
+                    VideogameId = id
+                };
+
+                _videogameGenderService.Add(videogameGenderDto);
+            }
+
             return Ok();
         }
         catch (KeyNotFoundException ex)

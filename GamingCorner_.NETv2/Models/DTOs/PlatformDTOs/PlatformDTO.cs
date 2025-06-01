@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata;
+using GamingCorner.Models.Enums.SystemEnum;
 
 namespace GamingCorner.Models;
 
@@ -12,8 +13,8 @@ public class PlatformDTO
 
     [Required]
     public string? Name { get; set; }
-    [Required]
-    public string? PrincipalImageURL { get; set; }
+
+    public SystemEnum System { get; set; }
 
     public Platform ToPlatform()
     {
@@ -21,7 +22,7 @@ public class PlatformDTO
         {
             PlatformId = this.PlatformId,
             Name = this.Name,
-            PrincipalImageURL = this.PrincipalImageURL
+            System = this.System,
         };
     }
 

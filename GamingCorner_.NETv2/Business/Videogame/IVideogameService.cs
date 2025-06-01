@@ -37,4 +37,10 @@ public interface IVideogameService
     /// </summary>
     /// <param name="id"></param>
     void Delete(int id);
+
+    /// <summary>
+    /// Obtenemos lista con todos los videojuegos
+    /// </summary>
+    /// <returns></returns>
+    List<VideogameDTO> GetFiltered(VideogameFilterDto filters);
 }

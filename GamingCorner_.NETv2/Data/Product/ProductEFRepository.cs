@@ -103,7 +103,11 @@ namespace GamingCorner.Data
             {
                 var gendersIds = product.Videogame.VideogameGenders.Select(vg => vg.GenderId).ToList();
 
-                similarProducts = _context.Products.Include(p => p.Videogame).ThenInclude(v => v.VideogameGenders).ThenInclude(vg => vg.Gender).Where(p => p.Id != id && p.Videogame.VideogameGenders.Any(vg => gendersIds.Contains(vg.GenderId))).Take(4).ToList();
+                similarProducts = _context.Products.Include(p => p.Videogame)
+                                                        .ThenInclude(v => v.VideogameGenders)
+                                                            .ThenInclude(vg => vg.Gender)
+                                                        .Where(p => p.Id != id && p.Videogame.VideogameGenders
+                                                        .Any(vg => gendersIds.Contains(vg.GenderId))).Take(4).ToList();
                 return similarProducts;
             }
             

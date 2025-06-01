@@ -37,7 +37,13 @@ namespace GamingCorner.Models
         /// Descuento del producto
         /// </summary>
         public int? Discount{ get; set; }
-        
+
+
+        /// <summary>
+        /// Imagen Principal del producto
+        /// </summary>
+        public string? PrincipalImageURL { get; set; }
+
         public Platform? Platform { get; set; }
 
         public Product ToProduct()

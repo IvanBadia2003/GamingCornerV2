@@ -28,6 +28,19 @@ using GamingCorner.Models;
         return videogameGender;
     }
 
+    public List<VideogameGenderDTO> GetGendersByVideogameId(int idVideogame)
+    {
+        List<VideogameGenderDTO> videogameGenderDTOs = new List<VideogameGenderDTO>();
+        List<VideogameGender> videogameGenderList = _videogameGenderRepository.GetGendersByVideogameId(idVideogame);
+
+        foreach (VideogameGender vg in videogameGenderList)
+        {
+            videogameGenderDTOs.Add(vg.MapToVideogameGenderDTO());
+        }
+
+        return videogameGenderDTOs;
+    }
+
 
     public void Add(VideogameGenderCreateDTO videogameGenderCreateDTO)
     {

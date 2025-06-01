@@ -126,6 +126,7 @@ namespace GamingCorner.Business
                     Name = product.Videogame.Name,
                     Discount = product.Videogame.Discount,
                     Price = product.Videogame.Price,
+                    PrincipalImageURL = product.Videogame.PrincipalImageURL
                 }).ToList<ProductDTOBase>();
 
                 return products;
@@ -139,6 +140,7 @@ namespace GamingCorner.Business
                     Name = product.Console.Name,
                     Discount = product.Console.Discount,
                    Price = product.Console.Price,
+                    PrincipalImageURL = product.Console.PrincipalImageURL
                 }).ToList<ProductDTOBase>();
 
                 return products;

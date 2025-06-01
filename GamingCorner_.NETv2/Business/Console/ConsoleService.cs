@@ -33,37 +33,57 @@ public class ConsoleService : IConsoleService
 
     public ConsoleDTO Add(ConsoleCreateDTO consoleCreateDTO)
     {
+        //Inicializamos el producto
         var product = new Product()
         {
             PlatformId = consoleCreateDTO.PlatformId,
             Sales = 0
         };
 
+        //Creamos el producto       
         var entityProduct = _productRepository.Add(product);
 
-        var console = new Console()
-        {
-            ProductId = entityProduct.Id
-        };
+        //Inicializamos la consola
+        var console = new Console();
+
+        //Mapeamos la consola
         var mappedConsole = console.mapFromCreateDto(consoleCreateDTO);
+
+        //Asignamos al producto la consola
+        mappedConsole.ProductId = entityProduct.Id;
+
+        //Creamos la consola
         var consoleCreated = _consoleRepository.Add(mappedConsole);
 
         return consoleCreated.mapToReadDto();
     }
 
-    public void Update(int id, ConsoleUpdateDTO consoleUpdateDTO)
+    public void Update(int id, ConsoleUpdateDTO dto)
     {
-        var consoleDto = _consoleRepository.Get(id);
-        if (consoleDto == null)
+        var console = _consoleRepository.Get(id);
+        if (console == null)
         {
             throw new KeyNotFoundException($"Console con Id {id} no encontrada.");
         }
 
-        var console = consoleDto.ToConsole();
-        console.Price = consoleUpdateDTO.Price;
-        console.Stock = consoleUpdateDTO.Stock;
-        //console.Available = consoleUpdateDTO.Available;
-        _consoleRepository.Update(console);
+        // Aquí actualizas las propiedades permitidas
+        console.Name = dto.Name;
+        console.Description = dto.Description;
+        console.Stock = dto.Stock;
+        console.Discount = dto.Discount;
+        console.Price = dto.Price;
+        console.PrincipalImageURL = dto.PrincipalImageURL;
+        console.ReleaseDate = dto.ReleaseDate;
+        console.Specifications = dto.Specifications;
+        console.Brand = dto.Brand;
+        console.PlatformId = dto.PlatformId;
+        console.Generation = dto.Generation;
+        console.Colors = dto.Colors;
+        console.Services = dto.Services;
+
+
+
+        _consoleRepository.Update(console.ToConsole());
     }
 
     public void Delete(int id)

@@ -5,7 +5,7 @@ using GamingCorner.Business;
 using GamingCorner.Models;
 
 
-    public class PlatformService : IPlatformService
+public class PlatformService : IPlatformService
 {
 
     private readonly IPlatformRepository _platformRepository;
@@ -27,7 +27,7 @@ using GamingCorner.Models;
         var platform = _platformRepository.Get(id);
         return platform;
     }
-    
+
     // public List<VideogameDTO> GetVideogamesByPlatform(int id)
     // {
     //     var videogames = _platformRepository.GetVideogamesByPlatform(id);
@@ -83,9 +83,14 @@ using GamingCorner.Models;
     {
         _platformRepository.Delete(id);
     }
+
+    public List<PlatformDTO> GetplatformsBySystem(int system)
+    {
+        return _platformRepository.GetplatformsBySystem(system);
+    }
 }
 
 
-    
-    
+
+
 

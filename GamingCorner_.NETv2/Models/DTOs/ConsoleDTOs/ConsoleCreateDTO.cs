@@ -35,9 +35,10 @@ public class ConsoleCreateDTO
     /// Precio de la consola
     /// </summary>
     public decimal Price { get; set; }
-
-    //public int PlatformId { get; set; }
-    //public int GenderId { get; set; }
+    /// <summary>
+    /// Producto al que pertenece la consola
+    /// </summary>
+    public int ProductId { get; set; }
 
     /// <summary>
     /// Imagen Principal de la consola

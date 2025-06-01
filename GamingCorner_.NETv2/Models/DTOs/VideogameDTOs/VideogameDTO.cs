@@ -57,8 +57,15 @@ public class VideogameDTO
     /// </summary>
     public decimal Price { get; set; }
 
-    //public int PlatformId { get; set; }
-    //public int GenderId { get; set; }
+    /// <summary>
+    /// Plataforma del videojuego
+    /// </summary>
+    public int PlatformId { get; set; }
+    
+    /// <summary>
+    /// Generos del videojuegos
+    /// </summary>
+    public List<int> GenderId { get; set; }
 
     /// <summary>
     /// Imagen Principal del juego

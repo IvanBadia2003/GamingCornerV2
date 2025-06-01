@@ -22,7 +22,7 @@ public class UserEFRepository : IUserRepository
     public List<UserDTO> GetAll()
     {
         var users = _context.Users
-            .Include(v => v.Videogames)
+            //.Include(v => v.Videogames)
             .ToList();
 
         if (users != null)
@@ -36,6 +36,10 @@ public class UserEFRepository : IUserRepository
                 PhoneNumber = u.PhoneNumber,
                 Password = u.Password,
                 Admin = u.Admin,
+                Rol = u.Rol,
+                State = u.State,
+                DateCreated = u.DateCreated,
+                Avatar = u.Avatar
             }).ToList();
             return userDto;
         }
@@ -51,37 +55,48 @@ public class UserEFRepository : IUserRepository
         SaveChanges();
     }
 
-    public UserDTO Get(int id)
+    public User Get(int id)
     {
         var user = _context.Users
-            .Include(v => v.Videogames)
+            //.Include(v => v.Videogames)
             .Where(user => user.UserId == id)
             .FirstOrDefault();
 
-        if (user != null)
+        if (user == null)
         {
-            var userDto = new UserDTO
-            {
-                UserId = user.UserId,
-                Name = user.Name,
-                Address = user.Address,
-                Email = user.Email,
-                Password = user.Password,
-                PhoneNumber = user.PhoneNumber,
-                Admin = user.Admin,
-                // Videogames = user.Videogames.Select(v => new VideogameDTO
-                // {
-                //     VideogameId = v.VideogameId,
-                //     Price = v.Price,
-                //     Name = v.Name,
-                // }).ToList()
-            };
-            return userDto;
+            throw new KeyNotFoundException("Usuario no encontrado.");
         }
-        else
-        {
-            return null;
-        }
+
+        return user;
+
+        //if (user != null)
+        //{
+        //    var userDto = new UserDTO
+        //    {
+        //        UserId = user.UserId,
+        //        Name = user.Name,
+        //        Address = user.Address,
+        //        Email = user.Email,
+        //        Password = user.Password,
+        //        PhoneNumber = user.PhoneNumber,
+        //        Admin = user.Admin,
+        //        State = user.State,
+        //        Rol = user.Rol,
+        //        Avatar = user.Avatar,
+        //        DateCreated = user.DateCreated
+        //        // Videogames = user.Videogames.Select(v => new VideogameDTO
+        //        // {
+        //        //     VideogameId = v.VideogameId,
+        //        //     Price = v.Price,
+        //        //     Name = v.Name,
+        //        // }).ToList()
+        //    };
+        //    return userDto;
+        //}
+        //else
+        //{
+        //    return null;
+        //}
     }
     
     //Obtener un usuario por su email
@@ -102,6 +117,10 @@ public class UserEFRepository : IUserRepository
                 Password = user.Password,
                 PhoneNumber = user.PhoneNumber,
                 Admin = user.Admin,
+                State = user.State,
+                Rol = user.Rol,
+                Avatar = user.Avatar,
+                DateCreated = user.DateCreated
             };
             return userDto;
         }
@@ -157,6 +176,10 @@ public class UserEFRepository : IUserRepository
                 Password = user.Password,
                 PhoneNumber = user.PhoneNumber,
                 Admin = user.Admin,
+                State = user.State,
+                Rol = user.Rol,
+                Avatar = user.Avatar,
+                DateCreated = user.DateCreated
             };
             return userDto;
         }

@@ -47,7 +47,7 @@ public class Console
 
     public Console() { }
 
-    public Console(string name, string description, int discount, DateTime releaseDate, string specifications, int stock, decimal price, string? principalImageURL, string brand, string generation, string services, string colors)
+    public Console(string name, string description, int discount, DateTime releaseDate, string specifications, int stock, decimal price, string? principalImageURL, string brand, string generation, string services, string colors, int productId)
     {
         Name = name;
         Description = description;
@@ -61,6 +61,7 @@ public class Console
         Generation = generation;
         Services = services;
         Colors = colors;
+        ProductId = productId;
     }
 
     public Console mapFromCreateDto(ConsoleCreateDTO dto)
@@ -81,7 +82,8 @@ public class Console
             Brand = dto.Brand,
             Colors = dto.Colors,
             Generation = dto.Generation,
-            Services = dto.Services
+            Services = dto.Services,
+            ProductId = dto.ProductId
         };
     }
 
@@ -98,7 +100,11 @@ public class Console
             ReleaseDate = this.ReleaseDate,
             Specifications = this.Specifications,
             PrincipalImageURL = this.PrincipalImageURL,
-            Brand = this.Brand
+            Brand = this.Brand,
+            Colors = this.Colors,
+            Generation = this.Generation,
+            Services = this.Services,
+            ProductId = this.ProductId,
         };
     }
 }

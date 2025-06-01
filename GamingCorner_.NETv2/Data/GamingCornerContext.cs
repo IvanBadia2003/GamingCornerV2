@@ -90,7 +90,7 @@ namespace GamingCorner.Data
                .HasMany(p => p.products)
                .WithOne(c => c.Platform)
                .HasForeignKey(c => c.PlatformId)
-               .OnDelete(DeleteBehavior.Restrict); // Mantén o usa Restrict
+               .OnDelete(DeleteBehavior.SetNull); // Mantén o usa Restrict
 
             //modelBuilder.Entity<Platform>()
             //    .HasMany(p => p.Consoles)
@@ -118,51 +118,51 @@ namespace GamingCorner.Data
 
 
 
-            modelBuilder.Entity<User>().HasData(
-                new User { UserId = 1, Name = "Diego", Address = "C/ La Lectura", Email = "diego@gmail.com", Password = "12345", PhoneNumber = "601112734", Admin = true },
-                new User { UserId = 2, Name = "Ivan", Address = "Avda. San Juan de la Peña", Email = "ivan@gmail.com", Password = "12345", PhoneNumber = "123456789", Admin = true },
-                new User { UserId = 3, Name = "Adrian", Address = "El Actur", Email = "adrian@gmail.com", Password = "00000", PhoneNumber = "987654321", Admin = false, }
-);
+//            modelBuilder.Entity<User>().HasData(
+//                new User { UserId = 1, Name = "Diego", Address = "C/ La Lectura", Email = "diego@gmail.com", Password = "12345", PhoneNumber = "601112734", Admin = true },
+//                new User { UserId = 2, Name = "Ivan", Address = "Avda. San Juan de la Peña", Email = "ivan@gmail.com", Password = "12345", PhoneNumber = "123456789", Admin = true },
+//                new User { UserId = 3, Name = "Adrian", Address = "El Actur", Email = "adrian@gmail.com", Password = "00000", PhoneNumber = "987654321", Admin = false, }
+//);
 
 
-            modelBuilder.Entity<Platform>().HasData(
-                new Platform { PlatformId = 1, Name = "Steam", PrincipalImageURL = "" },
-                new Platform { PlatformId = 2, Name = "Play Station", PrincipalImageURL = "" },
-                new Platform { PlatformId = 3, Name = "Xbox", PrincipalImageURL = "" },
-                new Platform { PlatformId = 4, Name = "Switch", PrincipalImageURL = "" },
-                new Platform { PlatformId = 5, Name = "Ubisoft", PrincipalImageURL = "" },
-                new Platform { PlatformId = 6, Name = "Epic Games", PrincipalImageURL = "" }
-            );
+            //modelBuilder.Entity<Platform>().HasData(
+            //    new Platform { PlatformId = 1, Name = "Steam", PrincipalImageURL = "" },
+            //    new Platform { PlatformId = 2, Name = "Play Station", PrincipalImageURL = "" },
+            //    new Platform { PlatformId = 3, Name = "Xbox", PrincipalImageURL = "" },
+            //    new Platform { PlatformId = 4, Name = "Switch", PrincipalImageURL = "" },
+            //    new Platform { PlatformId = 5, Name = "Ubisoft", PrincipalImageURL = "" },
+            //    new Platform { PlatformId = 6, Name = "Epic Games", PrincipalImageURL = "" }
+            //);
 
-            modelBuilder.Entity<Product>().HasData(
-               new Product { Id = 1, Sales = 50 },
-               new Product { Id = 2, Sales = 44 },
-               new Product { Id = 3, Sales = 22 },
-               new Product { Id = 4, Sales = 4 },
-               new Product { Id = 5, Sales = 141 },
-               new Product { Id = 6, Sales = 967 }
-            );
+            //modelBuilder.Entity<Product>().HasData(
+            //   new Product { Id = 1, Sales = 50 },
+            //   new Product { Id = 2, Sales = 44 },
+            //   new Product { Id = 3, Sales = 22 },
+            //   new Product { Id = 4, Sales = 4 },
+            //   new Product { Id = 5, Sales = 141 },
+            //   new Product { Id = 6, Sales = 967 }
+            //);
 
             // 🎮 Datos específicos para videojuegos
-            modelBuilder.Entity<Videogame>().HasData(
-                new Videogame { Id = 1, ProductId = 1, Name = "Elden Ring", Description = "Juego de rol y acción en mundo abierto", Price = 59.99m, Stock = 100, Discount = 0, ReleaseDate = new DateTime(2022, 2, 25), Pegi = 18, Developer = "FromSoftware", Distributor = "Bandai Namco", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/9/9c/Elden_Ring_Box_art.jpg", Requisitos1 = "Intel Core i5-8400 / AMD Ryzen 3 3300X", Requisitos2 = "12 GB RAM, GTX 1060 3GB / Radeon RX 580" },
-                new Videogame { Id = 2, ProductId = 2, Name = "God of War Ragnarök", Description = "Acción y aventura con mitología nórdica", Price = 69.99m, Stock = 75, Discount = 5, ReleaseDate = new DateTime(2022, 11, 9), Pegi = 18, Developer = "Santa Monica Studio", Distributor = "Sony Interactive Entertainment", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/9/9e/God_of_War_Ragnar%C3%B6k_cover.jpg", Requisitos1 = null, Requisitos2 = null },
-                new Videogame { Id = 3, ProductId = 3, Name = "Hogwarts Legacy", Description = "RPG ambientado en el mundo de Harry Potter", Price = 49.99m, Stock = 80, Discount = 10, ReleaseDate = new DateTime(2023, 2, 10), Pegi = 16, Developer = "Portkey Games", Distributor = "Warner Bros. Games", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/7/76/Hogwarts_Legacy_cover.jpg", Requisitos1 = "Intel Core i5-6600 / AMD Ryzen 5 1400", Requisitos2 = "16 GB RAM, GTX 1070 / RX Vega 56" }
-            );
+            //modelBuilder.Entity<Videogame>().HasData(
+            //    new Videogame { Id = 1, ProductId = 1, Name = "Elden Ring", Description = "Juego de rol y acción en mundo abierto", Price = 59.99m, Stock = 100, Discount = 0, ReleaseDate = new DateTime(2022, 2, 25), Pegi = 18, Developer = "FromSoftware", Distributor = "Bandai Namco", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/9/9c/Elden_Ring_Box_art.jpg", Requisitos1 = "Intel Core i5-8400 / AMD Ryzen 3 3300X", Requisitos2 = "12 GB RAM, GTX 1060 3GB / Radeon RX 580" },
+            //    new Videogame { Id = 2, ProductId = 2, Name = "God of War Ragnarök", Description = "Acción y aventura con mitología nórdica", Price = 69.99m, Stock = 75, Discount = 5, ReleaseDate = new DateTime(2022, 11, 9), Pegi = 18, Developer = "Santa Monica Studio", Distributor = "Sony Interactive Entertainment", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/9/9e/God_of_War_Ragnar%C3%B6k_cover.jpg", Requisitos1 = null, Requisitos2 = null },
+            //    new Videogame { Id = 3, ProductId = 3, Name = "Hogwarts Legacy", Description = "RPG ambientado en el mundo de Harry Potter", Price = 49.99m, Stock = 80, Discount = 10, ReleaseDate = new DateTime(2023, 2, 10), Pegi = 16, Developer = "Portkey Games", Distributor = "Warner Bros. Games", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/7/76/Hogwarts_Legacy_cover.jpg", Requisitos1 = "Intel Core i5-6600 / AMD Ryzen 5 1400", Requisitos2 = "16 GB RAM, GTX 1070 / RX Vega 56" }
+            //);
 
-            modelBuilder.Entity<Models.Console>().HasData(
-                new Models.Console { Id = 1, Name = "Play Station 4", Specifications = "CPU:AMD 'Jaguar' x86-64, 8 núcleos; GPU: motor gráfico AMD de 1,84 TFLOPS basado en Radeon; Memoria:8 GB GDDR5; Almacenamiento:1 TB; Peso: Aprox. 2,1 Kg; Entrada/Salida:2 puertos de altísima velocidad USB (USB 3.1 Gen1) y 1 puerto AUX; Red:1 puerto Ethernet (10BASE-T, 100BASE-TX, 1000BASE-T) / IEEE 802.11 a/b/g/n/ac / Bluetooth® 4.0; Alimentacion:AC de 100-240 V, 50/60 Hz; Consumo de energia: 165W; Salida AV:Salida HDMI™ (compatible con salida HDR)", Price = 300, Stock = 16, PrincipalImageURL = "https://gmedia.playstation.com/is/image/SIEPDC/ps4-pro-product-thumbnail-01-en-14sep21", Brand = "Sony", Description = "Consola muy buena", Discount = 50, ProductId = 4, ReleaseDate = new DateTime(2023, 2, 10) },
-                new Models.Console { Id = 2, Name = "Play Station 5", Specifications = "CPU: AMD Ryzen Zen 2, 8 núcleos a 3.5GHz; GPU: AMD RDNA 2, 10.28 TFLOPs, 36 CUs a 2.23GHz; Memoria: 16 GB GDDR6; Almacenamiento: SSD personalizado de 825 GB; Peso: Aprox. 4.5 Kg; Entrada/Salida: 2 puertos USB de alta velocidad (USB 3.1 Gen2), 1 puerto USB-C; Red: 1 puerto Ethernet (10BASE-T, 100BASE-TX, 1000BASE-T), Wi-Fi 6 (802.11ax), Bluetooth® 5.1; Alimentación: AC 100-240V, 50/60Hz; Consumo de energía: 350W; Salida AV: Salida HDMI™ 2.1 (compatible con 4K a 120Hz, 8K, y HDR)", Price = 490, Stock = 16, PrincipalImageURL = "https://m.media-amazon.com/images/I/51f6iZlNnvL.jpg", Brand = "Sony", Description = "Consola  buena", Discount = 10, ProductId = 5, ReleaseDate = new DateTime(2023, 2, 10) },
-                new Models.Console { Id = 3, Name = "Xbox 360", Specifications = "CPU: IBM PowerPC Tri-Core Xenon a 3.2GHz; GPU: ATI Xenos, 240 GFLOPs; Memoria: 512 MB GDDR3 a 700 MHz; Almacenamiento: Disco duro de 20 GB/60 GB/120 GB (según modelo); Peso: Aprox. 3.5 Kg; Entrada/Salida: 3 puertos USB 2.0; Red: 1 puerto Ethernet (10/100), Wi-Fi opcional con adaptador externo (en modelos antiguos); Alimentación: AC 100-240V, 50/60Hz; Consumo de energía: Aprox. 175W; Salida AV: Salida HDMI™, Salida por componentes, Salida por cable AV estándar", Price = 265, Stock = 5, PrincipalImageURL = "https://i.ebayimg.com/images/g/oBUAAOSwVgljSZS8/s-l400.jpg", Brand = "Microsoft", Description = "Consola casi buena", Discount = 22, ProductId = 6, ReleaseDate = new DateTime(2023, 2, 10) }
-            );
+            //modelBuilder.Entity<Models.Console>().HasData(
+            //    new Models.Console { Id = 1, Name = "Play Station 4", Specifications = "CPU:AMD 'Jaguar' x86-64, 8 núcleos; GPU: motor gráfico AMD de 1,84 TFLOPS basado en Radeon; Memoria:8 GB GDDR5; Almacenamiento:1 TB; Peso: Aprox. 2,1 Kg; Entrada/Salida:2 puertos de altísima velocidad USB (USB 3.1 Gen1) y 1 puerto AUX; Red:1 puerto Ethernet (10BASE-T, 100BASE-TX, 1000BASE-T) / IEEE 802.11 a/b/g/n/ac / Bluetooth® 4.0; Alimentacion:AC de 100-240 V, 50/60 Hz; Consumo de energia: 165W; Salida AV:Salida HDMI™ (compatible con salida HDR)", Price = 300, Stock = 16, PrincipalImageURL = "https://gmedia.playstation.com/is/image/SIEPDC/ps4-pro-product-thumbnail-01-en-14sep21", Brand = "Sony", Description = "Consola muy buena", Discount = 50, ProductId = 4, ReleaseDate = new DateTime(2023, 2, 10) },
+            //    new Models.Console { Id = 2, Name = "Play Station 5", Specifications = "CPU: AMD Ryzen Zen 2, 8 núcleos a 3.5GHz; GPU: AMD RDNA 2, 10.28 TFLOPs, 36 CUs a 2.23GHz; Memoria: 16 GB GDDR6; Almacenamiento: SSD personalizado de 825 GB; Peso: Aprox. 4.5 Kg; Entrada/Salida: 2 puertos USB de alta velocidad (USB 3.1 Gen2), 1 puerto USB-C; Red: 1 puerto Ethernet (10BASE-T, 100BASE-TX, 1000BASE-T), Wi-Fi 6 (802.11ax), Bluetooth® 5.1; Alimentación: AC 100-240V, 50/60Hz; Consumo de energía: 350W; Salida AV: Salida HDMI™ 2.1 (compatible con 4K a 120Hz, 8K, y HDR)", Price = 490, Stock = 16, PrincipalImageURL = "https://m.media-amazon.com/images/I/51f6iZlNnvL.jpg", Brand = "Sony", Description = "Consola  buena", Discount = 10, ProductId = 5, ReleaseDate = new DateTime(2023, 2, 10) },
+            //    new Models.Console { Id = 3, Name = "Xbox 360", Specifications = "CPU: IBM PowerPC Tri-Core Xenon a 3.2GHz; GPU: ATI Xenos, 240 GFLOPs; Memoria: 512 MB GDDR3 a 700 MHz; Almacenamiento: Disco duro de 20 GB/60 GB/120 GB (según modelo); Peso: Aprox. 3.5 Kg; Entrada/Salida: 3 puertos USB 2.0; Red: 1 puerto Ethernet (10/100), Wi-Fi opcional con adaptador externo (en modelos antiguos); Alimentación: AC 100-240V, 50/60Hz; Consumo de energía: Aprox. 175W; Salida AV: Salida HDMI™, Salida por componentes, Salida por cable AV estándar", Price = 265, Stock = 5, PrincipalImageURL = "https://i.ebayimg.com/images/g/oBUAAOSwVgljSZS8/s-l400.jpg", Brand = "Microsoft", Description = "Consola casi buena", Discount = 22, ProductId = 6, ReleaseDate = new DateTime(2023, 2, 10) }
+            //);
 
-            modelBuilder.Entity<VideogameGender>().HasData(
-                new VideogameGender { VideogameId = 1, GenderId =1 },
-                new VideogameGender { VideogameId = 1, GenderId =2 },
-                new VideogameGender { VideogameId = 2, GenderId =2 },
-                new VideogameGender { VideogameId = 2, GenderId =3 },
-                new VideogameGender { VideogameId = 3, GenderId =1 }
-            );
+            //modelBuilder.Entity<VideogameGender>().HasData(
+            //    new VideogameGender { VideogameId = 1, GenderId =1 },
+            //    new VideogameGender { VideogameId = 1, GenderId =2 },
+            //    new VideogameGender { VideogameId = 2, GenderId =2 },
+            //    new VideogameGender { VideogameId = 2, GenderId =3 },
+            //    new VideogameGender { VideogameId = 3, GenderId =1 }
+            //);
 
 
             //modelBuilder.Entity<Videogame>().HasData(
@@ -185,13 +185,13 @@ namespace GamingCorner.Data
             //);
 
 
-            modelBuilder.Entity<Gender>().HasData(
-                new Gender { GenderId = 1, Name = "RPG" },
-                new Gender { GenderId = 2, Name = "Shooter" },
-                new Gender { GenderId = 3, Name = "Estrategia" },
-                new Gender { GenderId = 4, Name = "Accion" },
-                new Gender { GenderId = 5, Name = "Deportes" }
-            );
+            //modelBuilder.Entity<Gender>().HasData(
+            //    new Gender { GenderId = 1, Name = "RPG" },
+            //    new Gender { GenderId = 2, Name = "Shooter" },
+            //    new Gender { GenderId = 3, Name = "Estrategia" },
+            //    new Gender { GenderId = 4, Name = "Accion" },
+            //    new Gender { GenderId = 5, Name = "Deportes" }
+            //);
 
             //modelBuilder.Entity<SecondHandProduct>().HasData(
             //    new SecondHandProduct { ProductId = 1, Name = "COD nuevo", Description = "COD Infinite Warfare nuevo en perfectas condiciones y con su precinto", Price = 15, Available = true, ImageURL = "https://cdn.wallapop.com/images/10420/g2/d9/__/c10420p971437424/i4694537666.jpg?pictureSize=W640" },

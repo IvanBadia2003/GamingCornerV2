@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata;
+using GamingCorner.Models.Enums.RolEnums;
+using GamingCorner.Models.Enums.UserStateEnum;
 
 namespace GamingCorner.Models;
 
@@ -25,7 +27,13 @@ public class UserDTO
 
     public bool Admin { get; set; }
 
-    public List<VideogameDTO> Videogames { get; set; }
+    //public List<VideogameDTO> Videogames { get; set; }
+    public RolEnum Rol { get; set; }
+    public UserStateEnum State { get; set; }
+    public DateTime DateCreated { get; set; }
+
+    public string Avatar { get; set; }
+
 
     public User ToUser()
     {
@@ -38,6 +46,10 @@ public class UserDTO
             Password = this.Password,
             PhoneNumber = this.PhoneNumber,
             Admin = this.Admin,
+            Rol = this.Rol,
+            DateCreated = this.DateCreated,
+            State = this.State,
+            Avatar = this.Avatar
 
         };
     }

@@ -12,4 +12,11 @@ public interface IPlatformRepository
     // List<Models.Console> GetConsolesByPlatform(int id);
     void Update(Platform platform);
     void Delete(int id);
+
+    /// <summary>
+    /// Obtener plataformas por sistema
+    /// </summary>
+    /// <param name="system"></param>
+    /// <returns></returns>
+    List<PlatformDTO> GetplatformsBySystem(int system);
 }

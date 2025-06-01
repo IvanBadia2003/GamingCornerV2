@@ -23,7 +23,7 @@ public class ConsoleEFRepository : IConsoleRepository
     public List<ConsoleDTO> GetAll()
     {
         var consoles = _context.Consoles
-            .Include(c => c.Product)
+            .Include(c => c.Product).ThenInclude(c => c.Platform)
             .ToList();
 
         if (consoles != null)
@@ -41,7 +41,11 @@ public class ConsoleEFRepository : IConsoleRepository
                 PrincipalImageURL = c.PrincipalImageURL,
                 ProductId = c.Product.Id,
                 ReleaseDate = c.ReleaseDate,
-                Sales = c.Product.Sales
+                Sales = c.Product.Sales,
+                Colors  = c.Colors,
+                Generation = c.Generation,
+                PlatformId = c.Product.Platform.PlatformId,
+                Services = c.Services
 
             }).ToList();
             return consoleDto;

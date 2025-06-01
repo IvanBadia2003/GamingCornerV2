@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata;
+using GamingCorner.Models.Enums.SystemEnum;
 
 namespace GamingCorner.Models;
 
@@ -13,9 +14,9 @@ public class Platform
 
     public string? Name { get; set; }
     
-    public string? PrincipalImageURL { get; set; }
-
     public List<Product> products { get; set; } = new List<Product>();
+
+    public SystemEnum System{ get; set; }
 
     public Platform() { }
     public Platform mapFromCreateDto(PlatformCreateDTO platformCreateDTO)
@@ -29,6 +30,7 @@ public class Platform
         var platform = new Platform
         {
            Name = platformCreateDTO.Name,
+           System = platformCreateDTO.System
            //PrincipalImageURL = platformCreateDTO.PrincipalImageURL,
         };
 

@@ -43,7 +43,10 @@ public class ConsoleDTO
     /// </summary>
     public decimal Price { get; set; }
 
-    //public int PlatformId { get; set; }
+    /// <summary>
+    /// Plataforma de la cosola
+    /// </summary>
+    public int PlatformId { get; set; }
     //public int GenderId { get; set; }
 
     /// <summary>

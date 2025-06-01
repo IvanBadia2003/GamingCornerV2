@@ -66,6 +66,21 @@ public class VideogameGenderEFRepository : IVideogameGenderRepository
         }
     }
 
+    /// <summary>
+    /// Obtener los generos de un juego
+    /// </summary>
+    /// <param name="idVideogame"></param>
+    /// <returns></returns>
+    public List<VideogameGender> GetGendersByVideogameId(int idVideogame)
+    {
+        var videogameGenders = _context.VideogameGenders
+            .Where(vg => vg.VideogameId == idVideogame)
+            .ToList();
+
+        return videogameGenders;
+    }
+
+
     // public void Update(Gender gender)
     // {
     //     var existingGender = _context.Genders.Find(gender.GenderId);

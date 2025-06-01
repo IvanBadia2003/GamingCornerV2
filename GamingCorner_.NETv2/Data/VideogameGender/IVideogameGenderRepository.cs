@@ -10,4 +10,7 @@ public interface IVideogameGenderRepository
     VideogameGenderDTO Get(int idGender, int idVideogame);
     // void Update(Gender gender);
     void Delete(int idGender, int idVideogame);
+
+    List<VideogameGender> GetGendersByVideogameId(int idVideogame);
+
 }

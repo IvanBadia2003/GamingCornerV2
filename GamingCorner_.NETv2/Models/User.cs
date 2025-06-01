@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata;
+using GamingCorner.Models.Enums.RolEnums;
+using GamingCorner.Models.Enums.UserStateEnum;
 
 namespace GamingCorner.Models;
 
@@ -26,16 +28,24 @@ public class User
 
     public bool Admin { get; set; }
 
+    public RolEnum Rol { get; set; }
+    
+    public UserStateEnum State { get; set; }
+
+    public DateTime DateCreated { get; set; }
+
+    public string Avatar { get; set; }
+
 
     // public List<Console_> Consoles { get; set; } = new List<Console_>();
 
-    public List<Videogame> Videogames { get; set; } = new List<Videogame>();
-   // public List<Transaction> Transactions { get; set; }
+    //public List<Videogame> Videogames { get; set; } = new List<Videogame>();
+    // public List<Transaction> Transactions { get; set; }
 
 
     public User() { }
 
-    public User(string name,string address, string email,string password,string phoneNumber,bool admin)
+    public User(string name,string address, string email,string password,string phoneNumber,bool admin, RolEnum rol, UserStateEnum state, DateTime dateCreated, string avatar)
     {
         Name = name;
         Address = address;
@@ -43,26 +53,28 @@ public class User
         Password = password;
         PhoneNumber = phoneNumber;
         Admin = admin;
+        Rol = rol;
+        State = state;
+        DateCreated = dateCreated;
+        Avatar = avatar;
     }
 
-    public User mapFromCreateDto(UserCreateDTO userCreateDTO)
+    public UserDTO ToUserDTO()
     {
-        if (userCreateDTO == null)
+        return new UserDTO
         {
-            // Puedes lanzar una excepción aquí o manejar el caso de DTO nulo según tu lógica
-            throw new ArgumentNullException(nameof(userCreateDTO));
-        }
+            UserId = this.UserId,
+            Name = this.Name,
+            Address = this.Address,
+            Email = this.Email,
+            Password = this.Password,
+            PhoneNumber = this.PhoneNumber,
+            Admin = this.Admin,
+            Rol = this.Rol,
+            DateCreated = this.DateCreated,
+            State = this.State,
+            Avatar = this.Avatar
 
-        var user = new User
-        {
-            Name = userCreateDTO.Name,
-            Address = userCreateDTO.Address,
-            Email = userCreateDTO.Email,
-            Password = userCreateDTO.Password,
-            PhoneNumber = userCreateDTO.phoneNumber,
-            Admin = userCreateDTO.Admin,
         };
-
-        return user;
     }
 }

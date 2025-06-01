@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Data;
 using GamingCorner.Data;
 using Microsoft.EntityFrameworkCore;
+using GamingCorner.Models.Enums.OrderDirectionEnum;
 
 public class VideogameEFRepository : IVideogameRepository
 {
@@ -26,7 +27,7 @@ public class VideogameEFRepository : IVideogameRepository
     public List<VideogameDTO> GetAll()
     {
         // Obtenemos todos los videojuegos incluyendo su producto
-        var videogames = _context.Videogames.Include(v => v.Product).ToList();
+        var videogames = _context.Videogames.Include(v => v.Product).ThenInclude(p => p.Platform).Include(v => v.VideogameGenders).ThenInclude(vg => vg.Gender).ToList();
 
         // si existe
         if (videogames != null)
@@ -46,8 +47,8 @@ public class VideogameEFRepository : IVideogameRepository
                 Developer = v.Developer,
                 Discount = v.Discount,
                 ProductId = v.ProductId,
-                //PlatformId =v.PlatformId,
-                //GenderId =v.GenderId,
+                PlatformId =v.Product.Platform.PlatformId,
+                GenderId = v.VideogameGenders.Select(vg => vg.GenderId).ToList(),
                 Price = v.Price,
                 PrincipalImageURL = v.PrincipalImageURL,
                 Sales = v.Product.Sales
@@ -62,6 +63,93 @@ public class VideogameEFRepository : IVideogameRepository
             return null;
         }
     }
+
+    /// <summary>
+    /// Obtenemos lista con todos los videojuegos
+    /// </summary>
+    /// <returns></returns>
+    public List<VideogameDTO> GetFiltered(VideogameFilterDto filters)
+    {
+        var query = _context.Videogames
+            .Include(v => v.Product)
+                .ThenInclude(p => p.Platform)
+            .Include(v => v.VideogameGenders)
+                .ThenInclude(vg => vg.Gender)
+            .AsQueryable();
+
+        // Filtrar por plataforma
+        if (filters.Platform.HasValue)
+            query = query.Where(v => v.Product.Platform.PlatformId == filters.Platform.Value);
+
+        // Filtrar por genero
+        if (filters.Genre.HasValue)
+            query = query.Where(v => v.VideogameGenders.Any(vg => vg.GenderId == filters.Genre.Value));
+
+        // Filtrar por precio minimo
+        if (filters.MinPrice.HasValue)
+            query = query.Where(v => v.Price >= filters.MinPrice.Value);
+
+        // Filtrar por precio máximo
+        if (filters.MaxPrice.HasValue)
+            query = query.Where(v => v.Price <= filters.MaxPrice.Value);
+
+        // Filtrar por texto de búsqueda
+        if (!string.IsNullOrEmpty(filters.Search))
+        {
+            var searchLower = filters.Search.ToLower();
+            query = query.Where(v => v.Name.ToLower().Contains(searchLower));
+        }
+
+        // Filtrar por sistema
+        if (filters.System.HasValue)
+            query = query.Where(v => v.Product.Platform.System == filters.System);
+
+        // Ordenamiento
+        var orderBy = filters.OrderBy?.ToLower();
+
+        switch (orderBy)
+        {
+            case "price":
+                query = filters.OrderDirection == OrderDirectionEnum.DESC ? query.OrderByDescending(v => v.Price) : query.OrderBy(v => v.Price);
+                break;
+            case "name":
+                query = filters.OrderDirection == OrderDirectionEnum.DESC ? query.OrderByDescending(v => v.Name) : query.OrderBy(v => v.Name);
+                break;
+            case "releasedate":
+                query = filters.OrderDirection == OrderDirectionEnum.DESC ? query.OrderByDescending(v => v.ReleaseDate) : query.OrderBy(v => v.ReleaseDate);
+                break;
+            case "discount":
+                query = filters.OrderDirection == OrderDirectionEnum.DESC ? query.OrderByDescending(v => v.Discount) : query.OrderBy(v => v.Discount);
+                break;
+            default:
+                query = query.OrderBy(v => v.Name); // por defecto
+                break;
+        }
+
+        var videogameDto = query.Select(v => new VideogameDTO
+        {
+            Id = v.Id,
+            Name = v.Name,
+            Pegi = v.Pegi,
+            Description = v.Description,
+            Requisitos1 = v.Requisitos1,
+            Requisitos2 = v.Requisitos2,
+            Stock = v.Stock,
+            Distributor = v.Distributor,
+            ReleaseDate = v.ReleaseDate,
+            Developer = v.Developer,
+            Discount = v.Discount,
+            ProductId = v.ProductId,
+            PlatformId = v.Product.Platform.PlatformId,
+            GenderId = v.VideogameGenders.Select(vg => vg.GenderId).ToList(),
+            Price = v.Price,
+            PrincipalImageURL = v.PrincipalImageURL,
+            Sales = v.Product.Sales
+        }).ToList();
+
+        return videogameDto;
+    }
+
 
 
     /// <summary>

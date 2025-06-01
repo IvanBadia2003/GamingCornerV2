@@ -12,4 +12,11 @@ public interface IPlatformService
     // List<VideogameDTO> GetVideogamesByPlatform(int id);
     // List<ConsoleDTO> GetConsolesByPlatform(int id);
     void Delete(int id);
+
+    /// <summary>
+    /// Obtener plataformas por sistema
+    /// </summary>
+    /// <param name="system"></param>
+    /// <returns></returns>
+    List<PlatformDTO> GetplatformsBySystem(int system);
 }

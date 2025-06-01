@@ -56,6 +56,7 @@ public class Videogame
         string developer,
         string distributor,
         string principalImageURL,
+        int productId,
         string? requisitos1 = null,
         string? requisitos2 = null
     )
@@ -70,6 +71,7 @@ public class Videogame
         Developer = developer;
         Distributor = distributor;
         PrincipalImageURL = principalImageURL;
+        ProductId = productId;
         Requisitos1 = requisitos1;
         Requisitos2 = requisitos2;
     }
@@ -90,6 +92,7 @@ public class Videogame
             dto.Developer,
             dto.Distributor,
             dto.PrincipalImageURL,
+            dto.ProductId,
             dto.Requisitos1,
             dto.Requisitos2
         );

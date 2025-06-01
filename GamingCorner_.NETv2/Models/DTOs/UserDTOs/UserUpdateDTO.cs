@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
+using GamingCorner.Models.Enums.RolEnums;
+using GamingCorner.Models.Enums.UserStateEnum;
 using Microsoft.AspNetCore.Http;
 
 
@@ -13,7 +15,6 @@ public class UserUpdateDTO
     [Required]
     public string? Name { get; set; }
     
-    [Required]
     public string? Address { get; set; }
 
     [Required]
@@ -24,4 +25,24 @@ public class UserUpdateDTO
 
     public string? PhoneNumber { get; set; }
 
+    public RolEnum Rol { get; set; }
+    public UserStateEnum State { get; set; }
+
+    public string Avatar { get; set; }
+
+    public User ToUser()
+    {
+        return new User
+        {
+            Name = this.Name,
+            Address = this.Address,
+            Email = this.Email,
+            Password = this.Password,
+            PhoneNumber = this.PhoneNumber,
+            Rol = this.Rol,
+            State = this.State,
+            Avatar = this.Avatar
+
+        };
+    }
 }

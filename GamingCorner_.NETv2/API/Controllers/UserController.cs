@@ -67,9 +67,11 @@ public class UserController : ControllerBase
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState);
+            var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                          .Select(e => e.ErrorMessage)
+                                          .ToList();
+            return BadRequest(errors);
         }
-
         try
         {
             _userService.Update(id, userUpdateDTO);
