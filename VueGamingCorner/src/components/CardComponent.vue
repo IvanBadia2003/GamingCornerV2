@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { id } from 'vuetify/locale';
 import PrincipalImage from './Images/PrincipalImage.vue';
+import { useProductStore } from '@/stores/ProductStore';
 
 defineProps<{
   title: string
@@ -10,9 +11,11 @@ defineProps<{
   productId: number
 }>()
 
+const productStore = useProductStore(); 
+
 </script>
 <template>
-  <v-card tile elevation="0" class="bg-transparent" :to="'/description/' + productId"
+  <v-card tile elevation="0" class="bg-transparent" :to="'/description/' + productId" @click="productStore.getProductById(productId)"
     style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: visible;">
     <div class="discount bg-primary">
       <h5>-{{ discount }}%</h5>

@@ -33,8 +33,8 @@
         />
   
         <v-btn
-          :loading="auth.loading"
-          :disabled="auth.loading"
+          :loading="user.loading"
+          :disabled="user.loading"
           type="submit"
           color="primary"
           block
@@ -49,13 +49,13 @@
         </p>
   
         <v-alert
-          v-if="auth.error"
+          v-if="user.error"
           type="error"
           class="mt-4"
           border="start"
           variant="tonal"
         >
-          {{ auth.error }}
+          {{ user.error }}
         </v-alert>
       </v-card-text>
     </v-form>
@@ -63,9 +63,9 @@
   
   <script setup lang="ts">
   import { ref } from 'vue'
-  import { useAuthStore } from '@/stores/AuthStore'
+  import { useUserStore } from '@/stores/UserStore'
   
-  const auth = useAuthStore()
+  const user = useUserStore()
   
   const nombre = ref('')
   const email = ref('')
@@ -78,7 +78,7 @@
 
     const valid = await formRef.value?.validate()
     if (!valid) return
-    await auth.register(nombre.value, email.value, password.value)
+    await user.register(nombre.value, email.value, password.value)
   }
   </script>
   

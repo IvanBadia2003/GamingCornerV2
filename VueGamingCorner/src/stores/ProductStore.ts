@@ -2,8 +2,9 @@ import { defineStore } from 'pinia'
 import { ref, computed, reactive } from 'vue'
 import axios from 'axios'
 import router from '@/router'
-import { useAuthStore } from './AuthStore'
+import { useUserStore } from './UserStore'
 import type { Gender } from './GenderStore'
+import { de } from 'vuetify/locale'
 
 
 
@@ -12,6 +13,23 @@ interface Product {
     productId: number
     sales: string
 }
+
+export enum OrderDirectionEnum {
+    ASC = 1,
+    DESC = 2
+}
+
+export interface Filters {
+    platform: number | null
+    genre: number | null
+    minPrice: number | null
+    maxPrice: number | null
+    search: string
+    system: number | null
+    orderBy: string | null
+    orderDirection: OrderDirectionEnum | null
+  }
+
 
 // Interfaz del videojuego
 export interface Videogame extends Product {
@@ -25,13 +43,16 @@ export interface Videogame extends Product {
     discount: number //Porcentaje de descuento sobre el precio del juego
     price: number //Precio del juego
     platformId?: number
-    genders: Gender[] //Géneros del juego
+    genderId: Gender[] //Géneros del juego
     principalImageURL?: string //Imagen principal del juego
     releaseDate: Date //Fecha de lanzamiento del juego 
     distributor: string  //Distribuidor del juego
     developer: string //Desarrollador del juego
 }
 
+
+
+// Interfaz para crear el videojuego
 export interface VideogameCreate {
     name: string // Nombre del videojuego
     pegi: number // Pegi del juego
@@ -41,14 +62,31 @@ export interface VideogameCreate {
     stock: number //Cantidad de stock del juego
     discount: number //Porcentaje de descuento sobre el precio del juego
     price: number //Precio del juego
+    genderId : number[] //Géneros del juego
     platformId?: number
-    genders: number[] //Géneros del juego
     principalImageURL?: string //Imagen principal del juego
     releaseDate: Date //Fecha de lanzamiento del juego 
     distributor: string  //Distribuidor del juego
     developer: string //Desarrollador del juego
 }
+// Interfaz para editar el videojuego
 
+export interface VideogameUpdate{
+    name: string // Nombre del videojuego
+    pegi: number // Pegi del juego
+    description: string // Descripción del juego
+    requisitos1?: string // Requisitos mínimos del juego
+    requisitos2?: string // Requisitos recomendados del juego
+    stock: number // Cantidad de stock del juego
+    discount: number // Porcentaje de descuento sobre el precio del juego
+    price: number // Precio del juego
+    genderId: number[] // Géneros del juego
+    platformId?: number // Plataforma del juego
+    principalImageURL?: string // Imagen principal del juego
+    releaseDate: Date // Fecha de lanzamiento del juego 
+    distributor: string // Distribuidor del juego
+    developer: string // Desarrollador del juego
+}
 
 
 // Interfaz de la consola
@@ -66,21 +104,39 @@ export interface Console extends Product {
     brand: string  //Distribuidor de la consola
 
 }
-// Interfaz de la consola
+// Interfaz para crear la consola 
 export interface ConsoleCreate {
     name: string // Nombre de la consola
-    description: string //Descripción de la consola
-    stock: number //Cantidad de stock de la consola
-    discount: number //Porcentaje de descuento sobre el precio de la consola
-    price: number //Precio de la consola
-    platformId?: number
-    principalImageURL?: string //Imagen principal de la consola
-    releaseDate: Date //Fecha de lanzamiento de la consola
-    specifications?: string //Especificaciones de la consola
-    brand: string  //Distribuidor de la consola
+    description: string // Descripción de la consola
+    stock: number // Cantidad de stock de la consola
+    discount: number // Porcentaje de descuento sobre el precio de la consola
+    price: number // Precio de la consola
+    principalImageURL: string // Imagen principal de la consola
+    releaseDate: Date // Fecha de lanzamiento de la consola
+    specifications: string // Especificaciones de la consola
+    brand: string // Marca o distribuidor de la consola
+    platformId: number // ID de la plataforma
+    generation: string // Generación de la consola
+    colors: string // Colores disponibles
+    services: string // Servicios compatibles
+  }
 
-}
-
+// Interfaz para editar la consola 
+  export interface UpdateConsole {
+    name: string // Nombre de la consola
+    description: string // Descripción de la consola
+    stock: number // Cantidad de stock de la consola
+    discount: number // Porcentaje de descuento sobre el precio de la consola
+    price: number // Precio de la consola
+    principalImageURL: string // Imagen principal de la consola
+    releaseDate: Date // Fecha de lanzamiento de la consola
+    specifications: string // Especificaciones de la consola
+    brand: string // Marca o distribuidor de la consola
+    platformId: number // ID de la plataforma
+    generation: string // Generación de la consola
+    colors: string // Colores disponibles
+    services: string // Servicios compatibles
+  }
 
 export const useProductStore = defineStore('ProductStore', () => {
     // Estado
@@ -89,6 +145,9 @@ export const useProductStore = defineStore('ProductStore', () => {
     const products = reactive<Console[] | Videogame[]>([])
     const similarsProducts = reactive<Console[] | Videogame[]>([])
     const error = ref<string | null>(null)
+
+    const productType = ref<string | null>(null);
+
 
     const product = reactive<Videogame | Console>({ productId: 0, sales: '' } as Videogame | Console) // Producto actual
 
@@ -223,6 +282,7 @@ export const useProductStore = defineStore('ProductStore', () => {
                 body: JSON.stringify(game),
             });
             if (response.ok) {
+                getAllVideogames()
                 alert('Juego creado exitosamente.' + response);
             } else {
                 console.error('Error al crear el juego:', response.statusText);
@@ -236,14 +296,54 @@ export const useProductStore = defineStore('ProductStore', () => {
 
     async function deleteVideogame(id: number) {
         try {
-            //TENGO QUE VER COMO USARLO  useAuthStore().fetchCurrentUser
+            //TENGO QUE VER COMO USARLO  useUserStore().fetchCurrentUser
             const response = await fetch('http://localhost:5000/Videogame/' + id, {
                 method: 'DELETE',
             });
             console.log("Eliminar videojuego " + id + " hecho desde ProductStore.ts");
+            getAllVideogames()
             alert(`videojuego: ${id} eliminado con éxito` + response.ok);
         } catch (error) {
             console.error('Error al eliminar:', error);
+        }
+    }
+
+    async function updateVideogame(id: number, videogame: VideogameUpdate) {
+        debugger
+        try {
+            const response = await fetch('http://localhost:5000/Videogame/' + id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(videogame),
+            });
+            if (response.ok) {
+                alert('Juego editado exitosamente.' + response);
+                getAllVideogames()
+                console.log('Juego editado exitosamente.' + response);
+            } else {
+                alert('Error al editar el juego:' + response.statusText);
+                console.error('Error al editar el juego:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error al editar el juego:', error);
+        }
+    }
+
+       // Obtener todos los videojuegos filtrados
+       const getFilteredVideogames = async (filters: Filters) => {
+        debugger
+        try {
+            console.log(videogames);
+            
+            products.splice(0, videogames.length) // Actualiza el array de videojuegos
+            const response = await axios.post('http://localhost:5000/Videogame/Filter/', filters);
+            products.push(...response.data)// Añade los nuevos videojuegos al array
+            console.log(videogames);
+
+        } catch (err) {
+            error.value = 'Error al obtener los videojuegos'
         }
     }
     /************ FIN VIDEOJUEGOS **********/
@@ -284,23 +384,46 @@ export const useProductStore = defineStore('ProductStore', () => {
         }
     })
 
-    async function createConsole(game: ConsoleCreate) {
+    async function createConsole(_console: ConsoleCreate) {
         try {
             const response = await fetch('http://localhost:5000/Console', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(game),
+                body: JSON.stringify(_console),
             });
             if (response.ok) {
                 alert('Consola creada exitosamente.' + response);
                 console.log('Consola creada exitosamente.' + response);
+                getAllConsoles()
             } else {
                 console.error('Error al crear el juego:', response.statusText);
             }
         } catch (error) {
             console.error('Error al crear el juego:', error);
+        }
+    }
+
+    async function updateConsole(id: number, _console: UpdateConsole) {
+        debugger
+        try {
+            const response = await fetch('http://localhost:5000/Console/' + id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(_console),
+            });
+            if (response.ok) {
+                alert('Consola editada exitosamente.' + response);
+                console.log('Consola editada exitosamente.' + response);
+                getAllConsoles()
+            } else {
+                console.error('Error al editar la consola:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error al editar la consola:', error);
         }
     }
 
@@ -312,6 +435,7 @@ export const useProductStore = defineStore('ProductStore', () => {
             });
             console.log("Eliminar consola " + id + " hecho desde ProductStore.ts");
             alert(`Consola: ${id} eliminado con éxito` + response.ok);
+            getAllConsoles()
         } catch (error) {
             console.error('Error al eliminar:', error);
         }
@@ -338,6 +462,10 @@ export const useProductStore = defineStore('ProductStore', () => {
         deleteConsole,
         deleteVideogame,
         getSimilarsProducts,
-        similarsProducts
+        similarsProducts,
+        updateConsole,
+        updateVideogame,
+        getFilteredVideogames,
+        productType
     }
 })

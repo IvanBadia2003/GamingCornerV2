@@ -322,7 +322,7 @@ const rating = ref(4.5)
                         <v-col v-for="(similarProduct, i) in productStore.similarsProducts" :key="i" cols="6" lg="3">
                             <CardComponent :title="similarProduct.name" :discount="similarProduct.discount"
                                 :price="similarProduct.price" :product-id="similarProduct.id"
-                                src="https://media.vandal.net/m/4-2024/21/202442110133878_1.jpg" />
+                                :src="similarProduct.principalImageURL as string" />
                         </v-col>
 
                     </v-row>

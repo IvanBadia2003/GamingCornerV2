@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useDisplay } from 'vuetify'
-import { useAuthStore } from '@/stores/AuthStore'
+import { useUserStore } from '@/stores/UserStore'
 
 import CardComponent from '@/components/CardComponent.vue'
 import PerfilTab from '@/components/Settings/PerfilTab.vue'
@@ -12,7 +12,7 @@ import SecurityTab from '@/components/Settings/SecurityTab.vue'
 import SecondHandTab from '@/components/Settings/SecondHandTab.vue'
 
 
-const auth = useAuthStore()
+const userStore = useUserStore()
 const { xs, sm, md, lg } = useDisplay()
 
 const avatarSize = computed(() => {
@@ -27,12 +27,13 @@ const tab = ref(0)
 const mostrarProductos = ref(false)
 
 
+
 const tabSettings = ref('perfil')
 
 function getComponent(tabName: string) {
   switch (tabName) {
     case 'perfil': return PerfilTab
-    case 'direcciones': return AddressesTab
+    case 'direcciones': return AddressesTab 
     case 'pago': return PayTab
     case 'notificaciones': return NotificationsTab
     case 'seguridad': return SecurityTab
@@ -40,6 +41,21 @@ function getComponent(tabName: string) {
     default: return PerfilTab
   }
 }
+
+// Props condicionales para cada componente
+const propsDelComponente = computed(() => {
+  if (tabSettings.value === 'direcciones') {
+    return {
+      newAddress: true,
+      direction: userStore.addressFormatted[0].valor,
+      country: userStore.addressFormatted[1].valor,
+      city: userStore.addressFormatted[2].valor,
+      zip: userStore.addressFormatted[3].valor
+    }
+  }
+
+  return {} // Por defecto, sin props
+})
 
 </script>
 <template>
@@ -50,7 +66,7 @@ function getComponent(tabName: string) {
                 <v-row justify="center">
                     <v-col cols="12" class="d-flex flex-column align-center justify-center text-center">
                         <v-avatar :size="avatarSize">
-                            <v-img alt="John" src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+                            <v-img :alt="userStore.user.name" :src="userStore.user.avatar"></v-img>
                         </v-avatar>
                     </v-col>
                 </v-row>
@@ -60,8 +76,8 @@ function getComponent(tabName: string) {
                         <v-row justify="center">
                             <v-col cols="12">
 
-                                <p>{{ auth.user.email }}</p>
-                                <p>16 de noviembre</p>
+                                <p>{{ userStore.user.name }}</p>
+                                <p>Usuario desde {{ userStore.cratedDateFormated }}</p>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -536,7 +552,7 @@ function getComponent(tabName: string) {
                                 <v-divider></v-divider>
 
                                 <v-card-text>
-                                    <component :is="getComponent(tabSettings)" />
+                                    <component :is="getComponent(tabSettings)"  v-bind="propsDelComponente"/>
                                 </v-card-text>
                             </v-card>
                         </v-tabs-window-item>

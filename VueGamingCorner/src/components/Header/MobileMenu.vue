@@ -2,10 +2,10 @@
 import { computed, ref } from 'vue';
 import { useTheme } from 'vuetify';
 import { useThemeStore } from '@/stores/themeStore'
-import { useAuthStore } from '@/stores/AuthStore'
+import { useUserStore } from '@/stores/UserStore'
 import IconLogo from '@/components/icons/IconLogo.vue'
 
-const auth = useAuthStore()
+const user = useUserStore()
 const toggleMenu = ref<boolean>(false);
 
 defineProps<{
@@ -35,18 +35,18 @@ defineProps<{
                 </v-btn>
             </template>
 
-            <v-list v-if="auth.isAuthenticated">
+            <v-list v-if="user.isAuthenticated">
                 <v-list-item :to="'/perfil'">
                     <v-list-item-title>Mi perfil</v-list-item-title>
                 </v-list-item>
                 <v-list-item :to="'/orders'">
                     <v-list-item-title>Mis pedidos</v-list-item-title>
                 </v-list-item>
-                <v-list-item :to="'/admin'" v-if="auth.user?.admin">
+                <v-list-item :to="'/admin'" v-if="user.user?.admin">
                     <v-list-item-title>Pantalla Admin</v-list-item-title>
                 </v-list-item>
                 <v-list-item>
-                    <v-list-item-title @click="auth.logout">Cerrar sesión</v-list-item-title>
+                    <v-list-item-title @click="user.logout">Cerrar sesión</v-list-item-title>
                 </v-list-item>
                 <v-list-item>
                     <v-list-item-title>

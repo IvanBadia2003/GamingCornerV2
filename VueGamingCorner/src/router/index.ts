@@ -11,7 +11,7 @@ import AdminEconomyView from '../views/Admin/EconomyView.vue'
 import AdminChartView from '../views/Admin/ChartView.vue'
 import AdminUsersView from '../views/Admin/UsersView.vue'
 import AdminDataManagementView from '../views/Admin/DataManagement.vue'
-import { useAuthStore } from '@/stores/AuthStore' // o desde Pinia, etc.
+import { useUserStore } from '@/stores/UserStore' // o desde Pinia, etc.
 
 
 const router = createRouter({
@@ -101,7 +101,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore()
+  const authStore = useUserStore()
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next({ name: 'login' })

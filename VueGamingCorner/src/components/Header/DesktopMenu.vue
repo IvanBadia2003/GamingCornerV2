@@ -2,10 +2,10 @@
 import { computed, ref } from 'vue';
 import { useTheme } from 'vuetify';
 import { useThemeStore } from '@/stores/themeStore'
-import { useAuthStore } from '@/stores/AuthStore'
+import { useUserStore } from '@/stores/UserStore'
 import IconLogo from '@/components/icons/IconLogo.vue'
 
-const auth = useAuthStore()
+const user = useUserStore()
 
 defineProps<{
     platforms: { name: string, route: string }[]

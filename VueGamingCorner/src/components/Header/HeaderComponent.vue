@@ -2,14 +2,14 @@
 import { computed, onMounted, ref } from 'vue';
 import { useTheme } from 'vuetify';
 import { useThemeStore } from '@/stores/themeStore'
-import { useAuthStore } from '@/stores/AuthStore'
+import { useUserStore } from '@/stores/UserStore'
 import { useProductStore } from '@/stores/ProductStore'
 import { useDisplay } from 'vuetify'
 import { useCartStore } from '@/stores/CartStore';
 
 import IconLogo from '@/components/icons/IconLogo.vue'
 import { storeToRefs } from 'pinia';
-const auth = useAuthStore()
+const user = useUserStore()
 const productStore = useProductStore()
 
 const cartStore = useCartStore()
@@ -39,9 +39,10 @@ const toggleTheme = () => {
     useThemeStore().setTheme(newTheme)
 }
 
-const platforms = [
-    { name: 'Juegos', route: '/catalog', type: 'videogame' },
-    { name: 'Consolas', route: '/catalog', type: 'console' },
+
+const Products = [
+    { name: 'Juegos', route: '/catalog', type: 'videogame' as string},
+    { name: 'Consolas', route: '/catalog', type: 'console'as string},
     { name: 'Segunda Mano', route: '/catalog' }
 ];
 </script>
@@ -68,18 +69,18 @@ const platforms = [
                             </v-btn>
                         </template>
 
-                        <v-list v-if="auth.isAuthenticated">
+                        <v-list v-if="user.isAuthenticated">
                             <v-list-item :to="'/perfil'">
                                 <v-list-item-title>Mi perfil</v-list-item-title>
                             </v-list-item>
                             <v-list-item :to="'/orders'">
                                 <v-list-item-title>Mis pedidos</v-list-item-title>
                             </v-list-item>
-                            <v-list-item :to="'/admin'" v-if="auth.user?.admin">
+                            <v-list-item :to="'/admin'" v-if="user.user?.admin">
                                 <v-list-item-title>Pantalla Admin</v-list-item-title>
                             </v-list-item>
                             <v-list-item>
-                                <v-list-item-title @click="auth.logout">Cerrar sesión</v-list-item-title>
+                                <v-list-item-title @click="user.logout">Cerrar sesión</v-list-item-title>
                             </v-list-item>
                             <v-list-item>
                                 <v-list-item-title>
@@ -94,9 +95,9 @@ const platforms = [
                         </v-list>
                     </v-menu>
                 </div>
-                <v-btn v-if=" toggleMenu" v-for="platform in platforms" :key="platform.name" :to="platform.route" class="mx-0"
-                    variant="text" color="white" @click="productStore.getProductsToCatalog(platform.type as string)">
-                    {{ platform.name }}
+                <v-btn v-if=" toggleMenu" v-for="product in Products" :key="product.name" :to="product.route" class="mx-0"
+                    variant="text" color="white" @click="productStore.getProductsToCatalog(product.type as string); productStore.productType = product.type as string">
+                    {{ product.name }}
                 </v-btn>
             </v-col>
 
@@ -113,18 +114,18 @@ const platforms = [
                         </v-btn>
                     </template>
 
-                    <v-list v-if="auth.isAuthenticated">
+                    <v-list v-if="user.isAuthenticated">
                         <v-list-item :to="'/perfil'">
                             <v-list-item-title>Mi perfil</v-list-item-title>
                         </v-list-item>
                         <v-list-item :to="'/orders'">
                             <v-list-item-title>Mis pedidos</v-list-item-title>
                         </v-list-item>
-                        <v-list-item :to="'/admin'" v-if="auth.user.admin">
+                        <v-list-item :to="'/admin'" v-if="user.user.admin">
                             <v-list-item-title>Pantalla Admin</v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title @click="auth.logout">Cerrar sesión</v-list-item-title>
+                            <v-list-item-title @click="user.logout">Cerrar sesión</v-list-item-title>
                         </v-list-item>
                         <v-list-item>
                             <v-list-item-title>

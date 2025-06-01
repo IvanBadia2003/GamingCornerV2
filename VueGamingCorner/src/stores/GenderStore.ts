@@ -57,6 +57,7 @@ export const useGenderStore = defineStore('GenderStore', () => {
             });
             if (response.ok) {
                 alert('Genero creado exitosamente.' + response);
+                getAllGenders()
             } else {
                 console.error('Error al crear el genero:', response.statusText);
             }

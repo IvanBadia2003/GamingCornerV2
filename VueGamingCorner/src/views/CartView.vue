@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import AddressForm from '@/components/Auth/AddressForm.vue';
-import { useAuthStore } from '@/stores/AuthStore';
+import { useUserStore } from '@/stores/UserStore';
 import { useCartStore } from '@/stores/CartStore';
 import { computed, onMounted, ref } from 'vue';
 
 import { useRouter } from 'vue-router'
+import { tr } from 'vuetify/locale';
 const router = useRouter()
 
 const quantity = ref(1);
@@ -20,7 +21,7 @@ const panel2 = ref([0])
 
 const wishList = ref([])
 const cartStore = useCartStore();
-const authStore = useAuthStore();
+const userStore = useUserStore();
 
 const codigoActivacion = 'ABCD-1234-EFGH-5678' // Ejemplo de código
 const mostrarCodigo = ref(false)
@@ -151,20 +152,20 @@ onMounted(() => {
                         </v-row>
                     </v-stepper-window-item>
                     <v-stepper-window-item :value="2">
-                        <v-row>
+                        <v-row >
                             <v-col cols="12">
                                 <h3>DIRECCIÓN FACTURACIÓN/ENVÍO</h3>
                                 <v-expansion-panels v-model="panel">
-                                    <v-expansion-panel class="my-2">
+                                    <v-expansion-panel class="my-2" v-if="userStore.user.address != null">
                                         <v-expansion-panel-title>Usar mi dirección</v-expansion-panel-title>
                                         <v-expansion-panel-text>
-                                            <AddressForm :with-transition="true"/>
+                                            <AddressForm :newAddress="true" :direction="userStore.addressFormatted[0].valor" :city="userStore.addressFormatted[2].valor" :country="userStore.addressFormatted[1].valor" :zip="userStore.addressFormatted[3].valor"/>
                                         </v-expansion-panel-text>
                                     </v-expansion-panel>
                                     <v-expansion-panel class="my-2">
-                                        <v-expansion-panel-title>Escribir dirección</v-expansion-panel-title>
+                                        <v-expansion-panel-title>Escribir dirección nueva</v-expansion-panel-title>
                                         <v-expansion-panel-text>
-                                            <AddressForm :with-transition="true"/>
+                                            <AddressForm :newAddress="true" direction="" city="" country="" zip=""/>
                                         </v-expansion-panel-text>
                                     </v-expansion-panel>
                                 </v-expansion-panels>
@@ -316,11 +317,11 @@ onMounted(() => {
 
                     <!-- Botón de pago -->
                     <v-btn block class="payment-btn" height="50" :to="{ name: 'login' }"
-                        v-if="!authStore.isAuthenticated">
+                        v-if="!userStore.isAuthenticated">
                         Inicia sesión para continuar <v-icon>mdi-login</v-icon>
                     </v-btn>
                     <v-btn block class="payment-btn" height="50" @click="currentStep = 2; step1completed = true"
-                        v-if="currentStep === 1 && authStore.isAuthenticated">
+                        v-if="currentStep === 1 && userStore.isAuthenticated">
                         Proceder con el pago <v-icon>mdi-chevron-right</v-icon>
                     </v-btn>
                     <v-btn v-else-if="currentStep === 2" block class="payment-btn" height="50" @click="currentStep = 3; step2completed = true" >

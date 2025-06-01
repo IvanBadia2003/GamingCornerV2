@@ -16,12 +16,14 @@ onMounted(() => {
   productStore.getAllConsoles();
   genderStore.getAllGenders()
   platformStore.getAllPlatforms()
+  console.log(productStore.videogames);
+
 });
 
 
 const tab = ref('juegos')
 const dialogAbierto = ref(false)
-const formType = ref<'juego' | 'consola' | 'genero' | 'plataforma' >('juego') // Tipo de formulario: 'juego', 'consola' o null para géneros
+const formType = ref<'juego' | 'consola' | 'genero' | 'plataforma'>('juego') // Tipo de formulario: 'juego', 'consola' o null para géneros
 const isEditing = ref(false)
 const selectedItem = ref<any>(null)
 const search = ref('')
@@ -111,6 +113,8 @@ function añadirGenero() {
   isEditing.value = false
   selectedItem.value = null
   dialogAbierto.value = true
+  console.log(formType.value)
+
 }
 
 function editarGenero(item: any) {
@@ -122,7 +126,7 @@ function editarGenero(item: any) {
 }
 function eliminarGenero(item: any) {
   console.log('Eliminar género: ', item);
-  
+
   //productStore.deleteConsole(item.id)
 }
 ////////////////////////////////////
@@ -144,7 +148,7 @@ function editarPlataforma(item: any) {
 }
 function eliminarPlataforma(item: any) {
   console.log('Eliminar género: ', item);
-  
+
   //productStore.deleteConsole(item.id)
 }
 ////////////////////////////////////
@@ -204,17 +208,18 @@ const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name
         </v-data-table>
       </v-window-item>
 
-            <!-- GENEROS -->
+      <!-- GENEROS -->
       <v-window-item value="generos">
         <DataTableComponent :headers="genderHeaders" :items="genderStore.genders" title="Géneros" icon="mdi-controller"
           add-label="Añadir género" search-key="name" :on-add="añadirGenero" :on-edit="editarGenero"
           :on-delete="eliminarGenero" />
 
       </v-window-item>
-            <!-- PLATAFORMAS -->
+      <!-- PLATAFORMAS -->
       <v-window-item value="plataformas">
-        <DataTableComponent :headers="platformHeaders" :items="platformStore.platforms" title="Plataformas" icon="mdi-controller"
-          add-label="Añadir plataforma" search-key="name" :on-add="añadirPlataforma" :on-edit="editarPlataforma"
+        <DataTableComponent :headers="platformHeaders" :items="platformStore.platforms" title="Plataformas"
+          icon="mdi-controller" add-label="Añadir plataforma" search-key="name"
+          :filter-fields="['name', 'brand', 'description']" :on-add="añadirPlataforma" :on-edit="editarPlataforma"
           :on-delete="eliminarPlataforma" />
 
       </v-window-item>
