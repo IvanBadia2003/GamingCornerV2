@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamingCorner.Data.Migrations
 {
     [DbContext(typeof(GamingCornerContext))]
-    [Migration("20250529174214_InitialCreate2")]
+    [Migration("20250602183106_InitialCreate2")]
     partial class InitialCreate2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,21 @@ namespace GamingCorner.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("GamingCorner.Models.Basket", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Baskets");
+                });
 
             modelBuilder.Entity("GamingCorner.Models.Console", b =>
                 {
@@ -36,12 +51,20 @@ namespace GamingCorner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Colors")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Discount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Generation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -60,6 +83,10 @@ namespace GamingCorner.Data.Migrations
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Services")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Specifications")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -73,50 +100,6 @@ namespace GamingCorner.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Consoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Brand = "Sony",
-                            Description = "Consola muy buena",
-                            Discount = 50,
-                            Name = "Play Station 4",
-                            Price = 300m,
-                            PrincipalImageURL = "https://gmedia.playstation.com/is/image/SIEPDC/ps4-pro-product-thumbnail-01-en-14sep21",
-                            ProductId = 4,
-                            ReleaseDate = new DateTime(2023, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Specifications = "CPU:AMD 'Jaguar' x86-64, 8 núcleos; GPU: motor gráfico AMD de 1,84 TFLOPS basado en Radeon; Memoria:8 GB GDDR5; Almacenamiento:1 TB; Peso: Aprox. 2,1 Kg; Entrada/Salida:2 puertos de altísima velocidad USB (USB 3.1 Gen1) y 1 puerto AUX; Red:1 puerto Ethernet (10BASE-T, 100BASE-TX, 1000BASE-T) / IEEE 802.11 a/b/g/n/ac / Bluetooth® 4.0; Alimentacion:AC de 100-240 V, 50/60 Hz; Consumo de energia: 165W; Salida AV:Salida HDMI™ (compatible con salida HDR)",
-                            Stock = 16
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Brand = "Sony",
-                            Description = "Consola  buena",
-                            Discount = 10,
-                            Name = "Play Station 5",
-                            Price = 490m,
-                            PrincipalImageURL = "https://m.media-amazon.com/images/I/51f6iZlNnvL.jpg",
-                            ProductId = 5,
-                            ReleaseDate = new DateTime(2023, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Specifications = "CPU: AMD Ryzen Zen 2, 8 núcleos a 3.5GHz; GPU: AMD RDNA 2, 10.28 TFLOPs, 36 CUs a 2.23GHz; Memoria: 16 GB GDDR6; Almacenamiento: SSD personalizado de 825 GB; Peso: Aprox. 4.5 Kg; Entrada/Salida: 2 puertos USB de alta velocidad (USB 3.1 Gen2), 1 puerto USB-C; Red: 1 puerto Ethernet (10BASE-T, 100BASE-TX, 1000BASE-T), Wi-Fi 6 (802.11ax), Bluetooth® 5.1; Alimentación: AC 100-240V, 50/60Hz; Consumo de energía: 350W; Salida AV: Salida HDMI™ 2.1 (compatible con 4K a 120Hz, 8K, y HDR)",
-                            Stock = 16
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Brand = "Microsoft",
-                            Description = "Consola casi buena",
-                            Discount = 22,
-                            Name = "Xbox 360",
-                            Price = 265m,
-                            PrincipalImageURL = "https://i.ebayimg.com/images/g/oBUAAOSwVgljSZS8/s-l400.jpg",
-                            ProductId = 6,
-                            ReleaseDate = new DateTime(2023, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Specifications = "CPU: IBM PowerPC Tri-Core Xenon a 3.2GHz; GPU: ATI Xenos, 240 GFLOPs; Memoria: 512 MB GDDR3 a 700 MHz; Almacenamiento: Disco duro de 20 GB/60 GB/120 GB (según modelo); Peso: Aprox. 3.5 Kg; Entrada/Salida: 3 puertos USB 2.0; Red: 1 puerto Ethernet (10/100), Wi-Fi opcional con adaptador externo (en modelos antiguos); Alimentación: AC 100-240V, 50/60Hz; Consumo de energía: Aprox. 175W; Salida AV: Salida HDMI™, Salida por componentes, Salida por cable AV estándar",
-                            Stock = 5
-                        });
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Gender", b =>
@@ -176,7 +159,7 @@ namespace GamingCorner.Data.Migrations
                     b.Property<int>("Total")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -197,8 +180,8 @@ namespace GamingCorner.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PrincipalImageURL")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("System")
+                        .HasColumnType("int");
 
                     b.HasKey("PlatformId");
 
@@ -209,37 +192,37 @@ namespace GamingCorner.Data.Migrations
                         {
                             PlatformId = 1,
                             Name = "Steam",
-                            PrincipalImageURL = ""
+                            System = 0
                         },
                         new
                         {
                             PlatformId = 2,
                             Name = "Play Station",
-                            PrincipalImageURL = ""
+                            System = 0
                         },
                         new
                         {
                             PlatformId = 3,
                             Name = "Xbox",
-                            PrincipalImageURL = ""
+                            System = 0
                         },
                         new
                         {
                             PlatformId = 4,
                             Name = "Switch",
-                            PrincipalImageURL = ""
+                            System = 0
                         },
                         new
                         {
                             PlatformId = 5,
                             Name = "Ubisoft",
-                            PrincipalImageURL = ""
+                            System = 0
                         },
                         new
                         {
                             PlatformId = 6,
                             Name = "Epic Games",
-                            PrincipalImageURL = ""
+                            System = 0
                         });
                 });
 
@@ -267,31 +250,37 @@ namespace GamingCorner.Data.Migrations
                         new
                         {
                             Id = 1,
+                            PlatformId = 1,
                             Sales = 50
                         },
                         new
                         {
                             Id = 2,
+                            PlatformId = 2,
                             Sales = 44
                         },
                         new
                         {
                             Id = 3,
+                            PlatformId = 4,
                             Sales = 22
                         },
                         new
                         {
                             Id = 4,
+                            PlatformId = 5,
                             Sales = 4
                         },
                         new
                         {
                             Id = 5,
+                            PlatformId = 1,
                             Sales = 141
                         },
                         new
                         {
                             Id = 6,
+                            PlatformId = 6,
                             Sales = 967
                         });
                 });
@@ -350,6 +339,13 @@ namespace GamingCorner.Data.Migrations
                     b.Property<bool>("Admin")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -365,6 +361,12 @@ namespace GamingCorner.Data.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Rol")
+                        .HasColumnType("int");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
@@ -375,30 +377,42 @@ namespace GamingCorner.Data.Migrations
                             UserId = 1,
                             Address = "C/ La Lectura",
                             Admin = true,
+                            Avatar = "",
+                            DateCreated = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Local),
                             Email = "diego@gmail.com",
                             Name = "Diego",
                             Password = "12345",
-                            PhoneNumber = "601112734"
+                            PhoneNumber = "601112734",
+                            Rol = 1,
+                            State = 1
                         },
                         new
                         {
                             UserId = 2,
                             Address = "Avda. San Juan de la Peña",
                             Admin = true,
+                            Avatar = "",
+                            DateCreated = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Local),
                             Email = "ivan@gmail.com",
                             Name = "Ivan",
                             Password = "12345",
-                            PhoneNumber = "123456789"
+                            PhoneNumber = "123456789",
+                            Rol = 1,
+                            State = 1
                         },
                         new
                         {
                             UserId = 3,
                             Address = "El Actur",
                             Admin = false,
+                            Avatar = "",
+                            DateCreated = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Local),
                             Email = "adrian@gmail.com",
                             Name = "Adrian",
                             Password = "00000",
-                            PhoneNumber = "987654321"
+                            PhoneNumber = "987654321",
+                            Rol = 1,
+                            State = 1
                         });
                 });
 
@@ -454,15 +468,10 @@ namespace GamingCorner.Data.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId")
                         .IsUnique();
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Videogames");
 
@@ -531,33 +540,25 @@ namespace GamingCorner.Data.Migrations
                     b.HasIndex("GenderId");
 
                     b.ToTable("VideogameGenders");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            VideogameId = 1,
-                            GenderId = 1
-                        },
-                        new
-                        {
-                            VideogameId = 1,
-                            GenderId = 2
-                        },
-                        new
-                        {
-                            VideogameId = 2,
-                            GenderId = 2
-                        },
-                        new
-                        {
-                            VideogameId = 2,
-                            GenderId = 3
-                        },
-                        new
-                        {
-                            VideogameId = 3,
-                            GenderId = 1
-                        });
+            modelBuilder.Entity("GamingCorner.Models.Basket", b =>
+                {
+                    b.HasOne("GamingCorner.Models.Product", "Product")
+                        .WithMany("Baskets")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GamingCorner.Models.User", "User")
+                        .WithMany("Baskets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Console", b =>
@@ -575,9 +576,7 @@ namespace GamingCorner.Data.Migrations
                 {
                     b.HasOne("GamingCorner.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -587,7 +586,7 @@ namespace GamingCorner.Data.Migrations
                     b.HasOne("GamingCorner.Models.Platform", "Platform")
                         .WithMany("products")
                         .HasForeignKey("PlatformId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Platform");
                 });
@@ -610,10 +609,6 @@ namespace GamingCorner.Data.Migrations
                         .HasForeignKey("GamingCorner.Models.Videogame", "ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("GamingCorner.Models.User", null)
-                        .WithMany("Videogames")
-                        .HasForeignKey("UserId");
 
                     b.Navigation("Product");
                 });
@@ -644,6 +639,8 @@ namespace GamingCorner.Data.Migrations
 
             modelBuilder.Entity("GamingCorner.Models.Product", b =>
                 {
+                    b.Navigation("Baskets");
+
                     b.Navigation("Console");
 
                     b.Navigation("SecondHandProduct");
@@ -653,7 +650,7 @@ namespace GamingCorner.Data.Migrations
 
             modelBuilder.Entity("GamingCorner.Models.User", b =>
                 {
-                    b.Navigation("Videogames");
+                    b.Navigation("Baskets");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Videogame", b =>

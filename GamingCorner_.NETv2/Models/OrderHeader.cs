@@ -19,9 +19,9 @@ public class OrderHeader
     public DateTime Fecha { get; set; }
 
     public OrderHeader(){}
-    public OrderHeader(User? user, int total, DateTime fecha)
+    public OrderHeader(int? userId, int total, DateTime fecha)
     {
-        User = user;
+        UserId = userId;
         Total = total;
         Fecha = fecha;
     }

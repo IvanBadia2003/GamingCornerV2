@@ -47,7 +47,7 @@ public class VideogameEFRepository : IVideogameRepository
                 Developer = v.Developer,
                 Discount = v.Discount,
                 ProductId = v.ProductId,
-                PlatformId =v.Product.Platform.PlatformId,
+                PlatformId = v.Product.Platform.PlatformId,
                 GenderId = v.VideogameGenders.Select(vg => vg.GenderId).ToList(),
                 Price = v.Price,
                 PrincipalImageURL = v.PrincipalImageURL,

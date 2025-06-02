@@ -36,7 +36,7 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
             var orderHeaderDto = orderHeaders.Select(v => new OrderHeaderDTO
             {
                 Id = v.Id,
-                User = v.User,
+                UserId = v.UserId,
                 Fecha = v.Fecha,
                 Total = v.Total
 
@@ -84,7 +84,7 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
             var orderHeaderDto = new OrderHeaderDTO
             {
                 Id = orderHeader.Id,
-                User = orderHeader.User,
+                UserId = orderHeader.UserId,
                 Total = orderHeader.Total,
                 Fecha = orderHeader.Fecha
             };
