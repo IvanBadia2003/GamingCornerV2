@@ -57,6 +57,19 @@ namespace GamingCorner.Data
                 .WithMany(vl => vl.Baskets)
                 .HasForeignKey(vli => vli.UserId);
 
+            modelBuilder.Entity<Favourite>()
+                .HasKey(v => new { v.UserId, v.ProductId });
+
+            modelBuilder.Entity<Favourite>()
+                .HasOne(v => v.Product)
+                .WithMany(vl => vl.Favourites)
+                .HasForeignKey(vli => vli.ProductId);
+
+            modelBuilder.Entity<Favourite>()
+                .HasOne(v => v.User)
+                .WithMany(vl => vl.Favourites)
+                .HasForeignKey(vli => vli.UserId);
+
             // modelBuilder.Entity<VideogameGender>()
             //     .HasOne(g => g.Gender)
             //     .WithMany(vl => vl.ListVideogameGender)
@@ -224,6 +237,7 @@ namespace GamingCorner.Data
         public DbSet<VideogameGender> VideogameGenders { get; set; }
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<Basket> Baskets { get; set; }
+        public DbSet<Favourite> Favourites { get; set; }
 
     }
 }

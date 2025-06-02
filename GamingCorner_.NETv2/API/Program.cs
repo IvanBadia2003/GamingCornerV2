@@ -63,6 +63,9 @@ builder.Services.AddScoped<IOrderHeaderRepository, OrderHeaderEFRepository>();
 builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<IBasketRepository, BasketEFRepository>();
 
+builder.Services.AddScoped<IFavouriteService, FavouriteService>();
+builder.Services.AddScoped<IFavouriteRepository, FavouriteEFRepository>();
+
 // Autenticaci�n con cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

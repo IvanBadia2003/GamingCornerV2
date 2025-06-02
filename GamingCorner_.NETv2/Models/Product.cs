@@ -18,6 +18,7 @@ public class Product
     public Console? Console { get; set; }
     public SecondHandProduct? SecondHandProduct { get; set; }
     public List<Basket> Baskets { get; set; } = new List<Basket>();
+    public List<Favourite> Favourites { get; set; } = new List<Favourite>();
 
     public Product() { }
 
