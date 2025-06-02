@@ -4,6 +4,7 @@ using GamingCorner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamingCorner.Data.Migrations
 {
     [DbContext(typeof(GamingCornerContext))]
-    partial class GamingCornerContextModelSnapshot : ModelSnapshot
+    [Migration("20250602174134_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,8 +33,6 @@ namespace GamingCorner.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("UserId", "ProductId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Baskets");
                 });
@@ -98,21 +98,6 @@ namespace GamingCorner.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Consoles");
-                });
-
-            modelBuilder.Entity("GamingCorner.Models.Favourite", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Favourites");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Gender", b =>
@@ -247,6 +232,12 @@ namespace GamingCorner.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("BasketProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BasketUserId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("PlatformId")
                         .HasColumnType("int");
 
@@ -257,43 +248,39 @@ namespace GamingCorner.Data.Migrations
 
                     b.HasIndex("PlatformId");
 
+                    b.HasIndex("BasketUserId", "BasketProductId");
+
                     b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            PlatformId = 1,
                             Sales = 50
                         },
                         new
                         {
                             Id = 2,
-                            PlatformId = 2,
                             Sales = 44
                         },
                         new
                         {
                             Id = 3,
-                            PlatformId = 4,
                             Sales = 22
                         },
                         new
                         {
                             Id = 4,
-                            PlatformId = 5,
                             Sales = 4
                         },
                         new
                         {
                             Id = 5,
-                            PlatformId = 1,
                             Sales = 141
                         },
                         new
                         {
                             Id = 6,
-                            PlatformId = 6,
                             Sales = 967
                         });
                 });
@@ -356,6 +343,12 @@ namespace GamingCorner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("BasketProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BasketUserId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -381,6 +374,8 @@ namespace GamingCorner.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("UserId");
+
+                    b.HasIndex("BasketUserId", "BasketProductId");
 
                     b.ToTable("Users");
 
@@ -555,25 +550,6 @@ namespace GamingCorner.Data.Migrations
                     b.ToTable("VideogameGenders");
                 });
 
-            modelBuilder.Entity("GamingCorner.Models.Basket", b =>
-                {
-                    b.HasOne("GamingCorner.Models.Product", "Product")
-                        .WithMany("Baskets")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GamingCorner.Models.User", "User")
-                        .WithMany("Baskets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("GamingCorner.Models.Console", b =>
                 {
                     b.HasOne("GamingCorner.Models.Product", "Product")
@@ -583,25 +559,6 @@ namespace GamingCorner.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("GamingCorner.Models.Favourite", b =>
-                {
-                    b.HasOne("GamingCorner.Models.Product", "Product")
-                        .WithMany("Favourites")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GamingCorner.Models.User", "User")
-                        .WithMany("Favourites")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.OrderHeader", b =>
@@ -620,6 +577,10 @@ namespace GamingCorner.Data.Migrations
                         .HasForeignKey("PlatformId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("GamingCorner.Models.Basket", null)
+                        .WithMany("Product")
+                        .HasForeignKey("BasketUserId", "BasketProductId");
+
                     b.Navigation("Platform");
                 });
 
@@ -632,6 +593,13 @@ namespace GamingCorner.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("GamingCorner.Models.User", b =>
+                {
+                    b.HasOne("GamingCorner.Models.Basket", null)
+                        .WithMany("User")
+                        .HasForeignKey("BasketUserId", "BasketProductId");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Videogame", b =>
@@ -664,6 +632,13 @@ namespace GamingCorner.Data.Migrations
                     b.Navigation("Videogame");
                 });
 
+            modelBuilder.Entity("GamingCorner.Models.Basket", b =>
+                {
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("GamingCorner.Models.Platform", b =>
                 {
                     b.Navigation("products");
@@ -671,22 +646,11 @@ namespace GamingCorner.Data.Migrations
 
             modelBuilder.Entity("GamingCorner.Models.Product", b =>
                 {
-                    b.Navigation("Baskets");
-
                     b.Navigation("Console");
-
-                    b.Navigation("Favourites");
 
                     b.Navigation("SecondHandProduct");
 
                     b.Navigation("Videogame");
-                });
-
-            modelBuilder.Entity("GamingCorner.Models.User", b =>
-                {
-                    b.Navigation("Baskets");
-
-                    b.Navigation("Favourites");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Videogame", b =>

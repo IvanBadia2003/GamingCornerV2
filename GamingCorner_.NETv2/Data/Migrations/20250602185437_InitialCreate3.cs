@@ -1,29 +1,31 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace GamingCorner.Data.Migrations
 {
-    public partial class InitialCreate2 : Migration
+    public partial class InitialCreate3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "OrderHeaders",
+                name: "Favourites",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Total = table.Column<int>(type: "int", nullable: false),
-                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderHeaders", x => x.Id);
+                    table.PrimaryKey("PK_Favourites", x => new { x.UserId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_OrderHeaders_Users_UserId",
+                        name: "FK_Favourites_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Favourites_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
@@ -31,15 +33,15 @@ namespace GamingCorner.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderHeaders_UserId",
-                table: "OrderHeaders",
-                column: "UserId");
+                name: "IX_Favourites_ProductId",
+                table: "Favourites",
+                column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderHeaders");
+                name: "Favourites");
         }
     }
 }

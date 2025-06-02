@@ -17,14 +17,14 @@ namespace GamingCorner.Models
         /// Ventas del producto
         /// </summary>
         public int Total { get; set; }
-        public User? User { get; set; }
+        public int? UserId { get; set; }
         public DateTime Fecha { get; set; }
 
         public OrderHeader ToOrderHeader()
         {
             return new OrderHeader
             {
-                User = this.User,
+                UserId = this.UserId,
                 Total = this.Total,
                 Fecha = this.Fecha,
                 Id = this.Id
