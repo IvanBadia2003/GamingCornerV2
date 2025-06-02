@@ -24,7 +24,7 @@ const productStore = useProductStore();
       <v-img :src="src" cover height="100%" width="100%" />
     </div>
     <div style="display: flex; justify-content: space-between; align-items: center; height: 15%;" class="px-2">
-      <p>{{ title }}</p>
+      <p class="truncate-title">{{ title }}</p>
       <p>{{ (price - (price * discount / 100)).toFixed(2) }}€</p>
     </div>
   </v-card>
@@ -50,5 +50,12 @@ const productStore = useProductStore();
   justify-content: center;
 
 
+}
+
+.truncate-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%; /* Ajusta según tu layout */
 }
 </style>

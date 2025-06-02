@@ -5,8 +5,10 @@ import router from '@/router'
 import { useUserStore } from './UserStore'
 import type { Gender } from './GenderStore'
 import { de } from 'vuetify/locale'
+import { nextTick } from 'vue';
 
 
+// #region Interfaces
 
 // Interfaz del producto
 interface Product {
@@ -18,7 +20,6 @@ export enum OrderDirectionEnum {
     ASC = 1,
     DESC = 2
 }
-
 export interface Filters {
     platform: number | null
     genre: number | null
@@ -28,7 +29,8 @@ export interface Filters {
     system: number | null
     orderBy: string | null
     orderDirection: OrderDirectionEnum | null
-  }
+    brand: string | null
+}
 
 
 // Interfaz del videojuego
@@ -62,7 +64,7 @@ export interface VideogameCreate {
     stock: number //Cantidad de stock del juego
     discount: number //Porcentaje de descuento sobre el precio del juego
     price: number //Precio del juego
-    genderId : number[] //Géneros del juego
+    genderId: number[] //Géneros del juego
     platformId?: number
     principalImageURL?: string //Imagen principal del juego
     releaseDate: Date //Fecha de lanzamiento del juego 
@@ -71,7 +73,7 @@ export interface VideogameCreate {
 }
 // Interfaz para editar el videojuego
 
-export interface VideogameUpdate{
+export interface VideogameUpdate {
     name: string // Nombre del videojuego
     pegi: number // Pegi del juego
     description: string // Descripción del juego
@@ -119,10 +121,10 @@ export interface ConsoleCreate {
     generation: string // Generación de la consola
     colors: string // Colores disponibles
     services: string // Servicios compatibles
-  }
+}
 
 // Interfaz para editar la consola 
-  export interface UpdateConsole {
+export interface UpdateConsole {
     name: string // Nombre de la consola
     description: string // Descripción de la consola
     stock: number // Cantidad de stock de la consola
@@ -136,12 +138,16 @@ export interface ConsoleCreate {
     generation: string // Generación de la consola
     colors: string // Colores disponibles
     services: string // Servicios compatibles
-  }
+}
+// #endregion
 
 export const useProductStore = defineStore('ProductStore', () => {
     // Estado
     const videogames = reactive<Videogame[]>([])
+    const topVideogames = reactive<Videogame[]>([])
     const consoles = reactive<Console[]>([])
+    const topConsoles = reactive<Console[]>([])
+    const compatibleProducts = reactive<Console[] | Videogame[]>([])
     const products = reactive<Console[] | Videogame[]>([])
     const similarsProducts = reactive<Console[] | Videogame[]>([])
     const error = ref<string | null>(null)
@@ -157,14 +163,23 @@ export const useProductStore = defineStore('ProductStore', () => {
 
     // Obteener un producto por ID
     const getProductById = async (id: number) => {
-        debugger
         try {
-            const response = await axios.get('http://localhost:5000/Product/' + id)
-            Object.assign(product, response.data);
+            compatibleProducts.splice(0, compatibleProducts.length);
+            similarsProducts.splice(0, similarsProducts.length);
+    
+            const response = await axios.get('http://localhost:5000/Product/' + id);
+    
+            Object.assign(product, response.data); // producto reactivo
             console.log('Producto obtenido:', product);
-            await getSimilarsProducts()
+    
+            // Esperar un microtick para asegurar que Vue lo actualiza
+            await nextTick(); 
+            
+            await getSimilarsProducts();
+            await getCompatibleProducts();
+    
         } catch (err: any) {
-            error.value = err.response?.data || 'Error desconocido'
+            error.value = err.response?.data || 'Error desconocido';
         }
     }
 
@@ -204,7 +219,7 @@ export const useProductStore = defineStore('ProductStore', () => {
         try {
             similarsProducts.splice(0, similarsProducts.length); // Limpiar el array antes de agregar nuevos productos
             const response = await axios.get('http://localhost:5000/Product/Similar/' + product.id);
-            
+
             similarsProducts.push(...response.data); // Agregar el producto al array
             console.log(similarsProducts);
 
@@ -213,7 +228,23 @@ export const useProductStore = defineStore('ProductStore', () => {
         }
     }
 
-    /************ VIDEOJUEGOS **********/
+
+            
+        const getCompatibleProducts = async () => {
+            debugger
+            try {
+                console.log(topConsoles);
+    
+                compatibleProducts.splice(0, compatibleProducts.length) // Actualiza el array de videojuegos
+                const response = await axios.get('http://localhost:5000/Product/Compatible/     ' + product.id);
+                compatibleProducts.push(...response.data)// Añade los nuevos videojuegos al array
+                console.log(topConsoles);
+    
+            } catch (err) {
+                error.value = 'Error al obtener los videojuegos'
+            }
+        }
+    // #region /************ VIDEOJUEGOS **********/
 
     // Obtener todos los videojuegos
     const getAllVideogames = async () => {
@@ -331,12 +362,12 @@ export const useProductStore = defineStore('ProductStore', () => {
         }
     }
 
-       // Obtener todos los videojuegos filtrados
-       const getFilteredVideogames = async (filters: Filters) => {
+    // Obtener todos los videojuegos filtrados
+    const getFilteredVideogames = async (filters: Filters) => {
         debugger
         try {
             console.log(videogames);
-            
+
             products.splice(0, videogames.length) // Actualiza el array de videojuegos
             const response = await axios.post('http://localhost:5000/Videogame/Filter/', filters);
             products.push(...response.data)// Añade los nuevos videojuegos al array
@@ -346,10 +377,28 @@ export const useProductStore = defineStore('ProductStore', () => {
             error.value = 'Error al obtener los videojuegos'
         }
     }
+
+    // Obtener los 12 productos más vendidos
+    const TopSellingVideogames = async () => {
+        debugger
+        try {
+            console.log(topVideogames);
+
+            topVideogames.splice(0, videogames.length) // Actualiza el array de videojuegos
+            const response = await axios.get('http://localhost:5000/Videogame/Top');
+            topVideogames.push(...response.data)// Añade los nuevos videojuegos al array
+            console.log(topVideogames);
+
+        } catch (err) {
+            error.value = 'Error al obtener los videojuegos'
+        }
+    }
     /************ FIN VIDEOJUEGOS **********/
+    // #endregion 
 
 
-    /************ CONSOLAS **********/
+    // #region /************ CONSOLAS **********/
+
     // Obtener todas las consolas
     const getAllConsoles = async () => {
         try {
@@ -440,7 +489,41 @@ export const useProductStore = defineStore('ProductStore', () => {
             console.error('Error al eliminar:', error);
         }
     }
+
+    // Obtener todas las consolas filtradas
+    const getFilteredConsoles = async (filters: Filters) => {
+        debugger
+        try {
+            console.log(consoles);
+
+            products.splice(0, consoles.length) // Actualiza el array de videojuegos
+            const response = await axios.post('http://localhost:5000/Console/Filter/', filters);
+            products.push(...response.data)// Añade los nuevos videojuegos al array
+            console.log(consoles);
+
+        } catch (err) {
+            error.value = 'Error al obtener los videojuegos'
+        }
+    }
+
+        // Obtener los 12 productos más vendidos
+        const TopSellingConsoles = async () => {
+            debugger
+            try {
+                console.log(topConsoles);
+    
+                topConsoles.splice(0, videogames.length) // Actualiza el array de videojuegos
+                const response = await axios.get('http://localhost:5000/Console/Top');
+                topConsoles.push(...response.data)// Añade los nuevos videojuegos al array
+                console.log(topConsoles);
+    
+            } catch (err) {
+                error.value = 'Error al obtener los videojuegos'
+            }
+        }
+
     /************ FIN CONSOLAS **********/
+    // #endregion
 
 
     return {
@@ -466,6 +549,13 @@ export const useProductStore = defineStore('ProductStore', () => {
         updateConsole,
         updateVideogame,
         getFilteredVideogames,
-        productType
+        productType,
+        getFilteredConsoles,
+        topVideogames,
+        TopSellingVideogames,
+        topConsoles,
+        TopSellingConsoles,
+        getCompatibleProducts,
+        compatibleProducts
     }
 })

@@ -13,6 +13,7 @@ import pegi12 from '@/assets/Pegi/Pegi12.svg'
 import pegi16 from '@/assets/Pegi/Pegi16.svg'
 import pegi18 from '@/assets/Pegi/Pegi18.svg'
 import { useCartStore } from '@/stores/CartStore';
+import { useUserStore } from '@/stores/UserStore';
 
 
 onMounted(() => {
@@ -31,6 +32,7 @@ const pegiMap: Record<number, string> = {
 const route = useRoute()
 
 const productStore = useProductStore();
+const userStore = useUserStore();
 const cartStore = useCartStore();
 const loading = ref(false)
 const dialog = ref(false)
@@ -43,9 +45,16 @@ const isGame = computed(() => {
 
 
 function reserve(productId: number) {
-    loading.value = true
-    setTimeout(() => (loading.value = false), 2000)
-    cartStore.addToCartCookie(productId)
+
+    if (userStore.isAuthenticated) {
+        /* cartStore.addBasket({
+            userId: userStore.user?.userId,
+            productId: productId,
+        }) */
+    } else {
+        cartStore.addToCartCookie(productId)
+
+    }
 
 }
 
@@ -93,58 +102,6 @@ const toggleExpand = () => {
 };
 
 
-
-/* PARA LOS PRODUCTOS SIMILARES */
-const populars = [
-    {
-        img: "image/1.png",
-        title: "Appel Mac Book Pro",
-        price: "$ 93.358.01",
-        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
-    },
-    {
-        img: "image/2.png",
-        title: "Appel Mac Book Pro",
-        price: "$ 93.358.01",
-        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
-    },
-    {
-        img: "image/3.png",
-        title: "Appel Mac Book Pro",
-        price: "$ 93.358.01",
-        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
-    },
-    {
-        img: "image/4.png",
-        title: "Appel Mac Book Pro",
-        price: "$ 93.358.01",
-        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
-    },
-    {
-        img: "image/1.png",
-        title: "Appel Mac Book Pro",
-        price: "$ 93.358.01",
-        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
-    },
-    {
-        img: "image/2.png",
-        title: "Appel Mac Book Pro",
-        price: "$ 93.358.01",
-        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
-    },
-    {
-        img: "image/3.png",
-        title: "Appel Mac Book Pro",
-        price: "$ 93.358.01",
-        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
-    },
-    {
-        img: "image/4.png",
-        title: "Appel Mac Book Pro",
-        price: "$ 93.358.01",
-        bio: " Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.",
-    },
-]
 
 /* RESEÑAS */
 const rating = ref(4.5)
@@ -334,35 +291,16 @@ const rating = ref(4.5)
         <v-row class="bg-primary my-15">
             <v-container class="content mt-0">
                 <v-col cols="12">
-                    <h3>CONSOLAS COMPATIBLES</h3>
-                    <v-carousel height="auto" hide-delimiters style=" position: relative;">
-                        <!-- Botón Anterior -->
-                        <template v-slot:prev="{ props }">
-                            <v-btn variant="elevated" class="custom-prev" @click="props.onClick"
-                                style="position: absolute;  left: 0;">
-                                ◀
-                            </v-btn>
-                        </template>
+                    <h3>Productos compatibles</h3>
+                    <v-row style="width: 100%;">
+                        <v-col v-for="(compatibleProduct, i) in productStore.compatibleProducts" :key="i" cols="6"
+                            lg="3">
+                            <CardComponent :title="compatibleProduct.name" :discount="compatibleProduct.discount"
+                                :price="compatibleProduct.price" :product-id="compatibleProduct.id"
+                                :src="compatibleProduct.principalImageURL as string" />
+                        </v-col>
 
-                        <!-- Botón Siguiente -->
-                        <template v-slot:next="{ props }">
-                            <v-btn variant="elevated" class="custom-next" @click="props.onClick"
-                                style="position: absolute;  right:  0;">
-                                ▶
-                            </v-btn>
-                        </template>
-                        <v-carousel-item v-for="(item, i) in 2" :key="i" style="width: 100%;">
-                            <v-row style="width: 100%;">
-                                <v-col v-for="(item, i) in 4" :key="i" cols="6" lg="3">
-
-                                    <CardComponent title="Silent Hill"
-                                        src="https://media.vandal.net/m/4-2024/21/202442110133878_1.jpg" />
-                                </v-col>
-
-                            </v-row>
-
-                        </v-carousel-item>
-                    </v-carousel>
+                    </v-row>
                 </v-col>
             </v-container>
 

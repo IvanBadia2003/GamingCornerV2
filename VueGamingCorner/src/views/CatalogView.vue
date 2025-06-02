@@ -34,10 +34,11 @@ onMounted(() => {
 });
 
 const onSystemChange = (newSystem: number | null) => {
+  debugger
   if (newSystem === null) return;
 
   showStores.value = true;
-  resetFilters();
+  resetFiltersToUse();
   filters.value.system = newSystem; // Opcional, ya lo hace el v-model
   platformStore.getPlatformBySystem(newSystem);
   applyFilters();
@@ -51,10 +52,11 @@ const filters = ref<Filters>({
   search: '',
   system: null,
   orderBy: null,
-  orderDirection: 1
+  orderDirection: 1,
+  brand: null
 })
 
-const resetFilters = () => {
+const resetFiltersToUse = () => {
   filters.value.system = null;
   filters.value.platform = null;
   filters.value.genre = null;
@@ -63,10 +65,12 @@ const resetFilters = () => {
   filters.value.search = '';
   filters.value.orderBy = null;
   filters.value.orderDirection = 1;
-  applyFilters();
 
 };
 
+const resetFilters = () => {
+  productStore.getProductsToCatalog(productStore.productType as string);
+}
 
 const applyFilters = () => {
   console.log(filters);
@@ -74,6 +78,7 @@ const applyFilters = () => {
     productStore.getFilteredVideogames(filters.value);
 
   } else if (productStore.productType === 'console') {
+    productStore.getFilteredConsoles(filters.value);
 
   }
 };
@@ -139,7 +144,9 @@ const applyFilters = () => {
       <div v-if="showFilters">
         <v-row dense>
           <v-col cols="12" md="3">
-            <v-select v-model="filters.genre" :items="genderStore.genders" label="Géneros" clearable variant="solo"
+            <v-text-field   v-if="productStore.productType === 'console'" v-model="filters.brand" append-inner-icon="mdi-magnify" variant="solo" hide-details single-line
+          placeholder="Marca" clearable @click:append-inner="applyFilters" />
+            <v-select v-if="productStore.productType === 'videogame'" v-model="filters.genre" :items="genderStore.genders" label="Géneros" clearable variant="solo"
               item-title="name" item-value="genderId" @update:modelValue="applyFilters" />
           </v-col>
           <!-- Precio mínimo -->
