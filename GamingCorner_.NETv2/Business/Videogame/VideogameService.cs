@@ -135,6 +135,17 @@ public class VideogameService : IVideogameService
         return videogames;
     }
 
+    /// <summary>
+    /// Obtenemos lista con los videojuegos más vendidos
+    /// </summary>
+    /// <returns></returns>
+    public List<VideogameDTO> TopSellingVideogames()
+    {
+        var videogames = _videogameRepository.TopSellingVideogames();
+
+        return videogames;
+    }
+
 }
 
 

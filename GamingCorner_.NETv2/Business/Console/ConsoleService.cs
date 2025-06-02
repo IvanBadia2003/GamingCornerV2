@@ -90,6 +90,28 @@ public class ConsoleService : IConsoleService
     {
         _consoleRepository.Delete(id);
     }
+
+    /// <summary>
+    /// Obtener lista de todas las consolas
+    /// </summary>
+    /// <returns></returns>
+    public List<ConsoleDTO> GetFiltered(ConsoleFilterDTO filters)
+    {
+        var consoles = _consoleRepository.GetFiltered(filters);
+
+        return consoles;
+    }
+
+    /// <summary>
+    /// Obtenemos lista con los videojuegos más vendidos
+    /// </summary>
+    /// <returns></returns>
+    public List<ConsoleDTO> TopSellingConsoles()
+    {
+        var consoles = _consoleRepository.TopSellingConsoles();
+
+        return consoles;
+    }
 }
 
 

@@ -18,6 +18,13 @@ public class ConsoleController : ControllerBase
     [HttpGet]
     public ActionResult<List<ConsoleDTO>> GetAll() => _consoleService.GetAll();
 
+    [HttpGet("Top")]
+    public ActionResult<List<ConsoleDTO>> TopSellingConsoles() => _consoleService.TopSellingConsoles();
+
+
+    [HttpPost("Filter")]
+    public ActionResult<List<ConsoleDTO>> GetFiltered([FromBody] ConsoleFilterDTO filters) => _consoleService.GetFiltered(filters);
+
     [HttpGet]
     [Route("{id}")]
     public ActionResult<ConsoleDTO> Get(int id)

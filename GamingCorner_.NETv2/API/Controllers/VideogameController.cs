@@ -22,6 +22,9 @@ public class VideogameController : ControllerBase
 
     [HttpGet]
     public ActionResult<List<VideogameDTO>> GetAll() => _videogameService.GetAll();
+    
+    [HttpGet("Top")]
+    public ActionResult<List<VideogameDTO>> TopSellingVideogames() => _videogameService.TopSellingVideogames();
 
     [HttpPost("Filter")]
     public ActionResult<List<VideogameDTO>> GetFiltered([FromBody] VideogameFilterDto filters) => _videogameService.GetFiltered(filters);

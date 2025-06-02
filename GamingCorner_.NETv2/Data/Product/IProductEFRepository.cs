@@ -29,6 +29,14 @@ namespace GamingCorner.Data
         /// <param name="id"></param>
         /// <returns></returns>
         List<Product> GetSimilarProducts(int id);
+        
+
+        /// <summary>
+        /// Obtener una lista de productos compatibles
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        List<Product> GetcompatibleProducts(int id);
 
         /// <summary>
         /// Actualizar un producto

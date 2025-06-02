@@ -84,6 +84,36 @@ namespace GamingCorner.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
+        /// <summary>
+        /// Obtener productos compatibles por su ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Compatible/{id}")]
+        public ActionResult<List<ProductDTOBase>> GetCompatibleProducts(int id)
+        {
+            try
+            {
+                // Obtenemos el producto
+                var compatibleProducts = _productService.GetCompatibleProducts(id);
+
+                // Si existe
+                return Ok(compatibleProducts);
+
+            }
+            // Si no existe
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            // Otro fallo
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Crear producto (No hace falta usar)

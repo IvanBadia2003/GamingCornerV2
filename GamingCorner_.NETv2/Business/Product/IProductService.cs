@@ -49,5 +49,13 @@ namespace GamingCorner.Business
         /// </summary>
         /// <param name="id"></param>
         void Delete(int id);
+
+        /// <summary>
+        /// Obtener productos compatibles por su ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        List<ProductDTOBase> GetCompatibleProducts(int id);
     }
 }

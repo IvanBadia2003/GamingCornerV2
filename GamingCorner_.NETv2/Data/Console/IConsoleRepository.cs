@@ -11,6 +11,18 @@ public interface IConsoleRepository
     void Update(Models.Console console);
     void Delete(int id);
 
+    /// <summary>
+    /// Obtenemos lista con todas las consolas
+    /// </summary>
+    /// <returns></returns>
+    List<ConsoleDTO> GetFiltered(ConsoleFilterDTO filters);
 
+
+
+    /// <summary>
+    /// Obtenemos lista con las 3 consolas más vendidas
+    /// </summary>
+    /// <returns></returns>
+    public List<ConsoleDTO> TopSellingConsoles();
 
 }

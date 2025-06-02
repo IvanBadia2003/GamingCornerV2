@@ -113,13 +113,58 @@ namespace GamingCorner.Data
             
             if (product.Console != null)
             {
-                // AQUI ESTARIA BIEN FILTRAR POR LA GENERACION
-                similarProducts = _context.Products.Include(p => p.Console).Where(p => p.Console.Brand == "Nintendo").ToList();
+                similarProducts = _context.Products.Include(p => p.Console).Where(p => p.Id != id && p.Console.Generation == product.Console.Generation).Take(4).ToList();
                 return similarProducts;
             }
 
             throw new KeyNotFoundException("Producto no encontrado");
 
+        }
+
+        /// <summary>
+        /// Obtener una lista de productos compatibles
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        List<Product> IProductEFRepository.GetcompatibleProducts(int id)
+        {
+            // Obtenemos el producto por ID incluyendo el videojuego y la consola
+            var product = _context.Products
+                .Include(p => p.Console)
+                .Include(p => p.Videogame)
+                .FirstOrDefault(p => p.Id == id);
+
+            if (product == null)
+                throw new KeyNotFoundException("Producto no encontrado");
+
+            // Asegurarse de que el producto tiene plataforma
+            if (product.PlatformId == 0)
+                throw new InvalidOperationException("El producto no tiene plataforma asignada");
+
+            var platformId = product.PlatformId;
+
+            // Si es videojuego, buscamos consolas con la misma plataforma
+            if (product.Videogame != null)
+            {
+                return _context.Products
+                    .Include(p => p.Console)
+                    .Where(p => p.Id != id && p.PlatformId == platformId && p.Console != null)
+                    .Take(4)
+                    .ToList();
+            }
+
+            // Si es consola, buscamos videojuegos con la misma plataforma
+            if (product.Console != null)
+            {
+                return _context.Products
+                    .Include(p => p.Videogame)
+                    .Where(p => p.Id != id && p.PlatformId == platformId && p.Videogame != null)
+                    .Take(4)
+                    .ToList();
+            }
+
+            // En caso de que no sea ni consola ni videojuego
+            throw new InvalidOperationException("Producto sin tipo compatible");
         }
 
 

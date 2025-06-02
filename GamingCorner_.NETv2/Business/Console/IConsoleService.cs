@@ -11,4 +11,16 @@ public interface IConsoleService
     ConsoleDTO Get(int id);
     void Update(int id, ConsoleUpdateDTO consoleUpdateDTO);
     void Delete(int id);
+
+    /// <summary>
+    /// Obtener lista de todas las consolas
+    /// </summary>
+    /// <returns></returns>
+    List<ConsoleDTO> GetFiltered(ConsoleFilterDTO filters);
+
+    /// <summary>
+    /// Obtenemos lista con los videojuegos más vendidos
+    /// </summary>
+    /// <returns></returns>
+    List<ConsoleDTO> TopSellingConsoles();
 }

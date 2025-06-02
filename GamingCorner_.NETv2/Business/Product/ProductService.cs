@@ -148,6 +148,56 @@ namespace GamingCorner.Business
 
             return new List<ProductDTOBase>(); // Nunca devuelvas null en listas, mejor una vacía
         }
+        
+        
+        /// <summary>
+        /// Obtener productos compatibles por su ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public List<ProductDTOBase> GetCompatibleProducts(int id)
+        {
+            var compatibleProducts = _productEFRepository.GetcompatibleProducts(id);
+
+            List<ProductDTOBase> products = new List<ProductDTOBase>();
+            if (compatibleProducts == null || !compatibleProducts.Any())
+                throw new KeyNotFoundException($"Producto con el id {id} no encontrado o sin compatibles.");
+
+            var isVideogame = compatibleProducts.First().Videogame != null;
+            var isConsole = compatibleProducts.First().Console != null;
+
+            if (isVideogame)
+            {
+                products = compatibleProducts.Select(product => new ProductDTOBase
+                {
+                    Id = product.Id,
+                    Name = product.Videogame.Name,
+                    Discount = product.Videogame.Discount,
+                    Price = product.Videogame.Price,
+                    PrincipalImageURL = product.Videogame.PrincipalImageURL
+                }).ToList<ProductDTOBase>();
+
+                return products;
+            }
+
+            if (isConsole)
+            {
+                products = compatibleProducts.Select(product => new ProductDTOBase
+                {
+                    Id = product.Id,
+                    Name = product.Console.Name,
+                    Discount = product.Console.Discount,
+                   Price = product.Console.Price,
+                    PrincipalImageURL = product.Console.PrincipalImageURL
+                }).ToList<ProductDTOBase>();
+
+                return products;
+            }
+
+            return new List<ProductDTOBase>(); // Nunca devuelvas null en listas, mejor una vacía
+        }
+
 
 
         /// <summary>

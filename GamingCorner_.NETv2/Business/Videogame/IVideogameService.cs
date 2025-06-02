@@ -43,4 +43,11 @@ public interface IVideogameService
     /// </summary>
     /// <returns></returns>
     List<VideogameDTO> GetFiltered(VideogameFilterDto filters);
+
+
+    /// <summary>
+    /// Obtenemos lista con los videojuegos más vendidos
+    /// </summary>
+    /// <returns></returns>
+    List<VideogameDTO> TopSellingVideogames();
 }

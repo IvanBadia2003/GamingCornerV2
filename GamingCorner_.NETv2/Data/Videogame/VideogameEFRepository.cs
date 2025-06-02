@@ -65,7 +65,7 @@ public class VideogameEFRepository : IVideogameRepository
     }
 
     /// <summary>
-    /// Obtenemos lista con todos los videojuegos
+    /// Obtenemos lista con todos los videojuegos filtrados
     /// </summary>
     /// <returns></returns>
     public List<VideogameDTO> GetFiltered(VideogameFilterDto filters)
@@ -87,11 +87,11 @@ public class VideogameEFRepository : IVideogameRepository
 
         // Filtrar por precio minimo
         if (filters.MinPrice.HasValue)
-            query = query.Where(v => v.Price >= filters.MinPrice.Value);
+            query = query.Where(v => (v.Price * (1 - (v.Discount / 100.0m))) >= filters.MinPrice.Value);
 
         // Filtrar por precio máximo
         if (filters.MaxPrice.HasValue)
-            query = query.Where(v => v.Price <= filters.MaxPrice.Value);
+            query = query.Where(v => (v.Price * (1 - (v.Discount / 100.0m))) <= filters.MaxPrice.Value);
 
         // Filtrar por texto de búsqueda
         if (!string.IsNullOrEmpty(filters.Search))
@@ -110,7 +110,7 @@ public class VideogameEFRepository : IVideogameRepository
         switch (orderBy)
         {
             case "price":
-                query = filters.OrderDirection == OrderDirectionEnum.DESC ? query.OrderByDescending(v => v.Price) : query.OrderBy(v => v.Price);
+                query = filters.OrderDirection == OrderDirectionEnum.DESC ? query.OrderByDescending(v => (v.Price * (1 - (v.Discount / 100.0m)))) : query.OrderBy(v => (v.Price * (1 - (v.Discount / 100.0m))));
                 break;
             case "name":
                 query = filters.OrderDirection == OrderDirectionEnum.DESC ? query.OrderByDescending(v => v.Name) : query.OrderBy(v => v.Name);
@@ -122,7 +122,6 @@ public class VideogameEFRepository : IVideogameRepository
                 query = filters.OrderDirection == OrderDirectionEnum.DESC ? query.OrderByDescending(v => v.Discount) : query.OrderBy(v => v.Discount);
                 break;
             default:
-                query = query.OrderBy(v => v.Name); // por defecto
                 break;
         }
 
@@ -142,6 +141,43 @@ public class VideogameEFRepository : IVideogameRepository
             ProductId = v.ProductId,
             PlatformId = v.Product.Platform.PlatformId,
             GenderId = v.VideogameGenders.Select(vg => vg.GenderId).ToList(),
+            Price = v.Price,
+            PrincipalImageURL = v.PrincipalImageURL,
+            Sales = v.Product.Sales
+        }).ToList();
+
+        return videogameDto;
+    }
+    
+    /// <summary>
+    /// Obtenemos lista con los videojuegos más vendidos
+    /// </summary>
+    /// <returns></returns>
+    public List<VideogameDTO> TopSellingVideogames()
+    {
+        var videogames = _context.Videogames
+            .Include(v => v.Product)
+                .OrderByDescending(v => v.Product.Sales).Take(12)
+            .ToList();
+
+        
+
+        var videogameDto = videogames.Select(v => new VideogameDTO
+        {
+            Id = v.Id,
+            Name = v.Name,
+            Pegi = v.Pegi,
+            Description = v.Description,
+            Requisitos1 = v.Requisitos1,
+            Requisitos2 = v.Requisitos2,
+            Stock = v.Stock,
+            Distributor = v.Distributor,
+            ReleaseDate = v.ReleaseDate,
+            Developer = v.Developer,
+            Discount = v.Discount,
+            ProductId = v.ProductId,
+            //PlatformId = v.Product.Platform.PlatformId,
+            //GenderId = v.VideogameGenders.Select(vg => vg.GenderId).ToList(),
             Price = v.Price,
             PrincipalImageURL = v.PrincipalImageURL,
             Sales = v.Product.Sales
