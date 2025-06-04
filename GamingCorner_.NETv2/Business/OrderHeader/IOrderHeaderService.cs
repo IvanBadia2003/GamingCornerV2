@@ -8,7 +8,9 @@ public interface IOrderHeaderService
 {
     List<OrderHeaderDTO> GetAll();
     void Add(OrderHeaderCreateDTO orderHeaderCreateDTO);
-    OrderHeaderDTO Get(int id);
+    OrderHeaderDTO GetBtId(int id);
     void Update(int id, OrderHeaderUpdateDTO videogameUpdateDTO);
     void Delete(int id);
+
+    List<OrderHeaderDTO> GetByUserId(int userId);
 }

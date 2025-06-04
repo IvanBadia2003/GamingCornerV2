@@ -229,9 +229,81 @@ namespace GamingCorner.Data
 
         }
 
+        public void IncreaseSales(int productId)
+        {
+
+            var product = _context.Products.FirstOrDefault(p => p.Id == productId);
+
+            if (product == null)
+                throw new KeyNotFoundException("Producto no encontrado");
+
+            product.Sales++;
+            SaveChanges();
+        }
+
+
+        public void DecreaseStock(int productId)
+        {
+            try
+            {
+                var game = _context.Products
+                    .Include(p => p.Videogame)
+                    .Include(p => p.Console)
+                    .FirstOrDefault(g => g.Id == productId);
+
+                if (game == null)
+                {
+                    throw new KeyNotFoundException($"No se encontró un videojuego con ProductId = {productId}.");
+                }
+
+                if (game.Videogame != null)
+                {
+                    if (game.Videogame.Stock <= 0)
+                    {
+                        throw new InvalidOperationException($"El stock del producto con ProductId = {productId} ya está en 0.");
+                    }
+
+                    game.Videogame.Stock--;
+                }
+                
+                if (game.Console != null)
+                {
+                    if (game.Console.Stock <= 0)
+                    {
+                        throw new InvalidOperationException($"El stock del producto con ProductId = {productId} ya está en 0.");
+                    }
+
+                    game.Console.Stock--;
+                }
+
+               
+                SaveChanges();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                // Puedes loguearlo o propagarlo
+                throw new ApplicationException("Producto no encontrado.", ex);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new ApplicationException("Operación inválida sobre el stock.", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Ha ocurrido un error al decrementar el stock.", ex);
+            }
+        }
+
+
+
+
         public void SaveChanges()
         {
             _context.SaveChanges();
         }
+
+        
+
+
     }
 }

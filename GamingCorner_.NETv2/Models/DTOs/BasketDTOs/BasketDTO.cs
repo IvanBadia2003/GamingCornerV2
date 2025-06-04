@@ -16,6 +16,7 @@ public class BasketDTO
         return new Basket
         {
             UserId = this.UserId,
+
         };
     }
 }

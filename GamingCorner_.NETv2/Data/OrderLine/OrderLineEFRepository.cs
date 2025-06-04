@@ -8,13 +8,13 @@ using GamingCorner.Data;
 using Microsoft.EntityFrameworkCore;
 using GamingCorner.Models.DTOs.ProductDTOs;
 
-public class OrderHeaderEFRepository : IOrderHeaderRepository
+public class OrderLineEFRepository : IOrderLineEFRepository
 {
 
 
     private readonly GamingCornerContext _context;
 
-    public OrderHeaderEFRepository(GamingCornerContext context)
+    public OrderLineEFRepository(GamingCornerContext context)
     {
 
         _context = context;
@@ -24,28 +24,17 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
     /// Obtenemos lista con todos los videojuegos
     /// </summary>
     /// <returns></returns>
-    public List<OrderHeaderDTO> GetAll()
+    public List<OrderLineDTO> GetAll()
     {
         // Obtenemos todos los videojuegos incluyendo su producto
-        var orderHeaders = _context.OrderHeaders.ToList();//.Include(v => v.Product).ToList();
+        var orderLines = _context.OrderLines.ToList();//.Include(v => v.Product).ToList();
 
         // si existe
-        if (orderHeaders != null)
+        if (orderLines != null)
         {
-            // Mapeamos la entidad al DTO
-            var orderHeaderDto = orderHeaders.Select(v => new OrderHeaderDTO
-            {
-                Id = v.Id,
-                UserId = v.UserId,
-                BillingAddress = v.BillingAddress,
-                CreatedAt = v.CreatedAt, 
-                OrderNumber = v.OrderNumber,
-                PaymentMethod = v.PaymentMethod
 
-            }).ToList();
+            return orderLines.Select(r => r.ToOrderLineDTO()).ToList();
 
-            // Devolvemos la lista con los DTO
-            return orderHeaderDto;
         }
         else
         {
@@ -58,14 +47,10 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
     /// Añadimos un videojuego
     /// </summary>
     /// <param name="videogame"></param>
-    public OrderHeader Add(OrderHeader orderHeader)
+    public void Add(OrderLine orderLine)
     {
-        orderHeader.CreatedAt = DateTime.Now;
-        orderHeader.OrderNumber = $"ORD-{Guid.NewGuid().ToString("N")[..12].ToUpper()}";
-        _context.OrderHeaders.Add(orderHeader);
+        _context.OrderLines.Add(orderLine);
         SaveChanges();
-
-        return orderHeader;
     }
 
 
@@ -74,20 +59,20 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public List<OrderHeaderDTO> GetByUserId(int userId)
+    public List<OrderLineDTO> GetByHeaderId(int headerId)
     {
 
         // Obtenemos el videojuego incluyendo su producto
-        var orderHeader = _context.OrderHeaders
-            .Where(orderHeader => orderHeader.UserId == userId)
-            .Include(o => o.OrderLines)
+        var orderLines = _context.OrderLines
+            .Where(ol => ol.OrderHeaderId== headerId)
+            .Include(o => o.Product)
             .ToList();
 
         // si existe el juego
-        if (orderHeader != null)
+        if (orderLines != null)
         {
             // Devolvemos el DTO
-            return orderHeader.Select(r => r.ToOrderHeaderDTO()).ToList();
+            return orderLines.Select(r => r.ToOrderLineDTO()).ToList();
 
         }
         else
@@ -101,20 +86,20 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public OrderHeaderDTO GetById(int Id)
+    public OrderLineDTO GetById(int Id)
     {
 
         // Obtenemos el videojuego incluyendo su producto
-        var orderHeader = _context.OrderHeaders
+        var orderLine = _context.OrderLines
             .Where(orderHeader => orderHeader.Id == Id)
-            .Include(o => o.OrderLines)
+            .Include(o => o.Product)
             .FirstOrDefault();
 
         // si existe el juego
-        if (orderHeader != null)
+        if (orderLine != null)
         {
             // Devolvemos el DTO
-            return orderHeader.ToOrderHeaderDTO();
+            return orderLine.ToOrderLineDTO();
 
         }
         else
@@ -129,21 +114,21 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
     /// </summary>
     /// <param name="videogame"></param>
     /// <exception cref="KeyNotFoundException"></exception>
-    public void Update(OrderHeader orderHeader)
+    public void Update(OrderLine orderLine)
     {
         // Buscamos el videojuego por su ID
-        var existingOrderHeader = _context.OrderHeaders.Find(orderHeader.Id);
+        var existingOrderLine = _context.OrderLines.Find(orderLine.Id);
 
         // Si existe
-        if (orderHeader != null)
+        if (existingOrderLine != null)
         {
 
-            _context.Entry(existingOrderHeader).CurrentValues.SetValues(orderHeader);
+            _context.Entry(existingOrderLine).CurrentValues.SetValues(orderLine);
             _context.SaveChanges();
         }
         else
         {
-            throw new KeyNotFoundException("Order Header not found.");
+            throw new KeyNotFoundException("Order Line not found.");
         }
     }
 
@@ -157,7 +142,7 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
         var orderHeaderDto = GetById(id);
         if (orderHeaderDto == null)
         {
-            throw new KeyNotFoundException("Order Header not found.");
+            throw new KeyNotFoundException("Order Line not found.");
         }
         var orderHeader = _context.OrderHeaders.FirstOrDefault(v => v.Id == id);
         if (orderHeader != null)

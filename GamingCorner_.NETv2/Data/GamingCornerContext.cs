@@ -70,6 +70,39 @@ namespace GamingCorner.Data
                 .WithMany(vl => vl.Favourites)
                 .HasForeignKey(vli => vli.UserId);
 
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Product)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(r => r.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // User - OrderHeader (1:N)
+            modelBuilder.Entity<OrderHeader>()
+                .HasOne(o => o.User)
+                .WithMany(u => u.OrderHeaders)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // OrderHeader - OrderLine (1:N)
+            modelBuilder.Entity<OrderLine>()
+                .HasOne(ol => ol.OrderHeader)
+                .WithMany(oh => oh.OrderLines)
+                .HasForeignKey(ol => ol.OrderHeaderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Product - OrderLine (1:N)
+            modelBuilder.Entity<OrderLine>()
+                .HasOne(ol => ol.Product)
+                .WithMany(p => p.OrderLines)
+                .HasForeignKey(ol => ol.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // modelBuilder.Entity<VideogameGender>()
             //     .HasOne(g => g.Gender)
             //     .WithMany(vl => vl.ListVideogameGender)
@@ -114,6 +147,12 @@ namespace GamingCorner.Data
 
             modelBuilder.Entity<Platform>()
                 .HasKey(p => new { p.PlatformId });
+            
+            modelBuilder.Entity<OrderHeader>()
+                .HasKey(o => new { o.Id });
+            
+            modelBuilder.Entity<OrderLine>()
+                .HasKey(o => new { o.Id });
 
             modelBuilder.Entity<Platform>()
                .HasMany(p => p.products)
@@ -148,9 +187,9 @@ namespace GamingCorner.Data
 
 
             modelBuilder.Entity<User>().HasData(
-                new User { UserId = 1, Name = "Diego", Address = "C/ La Lectura", Email = "diego@gmail.com", Password = "12345", PhoneNumber = "601112734", Admin = true, Avatar = "", DateCreated = DateTime.Today, Rol= RolEnum.Admin, State = UserStateEnum.Active },
-                new User { UserId = 2, Name = "Ivan", Address = "Avda. San Juan de la Peña", Email = "ivan@gmail.com", Password = "12345", PhoneNumber = "123456789", Admin = true, Avatar = "", DateCreated = DateTime.Today, Rol= RolEnum.Admin, State = UserStateEnum.Active },
-                new User { UserId = 3, Name = "Adrian", Address = "El Actur", Email = "adrian@gmail.com", Password = "00000", PhoneNumber = "987654321", Admin = false, Avatar = "", DateCreated = DateTime.Today, Rol= RolEnum.Admin, State = UserStateEnum.Active }
+                new User { UserId = 1, Name = "Diego", Address = "C/ La Lectura", Email = "diego@gmail.com", Password = "12345", PhoneNumber = "601112734", Admin = true, Avatar = "", DateCreated = DateTime.Today, Rol = RolEnum.Admin, State = UserStateEnum.Active },
+                new User { UserId = 2, Name = "Ivan", Address = "Avda. San Juan de la Peña", Email = "ivan@gmail.com", Password = "12345", PhoneNumber = "123456789", Admin = true, Avatar = "", DateCreated = DateTime.Today, Rol = RolEnum.Admin, State = UserStateEnum.Active },
+                new User { UserId = 3, Name = "Adrian", Address = "El Actur", Email = "adrian@gmail.com", Password = "00000", PhoneNumber = "987654321", Admin = false, Avatar = "", DateCreated = DateTime.Today, Rol = RolEnum.Admin, State = UserStateEnum.Active }
  );
 
 
@@ -222,7 +261,7 @@ namespace GamingCorner.Data
             );
 
             // 
-        
+
 
 
 
@@ -238,6 +277,10 @@ namespace GamingCorner.Data
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<Favourite> Favourites { get; set; }
+        public DbSet<Review> Reviews{ get; set; }
+        public DbSet<OrderLine> OrderLines{ get; set; }
+
+
 
     }
 }

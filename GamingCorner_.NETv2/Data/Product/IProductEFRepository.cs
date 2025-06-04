@@ -49,5 +49,18 @@ namespace GamingCorner.Data
         /// </summary>
         /// <param name="id"></param>
         void Delete(int id);
+
+        /// <summary>
+        /// Aumentar las ventas
+        /// </summary>
+        /// <param name="productId"></param>
+        void IncreaseSales(int productId);
+
+        /// <summary>
+        /// Resta el stock
+        /// </summary>
+        /// <param name="productId"></param>
+        void DecreaseStock(int productId);
+
     }
 }

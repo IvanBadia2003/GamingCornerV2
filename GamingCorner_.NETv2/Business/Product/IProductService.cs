@@ -57,5 +57,8 @@ namespace GamingCorner.Business
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         List<ProductDTOBase> GetCompatibleProducts(int id);
+
+
+
     }
 }

@@ -24,10 +24,10 @@ public class OrderHeaderController : ControllerBase
     public ActionResult<List<OrderHeaderDTO>> GetAll() => _orderHeaderService.GetAll();
 
     [HttpGet]
-    [Route("{id}")]
-    public ActionResult<OrderHeaderDTO> Get(int id)
+    [Route("User/{id}")]
+    public ActionResult<List<OrderHeaderDTO>> GetByUserId(int id)
     {
-        var orderHeader = _orderHeaderService.Get(id);
+        var orderHeader = _orderHeaderService.GetByUserId(id);
 
         if (orderHeader == null)
         {
@@ -85,7 +85,7 @@ public class OrderHeaderController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var user = _orderHeaderService.Get(id);
+        var user = _orderHeaderService.GetBtId(id);
 
         if (user is null)
             return NotFound();

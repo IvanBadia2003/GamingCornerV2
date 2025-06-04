@@ -71,6 +71,8 @@ public class FavouriteEFRepository : IFavouriteRepository
             Price = b.Product.Videogame?.Price ?? b.Product.Console?.Price,
             Discount = b.Product.Videogame?.Discount ?? b.Product.Console?.Discount,
             PrincipalImageURL = b.Product.Videogame?.PrincipalImageURL ?? b.Product.Console?.PrincipalImageURL,
+            System = b.Product.Platform.System,
+
         }
     }).ToList();
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
+using GamingCorner.Models.Enums.SystemEnum;
 
 namespace GamingCorner.Models
 {
@@ -17,7 +18,7 @@ namespace GamingCorner.Models
         /// <summary>
         /// Ventas del producto
         /// </summary>
-        public int? Sales { get; set; }
+        public int Sales { get; set; }
 
         /// <summary>
         /// Plataforma del producto
@@ -38,6 +39,11 @@ namespace GamingCorner.Models
         /// Descuento del producto
         /// </summary>
         public int? Discount { get; set; }
+        
+        /// <summary>
+        /// Descuento del producto
+        /// </summary>
+        public SystemEnum? System { get; set; }
 
 
         /// <summary>

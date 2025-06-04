@@ -3,12 +3,12 @@ using GamingCorner.Models.DTOs.ProductDTOs;
 
 namespace GamingCorner.Data;
 
-public interface IOrderHeaderRepository
+public interface IOrderLineEFRepository
 {
-    List<OrderHeaderDTO> GetAll();
-    OrderHeader Add(OrderHeader orderHeader);
-    List<OrderHeaderDTO> GetByUserId(int userId);
-    void Update(OrderHeader orderHeader);
+    List<OrderLineDTO> GetAll();
+    void Add(OrderLine orderHeader);
+    List<OrderLineDTO> GetByHeaderId(int headerId);
+    void Update(OrderLine orderLine);
     void Delete(int id);
 
     /// <summary>
@@ -16,6 +16,6 @@ public interface IOrderHeaderRepository
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public OrderHeaderDTO GetById(int Id);
+    public OrderLineDTO GetById(int Id);
 
 }

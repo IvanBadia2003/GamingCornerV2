@@ -10,12 +10,14 @@ public class FavouriteDTO
 {
     public int UserId { get; set; }
     public ProductDTOBase Product { get; set; }
+    public DateTime DateAdd { get; set; }
     
     public Favourite ToBasket()
     {
         return new Favourite
         {
             UserId = this.UserId,
+            DateAdd = this.DateAdd,
         };
     }
 }

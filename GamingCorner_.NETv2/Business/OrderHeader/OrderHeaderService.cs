@@ -10,11 +10,19 @@ public class OrderHeaderService : IOrderHeaderService
 {
 
     private readonly IOrderHeaderRepository _orderHeaderRepository;
+    private readonly IBasketRepository _basketRepository;
+    private readonly IOrderLineEFRepository _orderLineRepository;
+    private readonly IProductEFRepository _productRepository;
 
 
-    public OrderHeaderService(IOrderHeaderRepository orderHeaderRepository)
+
+    public OrderHeaderService(IOrderHeaderRepository orderHeaderRepository, IBasketRepository basketRepository, IOrderLineEFRepository orderLineRepository, IProductEFRepository productRepository)
     {
         _orderHeaderRepository = orderHeaderRepository;
+        _basketRepository = basketRepository;
+        _orderLineRepository = orderLineRepository;
+        _productRepository = productRepository;
+
 
     }
 
@@ -25,24 +33,22 @@ public class OrderHeaderService : IOrderHeaderService
     public List<OrderHeaderDTO> GetAll()
     {
         var orderHeaders = _orderHeaderRepository.GetAll();
- 
+
         return orderHeaders;
     }
 
     /// <summary>
-    /// Obtener videojuego por su ID
+    /// Obtener lista de todos los videojuegos
     /// </summary>
-    /// <param name="id"></param>
     /// <returns></returns>
-    public OrderHeaderDTO Get(int id)
+    public List<OrderHeaderDTO> GetByUserId(int userId)
     {
-        var orderHeader = _orderHeaderRepository.Get(id);
-        if (orderHeader == null)
-        {
-            throw new KeyNotFoundException($"Order Header con Id {id} no encontrada.");
-        }
-        return orderHeader;
+        var orderHeaders = _orderHeaderRepository.GetByUserId(userId);
+
+        return orderHeaders;
     }
+
+
 
     /// <summary>
     /// A�adir videojuego
@@ -50,9 +56,29 @@ public class OrderHeaderService : IOrderHeaderService
     /// <param name="videogameCreateDTO"></param>
     public void Add(OrderHeaderCreateDTO orderHeaderCreateDTO)
     {
-        var orderHeader = new OrderHeader();
-        var mappedOrderHeader = orderHeader.mapFromCreateDto(orderHeaderCreateDTO);
-        _orderHeaderRepository.Add(mappedOrderHeader);
+        var userBasket = _basketRepository.Get(orderHeaderCreateDTO.UserId);
+        var orderHeader = _orderHeaderRepository.Add(orderHeaderCreateDTO.ToOrderHeaderEntite());
+
+        foreach (var item in userBasket)
+        {
+            OrderLine orderLine = new OrderLine()
+            {
+                CreatedAt = orderHeader.CreatedAt,
+                DigitalCode = OrderLine.GenerateAlphanumericCode(12),
+                OrderHeaderId = orderHeader.Id,
+                ProductId = item.Product.Id,
+                Price = item.Product.Price.Value * (1 - item.Product.Discount.Value / 100),
+                ProductType = item.Product.Videogame != null ? "Juego" : item.Product.Console != null ? "Consola" : "Segunda mano"
+            };
+            _orderLineRepository.Add(orderLine);
+
+            _productRepository.IncreaseSales(item.Product.Id);
+            _productRepository.DecreaseStock(item.Product.Id);
+            
+        }
+
+        _basketRepository.DeleteByUser(orderHeaderCreateDTO.UserId);
+
     }
 
     /// <summary>
@@ -63,8 +89,8 @@ public class OrderHeaderService : IOrderHeaderService
     /// <exception cref="KeyNotFoundException"></exception>
     public void Update(int id, OrderHeaderUpdateDTO orderHeaderUpdateDTO)
     {
-        var orderHeaderDTO = _orderHeaderRepository.Get(id);
-        if(orderHeaderDTO == null)
+        var orderHeaderDTO = _orderHeaderRepository.GetById(id);
+        if (orderHeaderDTO == null)
         {
             throw new KeyNotFoundException($"Order Header con Id {id} no encontrada.");
         }
@@ -78,9 +104,19 @@ public class OrderHeaderService : IOrderHeaderService
     {
         _orderHeaderRepository.Delete(id);
     }
+
+    public OrderHeaderDTO GetBtId(int id)
+    {
+        var orderHeader = _orderHeaderRepository.GetById(id);
+        if (orderHeader == null)
+        {
+            throw new KeyNotFoundException($"Order Header con Id {id} no encontrada.");
+        }
+        return orderHeader;
+    }
 }
 
 
-    
-    
+
+
 

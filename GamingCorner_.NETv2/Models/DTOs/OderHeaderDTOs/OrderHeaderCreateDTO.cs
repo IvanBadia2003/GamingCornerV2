@@ -3,18 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GamingCorner.Models.Enums.RolEnums;
 
 namespace GamingCorner.Models.DTOs.ProductDTOs
 {
     public class OrderHeaderCreateDTO
     {
-       public int Id { get; set; }
-
-        /// <summary>
-        /// Ventas del producto
-        /// </summary>
-        public int Total { get; set; }
-        public int? UserId { get; set; }
-        public DateTime Fecha { get; set; }
+        public int UserId { get; set; }
+        public string? BillingAddress { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public PaymentMethodEnum PaymentMethod { get; set; }
+        public OrderHeader ToOrderHeaderEntite()
+        {
+            return new OrderHeader
+            {
+                UserId = this.UserId,
+                BillingAddress = this.BillingAddress,
+                CreatedAt = this.CreatedAt,
+                PaymentMethod = this.PaymentMethod
+            };
+        }
     }
 }

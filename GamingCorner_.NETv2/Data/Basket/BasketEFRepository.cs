@@ -44,38 +44,42 @@ public class BasketEFRepository : IBasketRepository
         SaveChanges();
     }
 
-  public List<BasketDTO> Get(int idUser)
-{
-    var baskets = _context.Baskets
-        .Where(b => b.UserId == idUser)
-        .Include(b => b.Product)
-            .ThenInclude(p => p.Videogame)
-        .Include(b => b.Product)
-            .ThenInclude(p => p.Console)
-        .Include(p => p.Product)
-            .ThenInclude(pp => pp.Platform)
-        .ToList();
-
-    if (baskets == null || !baskets.Any())
-        return new List<BasketDTO>();
-
-    var basketDtos = baskets.Select(b => new BasketDTO
+    public List<BasketDTO> Get(int idUser)
     {
-        UserId = b.UserId,
-        Product = new ProductDTOBase
-        {
-            Id = b.Product.Id,
-            Sales = b.Product.Sales,
-            PlatformId = b.Product.Platform.PlatformId,
-            Name = b.Product.Videogame?.Name ?? b.Product.Console?.Name,
-            Price = b.Product.Videogame?.Price ?? b.Product.Console?.Price,
-            Discount = b.Product.Videogame?.Discount ?? b.Product.Console?.Discount,
-            PrincipalImageURL = b.Product.Videogame?.PrincipalImageURL ?? b.Product.Console?.PrincipalImageURL,
-        }
-    }).ToList();
+        var baskets = _context.Baskets
+            .Where(b => b.UserId == idUser)
+            .Include(b => b.Product)
+            .Include(b => b.Product)
+                .ThenInclude(p => p.Videogame)
+            .Include(b => b.Product)
+                .ThenInclude(p => p.Console)
+            .Include(p => p.Product)
+                .ThenInclude(pp => pp.Platform)
+            .ToList();
 
-    return basketDtos;
-}
+        if (baskets == null || !baskets.Any())
+            return new List<BasketDTO>();
+
+
+        var basketDtos = baskets.Select(b => new BasketDTO
+        {
+            UserId = b.UserId,
+            Product = new ProductDTOBase
+            {
+                Id = b.Product.Id,
+                Sales = b.Product.Sales,
+                PlatformId = b.Product.Platform.PlatformId,
+                Name = b.Product.Videogame?.Name ?? b.Product.Console?.Name,
+                Price = b.Product.Videogame?.Price ?? b.Product.Console?.Price,
+                Discount = b.Product.Videogame?.Discount ?? b.Product.Console?.Discount,
+                PrincipalImageURL = b.Product.Videogame?.PrincipalImageURL ?? b.Product.Console?.PrincipalImageURL,
+                Videogame = b.Product.Videogame != null ? b.Product.Videogame.mapToReadDto() : null,
+                Console = b.Product.Console != null ? b.Product.Console.mapToReadDto() : null
+            }
+        }).ToList();
+
+        return basketDtos;
+    }
 
 
 
@@ -115,7 +119,7 @@ public class BasketEFRepository : IBasketRepository
         {
             throw new KeyNotFoundException("Basket not found.");
         }
-        var basket = _context.Baskets.FirstOrDefault(g => g.UserId == idUser && g.ProductId == idProduct) ;
+        var basket = _context.Baskets.FirstOrDefault(g => g.UserId == idUser && g.ProductId == idProduct);
         if (basket != null)
         {
             _context.Baskets.Remove(basket);
@@ -123,6 +127,20 @@ public class BasketEFRepository : IBasketRepository
         }
 
     }
+
+    public void DeleteByUser(int idUser)
+    {
+        var baskets = _context.Baskets.Where(b => b.UserId == idUser).ToList();
+
+        if (baskets == null || baskets.Count == 0)
+        {
+            throw new KeyNotFoundException("No se encontraron productos en el carrito para este usuario.");
+        }
+
+        _context.Baskets.RemoveRange(baskets);
+        SaveChanges();
+    }
+
 
     public void SaveChanges()
     {

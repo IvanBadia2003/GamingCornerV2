@@ -36,6 +36,9 @@ var connectionString = builder.Configuration.GetConnectionString("ServerDB");
 builder.Services.AddScoped<IVideogameService, VideogameService>();
 builder.Services.AddScoped<IVideogameRepository, VideogameEFRepository>();
 
+builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IReviewEFRepository, ReviewEFRepository>();
+
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductEFRepository, ProductEFRepository>();
 
@@ -59,6 +62,12 @@ builder.Services.AddScoped<IConsoleRepository, ConsoleEFRepository>();
 
 builder.Services.AddScoped<IOrderHeaderService, OrderHeaderService>();
 builder.Services.AddScoped<IOrderHeaderRepository, OrderHeaderEFRepository>();
+
+builder.Services.AddScoped<IOrderLineService, OrderLineService>();
+builder.Services.AddScoped<IOrderLineEFRepository, OrderLineEFRepository>();
+
+builder.Services.AddScoped<IChartService, ChartService>();
+builder.Services.AddScoped<IChartEFRepository, ChartEFRepository>();
 
 builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<IBasketRepository, BasketEFRepository>();
