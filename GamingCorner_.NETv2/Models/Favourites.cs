@@ -12,6 +12,8 @@ public class Favourite
 
     public Product Product { get; set; }
     public int ProductId { get; set; }
+
+    public DateTime DateAdd { get; set; }
     public Favourite() { }
 
     public Favourite(int userId, int productId)

@@ -39,6 +39,9 @@ public class User
 
     public List<Basket> Baskets { get; set; } = new List<Basket>();
     public List<Favourite> Favourites { get; set; } = new List<Favourite>();
+    public List<Review> Reviews { get; set; } = new List<Review>();
+    public List<OrderHeader> OrderHeaders { get; set; } = new List<OrderHeader>();
+
     // public List<Console_> Consoles { get; set; } = new List<Console_>();
 
     //public List<Videogame> Videogames { get; set; } = new List<Videogame>();

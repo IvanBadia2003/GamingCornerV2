@@ -11,7 +11,7 @@ public class Product
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    public int? Sales {  get; set; }
+    public int Sales {  get; set; }
     public int? PlatformId { get; set; }
     public Platform? Platform {  get; set; }
     public Videogame? Videogame { get; set; }
@@ -19,10 +19,13 @@ public class Product
     public SecondHandProduct? SecondHandProduct { get; set; }
     public List<Basket> Baskets { get; set; } = new List<Basket>();
     public List<Favourite> Favourites { get; set; } = new List<Favourite>();
+    public List<Review> Reviews { get; set; } = new List<Review>();
+    public List<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
+
 
     public Product() { }
 
-    public Product(Platform? platform = null, int? sales = 0, Videogame? videogame = null, Console? console = null, SecondHandProduct? secondHandProduct = null)
+    public Product(Platform? platform = null, int sales = 0, Videogame? videogame = null, Console? console = null, SecondHandProduct? secondHandProduct = null)
     {
         Sales = sales;
         Platform = platform;
