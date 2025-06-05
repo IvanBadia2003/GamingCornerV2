@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { useAuthStore } from '@/stores/AuthStore'
+import { useUserStore } from '@/stores/UserStore'
 
 
 import App from './App.vue'
@@ -40,7 +40,7 @@ app.use(router)
 app.use(createMyVuetify(savedTheme))
 
 // verificar si el usuario está autenticado
-const auth = useAuthStore()
-auth.fetchCurrentUser()
+const user = useUserStore()
+user.fetchCurrentUser()
 
 app.mount('#app')

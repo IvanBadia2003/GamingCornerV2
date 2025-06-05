@@ -1,11 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import AddProductDialogComponent from '@/components/Admin/AddProductDialogComponent.vue'
 import DataTableComponent from '@/components/DataTableComponent.vue'
 
+import { useProductStore } from '@/stores/ProductStore';
+import { useGenderStore } from '@/stores/GenderStore';
+import { usePlatformStore } from '@/stores/PlatformStore';
+
+const genderStore = useGenderStore();
+const productStore = useProductStore();
+const platformStore = usePlatformStore();
+
+onMounted(() => {
+  productStore.getAllVideogames();
+  productStore.getAllConsoles();
+  genderStore.getAllGenders()
+  platformStore.getAllPlatforms()
+  console.log(productStore.videogames);
+
+});
+
+
 const tab = ref('juegos')
 const dialogAbierto = ref(false)
-const formType = ref<'juego' | 'consola'>('juego')
+const formType = ref<'juego' | 'consola' | 'genero' | 'plataforma'>('juego') // Tipo de formulario: 'juego', 'consola' o null para géneros
 const isEditing = ref(false)
 const selectedItem = ref<any>(null)
 const search = ref('')
@@ -15,6 +33,7 @@ const gameHeaders = [
   { title: 'Nombre', key: 'name' },
   { title: 'Plataforma', key: 'platform' },
   { title: 'Precio', key: 'price' },
+  { title: 'Discount', key: 'discount' },
   { title: 'Stock', key: 'stock' },
   { title: 'Acciones', key: 'actions', sortable: false },
 ]
@@ -35,17 +54,12 @@ const usedHeaders = [
   { title: 'Acciones', key: 'actions', sortable: false },
 ]
 
-// Datos simulados
-const games = [
-  { id: 1, name: 'Elden Ring', platform: 'PC', price: '59.99 €', stock: 10, co: 10 },
-  { id: 2, name: 'God of War', platform: 'PlayStation', price: '49.99 €', stock: 5, co: 5 },
-  { id: 3, name: 'Halo Infinite', platform: 'Xbox', price: '39.99 €', stock: 8, co: 8 },
-  { id: 4, name: 'The Legend of Zelda', platform: 'Nintendo', price: '59.99 €', stock: 12, co: 12 },
+const genderHeaders = [
+  { title: 'Nombre', key: 'name' },
 ]
 
-const consoles = [
-  { id: 1, name: 'PlayStation 5', brand: 'Sony', price: '499 €', stock: 8 },
-  { id: 2, name: 'Xbox Series X', brand: 'Microsoft', price: '479 €', stock: 4 },
+const platformHeaders = [
+  { title: 'Nombre', key: 'name' },
 ]
 
 const usedProducts = [
@@ -53,7 +67,7 @@ const usedProducts = [
   { id: 2, name: 'The Last of Us 2', seller: 'laura45', condition: 'Nuevo', price: '25 €' },
 ]
 
-// Acciones simuladas
+// Acciones para juegos
 function añadirJuego() {
   formType.value = 'juego'
   isEditing.value = false
@@ -67,8 +81,12 @@ function editarJuego(item: any) {
   dialogAbierto.value = true
   console.log('Editar juego: ', item)
 }
-const eliminarJuego = (item: any) => alert('Eliminar juego: ' + item.name)
+function deleteVideogame(item: any) {
+  productStore.deleteVideogame(item.id)
+}
+////////////////////////////////////
 
+// Acciones para consolas
 function añadirConsola() {
   formType.value = 'consola'
   isEditing.value = false
@@ -83,8 +101,57 @@ function editarConsola(item: any) {
   dialogAbierto.value = true
   console.log('Editar consola: ', item)
 }
+function eliminarConsola(item: any) {
+  productStore.deleteConsole(item.id)
+}
+////////////////////////////////////
 
-const eliminarConsola = (item: any) => alert('Eliminar consola: ' + item.model)
+
+// Acciones para generos
+function añadirGenero() {
+  formType.value = 'genero'
+  isEditing.value = false
+  selectedItem.value = null
+  dialogAbierto.value = true
+  console.log(formType.value)
+
+}
+
+function editarGenero(item: any) {
+  formType.value = 'genero'
+  isEditing.value = false
+  selectedItem.value = item
+  dialogAbierto.value = true
+  console.log('Editar consola: ', item)
+}
+function eliminarGenero(item: any) {
+  console.log('Eliminar género: ', item);
+
+  //productStore.deleteConsole(item.id)
+}
+////////////////////////////////////
+
+// Acciones para plataformas
+function añadirPlataforma() {
+  formType.value = 'plataforma'
+  isEditing.value = false
+  selectedItem.value = null
+  dialogAbierto.value = true
+}
+
+function editarPlataforma(item: any) {
+  formType.value = 'plataforma'
+  isEditing.value = false
+  selectedItem.value = item
+  dialogAbierto.value = true
+  console.log('Editar consola: ', item)
+}
+function eliminarPlataforma(item: any) {
+  console.log('Eliminar género: ', item);
+
+  //productStore.deleteConsole(item.id)
+}
+////////////////////////////////////
 
 const aprobarProducto = (item: any) => alert('Producto aprobado: ' + item.name)
 const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name)
@@ -104,27 +171,29 @@ const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name
       <v-tab value="juegos">Juegos</v-tab>
       <v-tab value="consolas">Consolas</v-tab>
       <v-tab value="segundaMano">Segunda Mano</v-tab>
+      <v-tab value="generos">Géneros</v-tab>
+      <v-tab value="plataformas">Plataformas</v-tab>
     </v-tabs>
 
     <v-window v-model="tab" class="mt-4">
       <!-- JUEGOS -->
       <v-window-item value="juegos">
-        <DataTableComponent :headers="gameHeaders" :items="games" title="Juegos" icon="mdi-controller"
+        <DataTableComponent :headers="gameHeaders" :items="productStore.videogames" title="Juegos" icon="mdi-controller"
           add-label="Añadir juego" search-key="name" :on-add="añadirJuego" :on-edit="editarJuego"
-          :on-delete="eliminarJuego" />
+          :on-delete="deleteVideogame" />
 
       </v-window-item>
 
       <!-- CONSOLAS -->
       <v-window-item value="consolas">
-        <DataTableComponent :headers="consoleHeaders" :items="consoles" title="Consolas" icon="mdi-controller"
-          add-label="Añadir consola" search-key="name" :on-add="añadirConsola" :on-edit="editarConsola"
-          :on-delete="eliminarConsola" />
+        <DataTableComponent :headers="consoleHeaders" :items="productStore.consoles" title="Consolas"
+          icon="mdi-controller" add-label="Añadir consola" search-key="name" :on-add="añadirConsola"
+          :on-edit="editarConsola" :on-delete="eliminarConsola" />
       </v-window-item>
 
       <!-- SEGUNDA MANO -->
       <v-window-item value="segundaMano">
-        
+
         <v-data-table :headers="usedHeaders" :items="usedProducts" class="elevation-1" item-value="id">
           <template #top>
             <v-toolbar flat>
@@ -133,10 +202,26 @@ const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name
           </template>
 
           <template #item.actions="{ item }">
-              <v-icon @click="aprobarProducto(item)">mdi-check</v-icon>
-              <v-icon  @click="rechazarProducto(item)">mdi-close</v-icon>
+            <v-icon @click="aprobarProducto(item)">mdi-check</v-icon>
+            <v-icon @click="rechazarProducto(item)">mdi-close</v-icon>
           </template>
         </v-data-table>
+      </v-window-item>
+
+      <!-- GENEROS -->
+      <v-window-item value="generos">
+        <DataTableComponent :headers="genderHeaders" :items="genderStore.genders" title="Géneros" icon="mdi-controller"
+          add-label="Añadir género" search-key="name" :on-add="añadirGenero" :on-edit="editarGenero"
+          :on-delete="eliminarGenero" />
+
+      </v-window-item>
+      <!-- PLATAFORMAS -->
+      <v-window-item value="plataformas">
+        <DataTableComponent :headers="platformHeaders" :items="platformStore.platforms" title="Plataformas"
+          icon="mdi-controller" add-label="Añadir plataforma" search-key="name"
+          :filter-fields="['name', 'brand', 'description']" :on-add="añadirPlataforma" :on-edit="editarPlataforma"
+          :on-delete="eliminarPlataforma" />
+
       </v-window-item>
     </v-window>
   </v-container>

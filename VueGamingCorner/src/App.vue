@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HeaderComponent from '@/components/HeaderComponent.vue'
+import HeaderComponent from '@/components/Header/HeaderComponent.vue'
 </script>
 
-<template>
+<template >
+<div id="App1">
+
   <HeaderComponent id="Header" />
   <div class="bg-background" id="App">
     <RouterView />
   </div>
+</div>
 </template>
 
 <style lang="scss">
 $HeaderHeight: 90px;
 
-#App {
-  min-height: calc(100vh - $HeaderHeight);
-  //min-height: calc(100vh - $HeaderHeight);
+#App1{
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr;
 }
 
 #Header {

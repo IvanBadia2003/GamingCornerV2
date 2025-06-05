@@ -46,6 +46,8 @@ import {
     ArcElement, RadarController,
     CategoryScale, LinearScale, RadialLinearScale
 } from 'chart.js'
+import { computed, onMounted } from 'vue'
+import { useChartStore } from '@/stores/ChartStore'
 
 ChartJS.register(
     Title, Tooltip, Legend,
@@ -54,60 +56,61 @@ ChartJS.register(
     CategoryScale, LinearScale, RadialLinearScale
 )
 
-const kpis = [
-    { title: 'Ventas hoy', value: '1.250 €', icon: 'mdi-cash' },
-    { title: 'Pedidos hoy', value: '47', icon: 'mdi-package-variant' },
-    { title: 'Ticket medio', value: '135 €', icon: 'mdi-chart-pie' },
-    { title: 'Devoluciones', value: '3', icon: 'mdi-backup-restore' },
-]
+const chartStore = useChartStore()
+
+onMounted(() => {
+chartStore.loadAllCharts()
+
+})
 
 const chartOptions = {
     responsive: true,
     maintainAspectRatio: true,
     plugins: {
-        legend: { position: 'top' as const, labels: { color: '#000' } },
+        legend: { position: 'top' as const, labels: { color: '#fff' } },
         title: { display: false },
     },
     scales: {
-        x: { ticks: { color: '#000' } },
-        y: { beginAtZero: true, ticks: { color: '#000' } },
+        x: { ticks: { color: '#fff' } },
+        y: { beginAtZero: true, ticks: { color: '#fff' } },
     },
 } 
 
-const barData = {
-    labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-    datasets: [
-        {
-            label: 'Ingresos (€)',
-            data: [1200, 900, 1300, 800, 1500, 1000, 1400],
-            backgroundColor: '#3f51b5',
-            borderRadius: 5,
-        },
-    ],
-}
+const barData = computed(() => ({
+  labels: chartStore.barChartData.labels,
+  datasets: [
+    {
+      label: 'Ingresos (€)',
+      data: chartStore.barChartData.data,
+      backgroundColor: '#3f51b5',
+      borderRadius: 5,
+    },
+  ],
+}));
 
-const lineData = {
-    labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+const lineData = computed(() => ({
+    labels: chartStore.lineChartData.labels,
     datasets: [
         {
             label: 'Pedidos',
-            data: [110, 95, 130, 120],
+            data: chartStore.lineChartData.data,
             borderColor: '#ff9800',
             fill: false,
             tension: 0.4,
         },
     ],
-}
+}));
 
-const pieData = {
-    labels: ['PlayStation', 'Xbox', 'PC', 'Nintendo'],
+
+const pieData = computed(() => ({
+    labels: chartStore.pieChartData.labels,
     datasets: [
         {
-            data: [35, 25, 20, 20],
+            data: chartStore.pieChartData.data,
             backgroundColor: ['#3f51b5', '#4caf50', '#ff9800', '#e91e63'],
         },
     ],
-}
+}));
 
 const radarData = {
     labels: ['Ventas', 'Envíos', 'Reseñas', 'Reembolsos', 'Soporte'],
@@ -127,19 +130,7 @@ const radarData = {
     ],
 }
 
-const headers = [
-    { text: 'ID Pedido', value: 'id' },
-    { text: 'Cliente', value: 'client' },
-    { text: 'Fecha', value: 'date' },
-    { text: 'Total', value: 'total' },
-    { text: 'Estado', value: 'status' },
-]
 
-const orders = [
-    { id: '#001', client: 'Mario R.', date: '01/05/2025', total: '69,90 €', status: 'Pagado' },
-    { id: '#002', client: 'Laura V.', date: '01/05/2025', total: '129,99 €', status: 'Enviado' },
-    { id: '#003', client: 'Carlos T.', date: '30/04/2025', total: '49,95 €', status: 'Pendiente' },
-]
 </script>
 
 <style scoped>
