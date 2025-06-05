@@ -18,4 +18,20 @@ public interface IOrderHeaderRepository
     /// <returns></returns>
     public OrderHeaderDTO GetById(int Id);
 
+    /// <summary>
+    /// Obtener todos los videojuegos que ha comprado un usuario
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public List<Videogame> GetPurchasedVideogamesByUser(int userId);
+
+
+    /// <summary>
+    /// Obtener estadísticas de compra del usuario
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public UserPurchaseStatsDTO GetUserPurchaseStats(int userId);
+
+
 }

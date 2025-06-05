@@ -7,6 +7,7 @@ using System.Data;
 using GamingCorner.Data;
 using Microsoft.EntityFrameworkCore;
 using GamingCorner.Models.DTOs.ProductDTOs;
+using System.Threading.Tasks;
 
 public class OrderHeaderEFRepository : IOrderHeaderRepository
 {
@@ -38,7 +39,7 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
                 Id = v.Id,
                 UserId = v.UserId,
                 BillingAddress = v.BillingAddress,
-                CreatedAt = v.CreatedAt, 
+                CreatedAt = v.CreatedAt,
                 OrderNumber = v.OrderNumber,
                 PaymentMethod = v.PaymentMethod
 
@@ -77,11 +78,22 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
     public List<OrderHeaderDTO> GetByUserId(int userId)
     {
 
-        // Obtenemos el videojuego incluyendo su producto
         var orderHeader = _context.OrderHeaders
             .Where(orderHeader => orderHeader.UserId == userId)
             .Include(o => o.OrderLines)
+                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.Videogame)
+            .Include(o => o.OrderLines)
+                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.Console)
+            .Include(o => o.OrderLines)
+                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.SecondHandProduct)
+            .Include(o => o.OrderLines)
+                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.Platform)
             .ToList();
+
 
         // si existe el juego
         if (orderHeader != null)
@@ -95,7 +107,7 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
             return null;
         }
     }
-    
+
     /// <summary>
     /// Obtenemos la una cabecera de pedido por su id
     /// </summary>
@@ -173,4 +185,68 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
         _context.SaveChanges();
     }
 
+    public List<Videogame> GetPurchasedVideogamesByUser(int userId)
+    {
+        return _context.OrderHeaders
+            .Where(o => o.UserId == userId)
+            .SelectMany(o => o.OrderLines)
+            .Where(ol => ol.Product.Videogame != null)
+            .Select(ol => ol.Product.Videogame)
+            .Distinct()
+            .ToList();
+    }
+
+    public UserPurchaseStatsDTO GetUserPurchaseStats(int userId)
+    {
+        var orders = _context.OrderHeaders
+            .Where(o => o.UserId == userId)
+            .Include(o => o.OrderLines)
+                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.Videogame)
+            .Include(o => o.OrderLines)
+                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.Console)
+            .Include(o => o.OrderLines)
+                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.SecondHandProduct)
+            .ToList();
+
+        var stats = new UserPurchaseStatsDTO();
+
+        foreach (var order in orders)
+        {
+            foreach (var line in order.OrderLines)
+            {
+                var product = line.Product;
+
+                if (product.Videogame != null)
+                {
+                    stats.TotalVideogames++;
+                    stats.TotalSavedOnVideogames += Math.Round(product.Videogame.Price - line.Price, 2);
+                }
+                else if (product.Console != null)
+                {
+                    stats.TotalConsoles++;
+                    stats.TotalSavedOnConsoles += Math.Round(product.Console.Price - line.Price, 2);
+                }
+                else if (product.SecondHandProduct != null)
+                {
+                    stats.TotalSecondHandProducts++;
+                }
+            }
+        }
+
+        // ➕ Añadir estadísticas de productos en venta por el usuario
+        var secondHandProducts = _context.SecondHandProducts
+            .Where(p => p.UserId == userId)
+            .ToList();
+
+        stats.TotalProductsOnSale = secondHandProducts.Count;
+        stats.CheckedProductsOnSale = secondHandProducts.Count(p => p.IsChecked);
+        stats.UncheckedProductsOnSale = secondHandProducts.Count(p => !p.IsChecked);
+
+        return stats;
+    }
+
 }
+

@@ -9,21 +9,26 @@ namespace GamingCorner.Controllers;
 [Route("[controller]")]
 public class SecondHandProductController : ControllerBase
 {
-    private readonly ISecondHandProductService _productService;
+    private readonly ISecondHandProductService _secondHandProductService;
 
-    public SecondHandProductController(ISecondHandProductService productService)
+    public SecondHandProductController(ISecondHandProductService secondHandProductService)
     {
-        _productService = productService;
+        _secondHandProductService = secondHandProductService;
     }
 
     [HttpGet]
-    public ActionResult<List<SecondHandProductDTO>> GetAll() => _productService.GetAll();
+    public ActionResult<List<SecondHandProductDTO>> GetAll() => _secondHandProductService.GetAll();
+    
+    [HttpGet]
+    [Route("Checked")]
+
+    public ActionResult<List<SecondHandProductDTO>> GetAllChecked() => _secondHandProductService.GetAllChecked();
 
     [HttpGet]
     [Route("{id}")]
     public ActionResult<SecondHandProductDTO> Get(int id)
     {
-        var product = _productService.Get(id);
+        var product = _secondHandProductService.Get(id);
 
         if (product == null)
         {
@@ -42,7 +47,7 @@ public class SecondHandProductController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        _productService.Add(productCreateDTO);
+        _secondHandProductService.Add(productCreateDTO);
         return Ok();
     }
 
@@ -56,7 +61,31 @@ public class SecondHandProductController : ControllerBase
 
         try
         {
-           _productService.Update(id, productUpdateDTO);
+            _secondHandProductService.Update(id, productUpdateDTO);
+           return Ok();
+        }
+        catch (KeyNotFoundException)
+        {
+           return NotFound();
+        }
+        catch (Exception ex)
+        {
+           return BadRequest(ex.Message);
+        }
+    }
+    
+    
+    [HttpPut("{id}/Checked")]
+    public IActionResult CangeStatus(int id)
+    {
+        if (!ModelState.IsValid)
+        {
+           return BadRequest(ModelState);
+        }
+
+        try
+        {
+            _secondHandProductService.CangeStatus(id);
            return Ok();
         }
         catch (KeyNotFoundException)
@@ -73,12 +102,12 @@ public class SecondHandProductController : ControllerBase
     [Authorize(Roles = "Admin")]
     public IActionResult Delete(int id)
     {
-        var product = _productService.Get(id);
+        var product = _secondHandProductService.Get(id);
 
         if (product is null)
             return NotFound();
 
-        _productService.Delete(id);
+        _secondHandProductService.Delete(id);
 
         return NoContent();
     }

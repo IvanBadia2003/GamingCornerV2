@@ -98,6 +98,23 @@ namespace GamingCorner.Business
                 };
 
             }
+            
+            // Si el producto es un producto de segunda mano
+            if (product.SecondHandProduct != null)
+            {
+                // Mapeamos las propiedades al DTO y lo devolvemos
+                return new SecondHandProductDTO
+                {
+                    Id = product.Id,
+                    Description = product.SecondHandProduct.Description,
+                    ImageURL = product.SecondHandProduct.ImageURL,
+                    Name = product.SecondHandProduct.Name,
+                    Price = product.SecondHandProduct.Price,
+                    User = product.SecondHandProduct.User.ToUserDTO(),
+                    ProductId = product.SecondHandProduct.ProductId
+                };
+
+            }
 
             return null;
         }

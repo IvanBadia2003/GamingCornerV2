@@ -8,23 +8,26 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 public class SecondHandProductService : ISecondHandProductService
 {
 
-    private readonly ISecondHandProductRepository _productRepository;
+    private readonly ISecondHandProductRepository _secondHandProductRepository;
+    private readonly IProductEFRepository _productRepository;
 
 
-    public SecondHandProductService(ISecondHandProductRepository productRepository)
+
+    public SecondHandProductService(ISecondHandProductRepository secondHandProductRepository, IProductEFRepository productRepository)
     {
+        _secondHandProductRepository = secondHandProductRepository;
         _productRepository = productRepository;
 
     }
     public List<SecondHandProductDTO> GetAll()
     {
-        var products = _productRepository.GetAll();
+        var products = _secondHandProductRepository.GetAll();
         return products;
     }
 
     public SecondHandProductDTO Get(int id)
     {
-        var product = _productRepository.Get(id);
+        var product = _secondHandProductRepository.Get(id);
         if (product == null)
         {
             throw new KeyNotFoundException($"Product con Id {id} no encontrada.");
@@ -36,14 +39,32 @@ public class SecondHandProductService : ISecondHandProductService
     //public void Add(int productId, SecondHandProductCreateDTO productCreateDTO)
     public void Add(SecondHandProductCreateDTO productCreateDTO)
     {
-        var product = new SecondHandProduct();
-        var mappedProduct = product.mapFromCreateDto(productCreateDTO);
-        _productRepository.Add(mappedProduct);
+        //Inicializo el produtco
+        var product = new Product()
+        {
+            Sales = 0
+        };
+
+        //Creo el producto
+        var entityProduct = _productRepository.Add(product);
+
+        //Inicializo el producto de segunda mano
+        var secondHandProduct = new SecondHandProduct();
+
+        //Mapeo el producto de segunda mano
+        var mappedsecondHandProduct = secondHandProduct.mapFromCreateDto(productCreateDTO);
+
+        //Le añado el id del producto al producto de segunda mano
+        mappedsecondHandProduct.ProductId = entityProduct.Id;
+        mappedsecondHandProduct.IsChecked= false;
+
+        //Creo el producto de segunda mano
+        _secondHandProductRepository.Add(mappedsecondHandProduct);
     }
 
     public void Update(int id, SecondHandProductUpdateDTO productUpdateDTO)
     {
-        var productDto = _productRepository.Get(id);
+        var productDto = _secondHandProductRepository.Get(id);
         if(productDto == null)
         {
             throw new KeyNotFoundException($"Product con Id {id} no encontrada.");
@@ -51,12 +72,22 @@ public class SecondHandProductService : ISecondHandProductService
 
         var product = productDto.ToProduct();
         //product.Available = productUpdateDTO.Available;
-        _productRepository.Update(product);
+        _secondHandProductRepository.Update(product);
     }
 
     public void Delete(int id)
     {
-        _productRepository.Delete(id);
+        _secondHandProductRepository.Delete(id);
+    }
+
+    public void CangeStatus(int id)
+    {
+        _secondHandProductRepository.CangeStatus(id);
+    }
+
+    public List<SecondHandProductDTO> GetAllChecked()
+    {
+        return _secondHandProductRepository.GetAllChecked();
     }
 }
 

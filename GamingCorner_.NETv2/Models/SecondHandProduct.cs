@@ -33,6 +33,11 @@ public class SecondHandProduct
     public int ProductId { get; set; }
     public Product Product { get; set; }
 
+    [ForeignKey("User")]
+
+    public int UserId { get; set; }
+    public User User { get; set; }
+
     // public List<VideogameGender> ListVideogameGender { get; set; }
     //public List<Transaction> Transactions { get; set; }
 
@@ -40,18 +45,15 @@ public class SecondHandProduct
     public SecondHandProduct() { }
 
     //public SecondHandProduct(int id, string name, string description, bool isChecked, decimal price, string principalImageURL, int stock, int discount, DateTime releaseDate)
-    public SecondHandProduct(string name, string description, bool isChecked, decimal price, string? imageURL, DateTime releaseDate)
+    public SecondHandProduct(string name, string description, bool isChecked, decimal price, string imageURL, DateTime releaseDate, int userId)
     {
-        //Id = id;
         Name = name;
         Description = description;
-        //Discount = discount;
         ReleaseDate = releaseDate;
-        //Stock = stock;
-        //Available = available;
         Price = price;
         IsChecked = isChecked;
         ImageURL = imageURL;
+        UserId = userId;
     }
 
     //public SecondHandProduct mapFromCreateDto(int productId, SecondHandProductCreateDTO productCreateDTO)
@@ -64,16 +66,29 @@ public class SecondHandProduct
         }
 
         return new SecondHandProduct(
-            //productId,
             productCreateDTO.Name,
             productCreateDTO.Description,
-            productCreateDTO.isChecked,
+            IsChecked = false,
             productCreateDTO.Price,
-            //productCreateDTO.Available,
             productCreateDTO.ImageURL,
-            //productCreateDTO.Stock,
-            //productCreateDTO.Discount,
-            productCreateDTO.ReleaseDate
+            productCreateDTO.ReleaseDate,
+            productCreateDTO.UserId
+
         );        
     }
+
+    public SecondHandProductDTO ToSecondHandProductDTO()
+    {
+        return new SecondHandProductDTO
+        {
+            Description = Description,
+            Id = Id,
+            ImageURL = ImageURL,
+            Name = Name,
+            Price = Price,
+            ProductId = ProductId,
+            User = User.ToUserDTO(),
+        };
+    }
+
 }

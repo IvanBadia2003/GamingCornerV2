@@ -5,6 +5,7 @@ using GamingCorner.Business;
 using GamingCorner.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using GamingCorner.Models.DTOs.ProductDTOs;
+using GamingCorner.Models.DTOs.VideogameDTOs;
 
 public class OrderHeaderService : IOrderHeaderService
 {
@@ -45,6 +46,8 @@ public class OrderHeaderService : IOrderHeaderService
     {
         var orderHeaders = _orderHeaderRepository.GetByUserId(userId);
 
+
+
         return orderHeaders;
     }
 
@@ -54,20 +57,21 @@ public class OrderHeaderService : IOrderHeaderService
     /// A�adir videojuego
     /// </summary>
     /// <param name="videogameCreateDTO"></param>
-    public void Add(OrderHeaderCreateDTO orderHeaderCreateDTO)
+    public List<VideogamePurchaseDTO> Add(OrderHeaderCreateDTO orderHeaderCreateDTO)
     {
         var userBasket = _basketRepository.Get(orderHeaderCreateDTO.UserId);
         var orderHeader = _orderHeaderRepository.Add(orderHeaderCreateDTO.ToOrderHeaderEntite());
 
         foreach (var item in userBasket)
         {
+
             OrderLine orderLine = new OrderLine()
             {
-                CreatedAt = orderHeader.CreatedAt,
-                DigitalCode = OrderLine.GenerateAlphanumericCode(12),
+                CreatedAt =  orderHeader.CreatedAt,
+                DigitalCode = item.Product.Videogame != null ? OrderLine.GenerateAlphanumericCode(12) : null,
                 OrderHeaderId = orderHeader.Id,
                 ProductId = item.Product.Id,
-                Price = item.Product.Price.Value * (1 - item.Product.Discount.Value / 100),
+                Price = Math.Round(item.Product.Price * (1 - (item.Product.Discount / 100m)), 2),
                 ProductType = item.Product.Videogame != null ? "Juego" : item.Product.Console != null ? "Consola" : "Segunda mano"
             };
             _orderLineRepository.Add(orderLine);
@@ -78,6 +82,12 @@ public class OrderHeaderService : IOrderHeaderService
         }
 
         _basketRepository.DeleteByUser(orderHeaderCreateDTO.UserId);
+
+        return orderHeader.OrderLines.Where(ol => ol.Product.Videogame != null).Select(ol => new VideogamePurchaseDTO
+        {
+            DigitalCode = ol.DigitalCode,
+            Name = ol.Product.Videogame.Name
+        }).ToList();
 
     }
 
@@ -114,6 +124,18 @@ public class OrderHeaderService : IOrderHeaderService
         }
         return orderHeader;
     }
+
+    public List<VideogameDTO> GetPurchasedVideogamesByUser(int userId)
+    {
+        List<Videogame> videogamsEntitie = _orderHeaderRepository.GetPurchasedVideogamesByUser(userId);
+        return videogamsEntitie.Select(v => v.mapToReadDto()).ToList();
+    }
+
+    public UserPurchaseStatsDTO GetUserPurchaseStats(int userId)
+    {
+        return _orderHeaderRepository.GetUserPurchaseStats(userId);
+    }
+
 }
 
 

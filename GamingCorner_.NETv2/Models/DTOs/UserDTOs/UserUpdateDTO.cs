@@ -25,8 +25,8 @@ public class UserUpdateDTO
 
     public string? PhoneNumber { get; set; }
 
-    public RolEnum Rol { get; set; }
-    public UserStateEnum State { get; set; }
+    public int? Rol { get; set; }
+    public int? State { get; set; }
 
     public string Avatar { get; set; }
 
@@ -39,8 +39,8 @@ public class UserUpdateDTO
             Email = this.Email,
             Password = this.Password,
             PhoneNumber = this.PhoneNumber,
-            Rol = this.Rol,
-            State = this.State,
+            Rol = (RolEnum)this.Rol,
+            State = (UserStateEnum)this.State,
             Avatar = this.Avatar
 
         };

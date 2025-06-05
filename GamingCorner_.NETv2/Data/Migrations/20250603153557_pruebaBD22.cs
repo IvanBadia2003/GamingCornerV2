@@ -5,22 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GamingCorner.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class pruebaBD22 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Baskets",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Baskets", x => new { x.UserId, x.ProductId });
-                });
-
             migrationBuilder.CreateTable(
                 name: "Genders",
                 columns: table => new
@@ -63,18 +51,11 @@ namespace GamingCorner.Data.Migrations
                     Rol = table.Column<int>(type: "int", nullable: false),
                     State = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BasketProductId = table.Column<int>(type: "int", nullable: true),
-                    BasketUserId = table.Column<int>(type: "int", nullable: true)
+                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Users_Baskets_BasketUserId_BasketProductId",
-                        columns: x => new { x.BasketUserId, x.BasketProductId },
-                        principalTable: "Baskets",
-                        principalColumns: new[] { "UserId", "ProductId" });
                 });
 
             migrationBuilder.CreateTable(
@@ -84,18 +65,11 @@ namespace GamingCorner.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Sales = table.Column<int>(type: "int", nullable: true),
-                    PlatformId = table.Column<int>(type: "int", nullable: true),
-                    BasketProductId = table.Column<int>(type: "int", nullable: true),
-                    BasketUserId = table.Column<int>(type: "int", nullable: true)
+                    PlatformId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_Baskets_BasketUserId_BasketProductId",
-                        columns: x => new { x.BasketUserId, x.BasketProductId },
-                        principalTable: "Baskets",
-                        principalColumns: new[] { "UserId", "ProductId" });
                     table.ForeignKey(
                         name: "FK_Products_Platforms_PlatformId",
                         column: x => x.PlatformId,
@@ -122,6 +96,30 @@ namespace GamingCorner.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Baskets",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Baskets", x => new { x.UserId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_Baskets_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Baskets_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +151,60 @@ namespace GamingCorner.Data.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Favourites",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    DateAdd = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Favourites", x => new { x.UserId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_Favourites_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Favourites_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -261,26 +313,26 @@ namespace GamingCorner.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "BasketProductId", "BasketUserId", "PlatformId", "Sales" },
+                table: "Users",
+                columns: new[] { "UserId", "Address", "Admin", "Avatar", "DateCreated", "Email", "Name", "Password", "PhoneNumber", "Rol", "State" },
                 values: new object[,]
                 {
-                    { 1, null, null, null, 50 },
-                    { 2, null, null, null, 44 },
-                    { 3, null, null, null, 22 },
-                    { 4, null, null, null, 4 },
-                    { 5, null, null, null, 141 },
-                    { 6, null, null, null, 967 }
+                    { 1, "C/ La Lectura", true, "", new DateTime(2025, 6, 3, 0, 0, 0, 0, DateTimeKind.Local), "diego@gmail.com", "Diego", "12345", "601112734", 1, 1 },
+                    { 2, "Avda. San Juan de la Peña", true, "", new DateTime(2025, 6, 3, 0, 0, 0, 0, DateTimeKind.Local), "ivan@gmail.com", "Ivan", "12345", "123456789", 1, 1 },
+                    { 3, "El Actur", false, "", new DateTime(2025, 6, 3, 0, 0, 0, 0, DateTimeKind.Local), "adrian@gmail.com", "Adrian", "00000", "987654321", 1, 1 }
                 });
 
             migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "UserId", "Address", "Admin", "Avatar", "BasketProductId", "BasketUserId", "DateCreated", "Email", "Name", "Password", "PhoneNumber", "Rol", "State" },
+                table: "Products",
+                columns: new[] { "Id", "PlatformId", "Sales" },
                 values: new object[,]
                 {
-                    { 1, "C/ La Lectura", true, "", null, null, new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Local), "diego@gmail.com", "Diego", "12345", "601112734", 1, 1 },
-                    { 2, "Avda. San Juan de la Peña", true, "", null, null, new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Local), "ivan@gmail.com", "Ivan", "12345", "123456789", 1, 1 },
-                    { 3, "El Actur", false, "", null, null, new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Local), "adrian@gmail.com", "Adrian", "00000", "987654321", 1, 1 }
+                    { 1, 1, 50 },
+                    { 2, 2, 44 },
+                    { 3, 4, 22 },
+                    { 4, 5, 4 },
+                    { 5, 1, 141 },
+                    { 6, 6, 967 }
                 });
 
             migrationBuilder.InsertData(
@@ -299,10 +351,20 @@ namespace GamingCorner.Data.Migrations
                 values: new object[] { 3, "RPG ambientado en el mundo de Harry Potter", "Portkey Games", 10, "Warner Bros. Games", "Hogwarts Legacy", 16, 49.99m, "https://upload.wikimedia.org/wikipedia/en/7/76/Hogwarts_Legacy_cover.jpg", 3, new DateTime(2023, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Intel Core i5-6600 / AMD Ryzen 5 1400", "16 GB RAM, GTX 1070 / RX Vega 56", 80 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Baskets_ProductId",
+                table: "Baskets",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Consoles_ProductId",
                 table: "Consoles",
                 column: "ProductId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Favourites_ProductId",
+                table: "Favourites",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderHeaders_UserId",
@@ -310,25 +372,25 @@ namespace GamingCorner.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_BasketUserId_BasketProductId",
-                table: "Products",
-                columns: new[] { "BasketUserId", "BasketProductId" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Products_PlatformId",
                 table: "Products",
                 column: "PlatformId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_ProductId",
+                table: "Reviews",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SecondHandProducts_ProductId",
                 table: "SecondHandProducts",
                 column: "ProductId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_BasketUserId_BasketProductId",
-                table: "Users",
-                columns: new[] { "BasketUserId", "BasketProductId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_VideogameGenders_GenderId",
@@ -345,10 +407,19 @@ namespace GamingCorner.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Baskets");
+
+            migrationBuilder.DropTable(
                 name: "Consoles");
 
             migrationBuilder.DropTable(
+                name: "Favourites");
+
+            migrationBuilder.DropTable(
                 name: "OrderHeaders");
+
+            migrationBuilder.DropTable(
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "SecondHandProducts");
@@ -367,9 +438,6 @@ namespace GamingCorner.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Products");
-
-            migrationBuilder.DropTable(
-                name: "Baskets");
 
             migrationBuilder.DropTable(
                 name: "Platforms");

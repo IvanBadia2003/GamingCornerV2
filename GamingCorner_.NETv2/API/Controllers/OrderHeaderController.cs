@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using GamingCorner.Models.DTOs.ProductDTOs;
+using GamingCorner.Models.DTOs.VideogameDTOs;
 
 namespace GamingCorner.Controllers;
 
@@ -24,10 +25,32 @@ public class OrderHeaderController : ControllerBase
     public ActionResult<List<OrderHeaderDTO>> GetAll() => _orderHeaderService.GetAll();
 
     [HttpGet]
+    [Route("VideogamePurchased/User/{id}")]
+
+    public ActionResult<List<VideogameDTO>> GetPurchasedVideogamesByUser(int id) => _orderHeaderService.GetPurchasedVideogamesByUser(id);
+
+    [HttpGet]
     [Route("User/{id}")]
     public ActionResult<List<OrderHeaderDTO>> GetByUserId(int id)
     {
         var orderHeader = _orderHeaderService.GetByUserId(id);
+
+        if (orderHeader == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            return orderHeader;
+        }
+    }
+    
+    
+    [HttpGet]
+    [Route("UserStats/{id}")]
+    public ActionResult<UserPurchaseStatsDTO> GetUserPurchaseStats(int id)
+    {
+        var orderHeader = _orderHeaderService.GetUserPurchaseStats(id);
 
         if (orderHeader == null)
         {
@@ -49,8 +72,8 @@ public class OrderHeaderController : ControllerBase
         }
         try
         {
-            _orderHeaderService.Add(orderHeaderCreateDTO);
-            return Ok();
+            List<VideogamePurchaseDTO> videogamePurchaseDTOs = _orderHeaderService.Add(orderHeaderCreateDTO);
+            return Ok(videogamePurchaseDTOs);
         }
         catch (InvalidOperationException ex)
         {

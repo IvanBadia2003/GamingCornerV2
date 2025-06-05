@@ -46,8 +46,18 @@ using GamingCorner.Models;
     {
         var basket = new Basket();
         var mappedBasket = basket.mapFromCreateDto(basketCreateDTO);
-        _basketRepository.Add(mappedBasket);
+
+        try
+        {
+            _basketRepository.Add(mappedBasket);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Puedes relanzarla o devolverla como mensaje más específico
+            throw new InvalidOperationException("No se pudo añadir el producto al carrito: " + ex.Message);
+        }
     }
+
 
     // public void Update(int id, VideogameUpdateDTO videogameUpdateDTO)
     // {

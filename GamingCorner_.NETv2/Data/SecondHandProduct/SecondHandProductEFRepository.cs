@@ -20,21 +20,29 @@ public class SecondHandProductEFRepository : ISecondHandProductRepository
 
     public List<SecondHandProductDTO> GetAll()
     {
-        var products = _context.SecondHandProducts.Include(p => p.Product).ToList();
-            //.Where(p => p.Available == true)
+        var products = _context.SecondHandProducts.Include(p => p.Product).Include(p => p.User).ToList();
+        //.Where(p => p.Available == true)
 
         if (products != null)
         {
-            var productDto = products.Select(p => new SecondHandProductDTO
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                //Available = p.Available,
-                Price = p.Price,
-                ImageURL = p.ImageURL,
-            }).ToList();
-            return productDto;
+
+            return products.Select(r => r.ToSecondHandProductDTO()).ToList();
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    public List<SecondHandProductDTO> GetAllChecked()
+    {
+        var products = _context.SecondHandProducts.Where(p => p.IsChecked == true).Include(p => p.Product).Include(p => p.User).ToList();
+        //.Where(p => p.Available == true)
+
+        if (products != null)
+        {
+
+            return products.Select(r => r.ToSecondHandProductDTO()).ToList();
         }
         else
         {
@@ -44,13 +52,7 @@ public class SecondHandProductEFRepository : ISecondHandProductRepository
 
     public void Add(SecondHandProduct product)
     {
-        //Primero se crea el producto
-        var producto = new Product();
-        _context.Products.Add(producto);
-        SaveChanges();
 
-        //Segundo se crea el producto de segunda mano con el id del producto
-        product.ProductId = producto.Id;
         _context.SecondHandProducts.Add(product);
         SaveChanges();
     }
@@ -60,21 +62,14 @@ public class SecondHandProductEFRepository : ISecondHandProductRepository
         var product = _context.SecondHandProducts
             .Where(product => product.Id == id)
             .Include(p => p.Product)
+            .Include(p => p.User)
             //.Where(p => p.Available == true)
             .FirstOrDefault();
 
         if (product != null)
         {
-            var productDTO = new SecondHandProductDTO
-            {
-                ProductId = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                //Available =product.Available,
-                Price = product.Price,
-                ImageURL = product.ImageURL,
-            };
-            return productDTO;
+
+            return product.ToSecondHandProductDTO();
         }
         else
         {
@@ -113,9 +108,28 @@ public class SecondHandProductEFRepository : ISecondHandProductRepository
 
     }
 
+    public void CangeStatus(int id)
+    {
+        var product = _context.SecondHandProducts
+                    .Where(product => product.Id == id)
+                    .Include(p => p.Product)
+                    .Include(p => p.User)
+                    //.Where(p => p.Available == true)
+                    .FirstOrDefault();
+
+        if (product == null)
+        {
+            throw new KeyNotFoundException("Product not found.");
+        }
+
+        product.IsChecked = !product.IsChecked;
+        SaveChanges();
+    }
+
     public void SaveChanges()
     {
         _context.SaveChanges();
     }
+
 
 }

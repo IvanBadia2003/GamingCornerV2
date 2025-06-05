@@ -5,7 +5,7 @@ using System.Reflection.Metadata;
 
 namespace GamingCorner.Models;
 
-public class SecondHandProductDTO
+public class SecondHandProductDTO : ProductDTOBase
 {
     public int ProductId { get; set; }
     public int Id { get; set; }
@@ -21,7 +21,9 @@ public class SecondHandProductDTO
         
     public string? ImageURL { get; set; }
 
-    // public List<TransactionDTO> Transactions { get; set; } 
+    public UserDTO User { get; set; }
+
+    public bool IsChecked { get; set; }
 
     public SecondHandProduct ToProduct()
     {
@@ -33,7 +35,9 @@ public class SecondHandProductDTO
             Price = this.Price,
             Description = this.Description,
             //Available = this.Available,
-            ImageURL = this.ImageURL
+            ImageURL = this.ImageURL,
+            IsChecked = this.IsChecked,
+            
         };
     }
 

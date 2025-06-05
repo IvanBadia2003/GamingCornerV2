@@ -33,12 +33,12 @@ namespace GamingCorner.Models
         /// <summary>
         /// Precio del producto
         /// </summary>
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
 
         /// <summary>
         /// Descuento del producto
         /// </summary>
-        public int? Discount { get; set; }
+        public int Discount { get; set; }
         
         /// <summary>
         /// Descuento del producto

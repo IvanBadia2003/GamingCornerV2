@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamingCorner.Data.Migrations
 {
     [DbContext(typeof(GamingCornerContext))]
-    [Migration("20250602185437_InitialCreate3")]
-    partial class InitialCreate3
+    [Migration("20250604172447_pruebaBD25")]
+    partial class pruebaBD25
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -110,6 +110,9 @@ namespace GamingCorner.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DateAdd")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("UserId", "ProductId");
 
                     b.HasIndex("ProductId");
@@ -168,10 +171,17 @@ namespace GamingCorner.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("Fecha")
+                    b.Property<string>("BillingAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Total")
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
 
                     b.Property<int?>("UserId")
@@ -182,6 +192,41 @@ namespace GamingCorner.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("OrderHeaders");
+                });
+
+            modelBuilder.Entity("GamingCorner.Models.OrderLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DigitalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderHeaderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderLines");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Platform", b =>
@@ -252,7 +297,7 @@ namespace GamingCorner.Data.Migrations
                     b.Property<int?>("PlatformId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Sales")
+                    b.Property<int>("Sales")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -300,6 +345,39 @@ namespace GamingCorner.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("GamingCorner.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("GamingCorner.Models.SecondHandProduct", b =>
                 {
                     b.Property<int>("Id")
@@ -332,10 +410,15 @@ namespace GamingCorner.Data.Migrations
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("SecondHandProducts");
                 });
@@ -393,7 +476,7 @@ namespace GamingCorner.Data.Migrations
                             Address = "C/ La Lectura",
                             Admin = true,
                             Avatar = "",
-                            DateCreated = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Local),
+                            DateCreated = new DateTime(2025, 6, 4, 0, 0, 0, 0, DateTimeKind.Local),
                             Email = "diego@gmail.com",
                             Name = "Diego",
                             Password = "12345",
@@ -407,7 +490,7 @@ namespace GamingCorner.Data.Migrations
                             Address = "Avda. San Juan de la Peña",
                             Admin = true,
                             Avatar = "",
-                            DateCreated = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Local),
+                            DateCreated = new DateTime(2025, 6, 4, 0, 0, 0, 0, DateTimeKind.Local),
                             Email = "ivan@gmail.com",
                             Name = "Ivan",
                             Password = "12345",
@@ -421,7 +504,7 @@ namespace GamingCorner.Data.Migrations
                             Address = "El Actur",
                             Admin = false,
                             Avatar = "",
-                            DateCreated = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Local),
+                            DateCreated = new DateTime(2025, 6, 4, 0, 0, 0, 0, DateTimeKind.Local),
                             Email = "adrian@gmail.com",
                             Name = "Adrian",
                             Password = "00000",
@@ -609,10 +692,30 @@ namespace GamingCorner.Data.Migrations
             modelBuilder.Entity("GamingCorner.Models.OrderHeader", b =>
                 {
                     b.HasOne("GamingCorner.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithMany("OrderHeaders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GamingCorner.Models.OrderLine", b =>
+                {
+                    b.HasOne("GamingCorner.Models.OrderHeader", "OrderHeader")
+                        .WithMany("OrderLines")
+                        .HasForeignKey("OrderHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GamingCorner.Models.Product", "Product")
+                        .WithMany("OrderLines")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("OrderHeader");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Product", b =>
@@ -625,6 +728,25 @@ namespace GamingCorner.Data.Migrations
                     b.Navigation("Platform");
                 });
 
+            modelBuilder.Entity("GamingCorner.Models.Review", b =>
+                {
+                    b.HasOne("GamingCorner.Models.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GamingCorner.Models.User", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("GamingCorner.Models.SecondHandProduct", b =>
                 {
                     b.HasOne("GamingCorner.Models.Product", "Product")
@@ -633,7 +755,15 @@ namespace GamingCorner.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("GamingCorner.Models.User", "User")
+                        .WithMany("SecondHandProducts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Videogame", b =>
@@ -666,6 +796,11 @@ namespace GamingCorner.Data.Migrations
                     b.Navigation("Videogame");
                 });
 
+            modelBuilder.Entity("GamingCorner.Models.OrderHeader", b =>
+                {
+                    b.Navigation("OrderLines");
+                });
+
             modelBuilder.Entity("GamingCorner.Models.Platform", b =>
                 {
                     b.Navigation("products");
@@ -679,6 +814,10 @@ namespace GamingCorner.Data.Migrations
 
                     b.Navigation("Favourites");
 
+                    b.Navigation("OrderLines");
+
+                    b.Navigation("Reviews");
+
                     b.Navigation("SecondHandProduct");
 
                     b.Navigation("Videogame");
@@ -689,6 +828,12 @@ namespace GamingCorner.Data.Migrations
                     b.Navigation("Baskets");
 
                     b.Navigation("Favourites");
+
+                    b.Navigation("OrderHeaders");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("SecondHandProducts");
                 });
 
             modelBuilder.Entity("GamingCorner.Models.Videogame", b =>

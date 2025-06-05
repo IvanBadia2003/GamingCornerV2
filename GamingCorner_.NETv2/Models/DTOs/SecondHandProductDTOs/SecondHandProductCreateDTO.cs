@@ -18,22 +18,6 @@ public class SecondHandProductCreateDTO
     /// </summary>
     public string Description { get; set; }
 
-
-    /// <summary>
-    /// Cantidad de stock del producto de segunda mano
-    /// </summary>
-    //public int Stock { get; set; }
-
-    /// <summary>
-    /// Cantidad de stock del producto de segunda mano
-    /// </summary>
-    public bool Available { get; set; }
-
-    /// <summary>
-    /// Porcentaje de descuento sobre el precio del producto de segunda mano
-    /// </summary>
-    //public int Discount { get; set; }
-
     /// <summary>
     /// Precio del producto de segunda mano
     /// </summary>
@@ -53,9 +37,9 @@ public class SecondHandProductCreateDTO
     public DateTime ReleaseDate { get; set; }
 
     /// <summary>
-    /// Est� revisado el producto de segunda mano
+    /// Id del usario
     /// </summary>
-    public bool isChecked{ get; set; }
+    public int UserId { get; set; }
 
 
 }

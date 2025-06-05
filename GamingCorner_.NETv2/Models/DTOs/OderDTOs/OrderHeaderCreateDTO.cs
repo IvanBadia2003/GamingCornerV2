@@ -12,7 +12,7 @@ namespace GamingCorner.Models.DTOs.ProductDTOs
         public int UserId { get; set; }
         public string? BillingAddress { get; set; }
         public DateTime CreatedAt { get; set; }
-        public PaymentMethodEnum PaymentMethod { get; set; }
+        public int PaymentMethod { get; set; }
         public OrderHeader ToOrderHeaderEntite()
         {
             return new OrderHeader
@@ -20,7 +20,7 @@ namespace GamingCorner.Models.DTOs.ProductDTOs
                 UserId = this.UserId,
                 BillingAddress = this.BillingAddress,
                 CreatedAt = this.CreatedAt,
-                PaymentMethod = this.PaymentMethod
+                PaymentMethod = (PaymentMethodEnum)this.PaymentMethod
             };
         }
     }

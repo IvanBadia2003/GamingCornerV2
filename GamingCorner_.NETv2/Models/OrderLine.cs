@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GamingCorner.Models.Enums.SystemEnum;
 
 namespace GamingCorner.Models
 {
@@ -50,7 +51,11 @@ namespace GamingCorner.Models
                 Price = this.Price,
                 ProductType = this.ProductType,
                 DigitalCode = this.DigitalCode,
-                CreatedAt = this.CreatedAt
+                CreatedAt = this.CreatedAt,
+                ProductName = this.Product.Videogame != null ? this.Product.Videogame.Name : this.Product.Console != null ? this.Product.Console.Name : this.Product.SecondHandProduct.Name,
+                ProductPlatform = this.Product.Platform.Name,
+                ProductSystem = this.Product.Platform.System.ToString()
+
             };
         }
 

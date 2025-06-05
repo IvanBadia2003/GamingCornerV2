@@ -46,7 +46,16 @@ using GamingCorner.Models;
     {
         var favourite = new Favourite();
         var mappedFavourite = favourite.mapFromCreateDto(favouriteCreateDTO);
-        _favouriteRepository.Add(mappedFavourite);
+
+        try
+        {
+            _favouriteRepository.Add(mappedFavourite);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Puedes relanzarla o devolverla como mensaje más específico
+            throw new InvalidOperationException("No se pudo añadir el producto al carrito: " + ex.Message);
+        }
     }
 
     // public void Update(int id, VideogameUpdateDTO videogameUpdateDTO)

@@ -103,6 +103,12 @@ namespace GamingCorner.Data
                 .HasForeignKey(ol => ol.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<SecondHandProduct>()
+               .HasOne(s => s.User)
+               .WithMany(u => u.SecondHandProducts)
+               .HasForeignKey(s => s.UserId)
+               .OnDelete(DeleteBehavior.Cascade);
+
             // modelBuilder.Entity<VideogameGender>()
             //     .HasOne(g => g.Gender)
             //     .WithMany(vl => vl.ListVideogameGender)
@@ -147,10 +153,10 @@ namespace GamingCorner.Data
 
             modelBuilder.Entity<Platform>()
                 .HasKey(p => new { p.PlatformId });
-            
+
             modelBuilder.Entity<OrderHeader>()
                 .HasKey(o => new { o.Id });
-            
+
             modelBuilder.Entity<OrderLine>()
                 .HasKey(o => new { o.Id });
 
@@ -186,36 +192,36 @@ namespace GamingCorner.Data
 
 
 
-            modelBuilder.Entity<User>().HasData(
-                new User { UserId = 1, Name = "Diego", Address = "C/ La Lectura", Email = "diego@gmail.com", Password = "12345", PhoneNumber = "601112734", Admin = true, Avatar = "", DateCreated = DateTime.Today, Rol = RolEnum.Admin, State = UserStateEnum.Active },
-                new User { UserId = 2, Name = "Ivan", Address = "Avda. San Juan de la Peña", Email = "ivan@gmail.com", Password = "12345", PhoneNumber = "123456789", Admin = true, Avatar = "", DateCreated = DateTime.Today, Rol = RolEnum.Admin, State = UserStateEnum.Active },
-                new User { UserId = 3, Name = "Adrian", Address = "El Actur", Email = "adrian@gmail.com", Password = "00000", PhoneNumber = "987654321", Admin = false, Avatar = "", DateCreated = DateTime.Today, Rol = RolEnum.Admin, State = UserStateEnum.Active }
- );
+ //           modelBuilder.Entity<User>().HasData(
+ //               new User { UserId = 1, Name = "Diego", Address = "C/ La Lectura", Email = "diego@gmail.com", Password = "12345", PhoneNumber = "601112734", Admin = true, Avatar = "", DateCreated = DateTime.Today, Rol = RolEnum.Admin, State = UserStateEnum.Active },
+ //               new User { UserId = 2, Name = "Ivan", Address = "Avda. San Juan de la Peña", Email = "ivan@gmail.com", Password = "12345", PhoneNumber = "123456789", Admin = true, Avatar = "", DateCreated = DateTime.Today, Rol = RolEnum.Admin, State = UserStateEnum.Active },
+ //               new User { UserId = 3, Name = "Adrian", Address = "El Actur", Email = "adrian@gmail.com", Password = "00000", PhoneNumber = "987654321", Admin = false, Avatar = "", DateCreated = DateTime.Today, Rol = RolEnum.Admin, State = UserStateEnum.Active }
+ //);
 
 
-            modelBuilder.Entity<Platform>().HasData(
-               new Platform { PlatformId = 1, Name = "Steam" },
-               new Platform { PlatformId = 2, Name = "Play Station" },
-               new Platform { PlatformId = 3, Name = "Xbox" },
-               new Platform { PlatformId = 4, Name = "Switch" },
-               new Platform { PlatformId = 5, Name = "Ubisoft" },
-               new Platform { PlatformId = 6, Name = "Epic Games" }
-            );
+ //           modelBuilder.Entity<Platform>().HasData(
+ //              new Platform { PlatformId = 1, Name = "Steam" },
+ //              new Platform { PlatformId = 2, Name = "Play Station" },
+ //              new Platform { PlatformId = 3, Name = "Xbox" },
+ //              new Platform { PlatformId = 4, Name = "Switch" },
+ //              new Platform { PlatformId = 5, Name = "Ubisoft" },
+ //              new Platform { PlatformId = 6, Name = "Epic Games" }
+ //           );
 
-            modelBuilder.Entity<Product>().HasData(
-              new Product { Id = 1, Sales = 50, PlatformId = 1 },
-              new Product { Id = 2, Sales = 44, PlatformId = 2 },
-              new Product { Id = 3, Sales = 22, PlatformId = 4 },
-              new Product { Id = 4, Sales = 4, PlatformId = 5 },
-              new Product { Id = 5, Sales = 141, PlatformId = 1 },
-              new Product { Id = 6, Sales = 967, PlatformId = 6 }
-            );
+ //           modelBuilder.Entity<Product>().HasData(
+ //             new Product { Id = 1, Sales = 50, PlatformId = 1 },
+ //             new Product { Id = 2, Sales = 44, PlatformId = 2 },
+ //             new Product { Id = 3, Sales = 22, PlatformId = 4 },
+ //             new Product { Id = 4, Sales = 4, PlatformId = 5 },
+ //             new Product { Id = 5, Sales = 141, PlatformId = 1 },
+ //             new Product { Id = 6, Sales = 967, PlatformId = 6 }
+ //           );
 
-            modelBuilder.Entity<Videogame>().HasData(
-               new Videogame { Id = 1, ProductId = 1, Name = "Elden Ring", Description = "Juego de rol y acción en mundo abierto", Price = 59.99m, Stock = 100, Discount = 0, ReleaseDate = new DateTime(2022, 2, 25), Pegi = 18, Developer = "FromSoftware", Distributor = "Bandai Namco", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/9/9c/Elden_Ring_Box_art.jpg", Requisitos1 = "Intel Core i5-8400 / AMD Ryzen 3 3300X", Requisitos2 = "12 GB RAM, GTX 1060 3GB / Radeon RX 580" },
-               new Videogame { Id = 2, ProductId = 2, Name = "God of War Ragnarök", Description = "Acción y aventura con mitología nórdica", Price = 69.99m, Stock = 75, Discount = 5, ReleaseDate = new DateTime(2022, 11, 9), Pegi = 18, Developer = "Santa Monica Studio", Distributor = "Sony Interactive Entertainment", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/9/9e/God_of_War_Ragnar%C3%B6k_cover.jpg", Requisitos1 = null, Requisitos2 = null },
-               new Videogame { Id = 3, ProductId = 3, Name = "Hogwarts Legacy", Description = "RPG ambientado en el mundo de Harry Potter", Price = 49.99m, Stock = 80, Discount = 10, ReleaseDate = new DateTime(2023, 2, 10), Pegi = 16, Developer = "Portkey Games", Distributor = "Warner Bros. Games", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/7/76/Hogwarts_Legacy_cover.jpg", Requisitos1 = "Intel Core i5-6600 / AMD Ryzen 5 1400", Requisitos2 = "16 GB RAM, GTX 1070 / RX Vega 56" }
-            );
+ //           modelBuilder.Entity<Videogame>().HasData(
+ //              new Videogame { Id = 1, ProductId = 1, Name = "Elden Ring", Description = "Juego de rol y acción en mundo abierto", Price = 59.99m, Stock = 100, Discount = 0, ReleaseDate = new DateTime(2022, 2, 25), Pegi = 18, Developer = "FromSoftware", Distributor = "Bandai Namco", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/9/9c/Elden_Ring_Box_art.jpg", Requisitos1 = "Intel Core i5-8400 / AMD Ryzen 3 3300X", Requisitos2 = "12 GB RAM, GTX 1060 3GB / Radeon RX 580" },
+ //              new Videogame { Id = 2, ProductId = 2, Name = "God of War Ragnarök", Description = "Acción y aventura con mitología nórdica", Price = 69.99m, Stock = 75, Discount = 5, ReleaseDate = new DateTime(2022, 11, 9), Pegi = 18, Developer = "Santa Monica Studio", Distributor = "Sony Interactive Entertainment", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/9/9e/God_of_War_Ragnar%C3%B6k_cover.jpg", Requisitos1 = null, Requisitos2 = null },
+ //              new Videogame { Id = 3, ProductId = 3, Name = "Hogwarts Legacy", Description = "RPG ambientado en el mundo de Harry Potter", Price = 49.99m, Stock = 80, Discount = 10, ReleaseDate = new DateTime(2023, 2, 10), Pegi = 16, Developer = "Portkey Games", Distributor = "Warner Bros. Games", PrincipalImageURL = "https://upload.wikimedia.org/wikipedia/en/7/76/Hogwarts_Legacy_cover.jpg", Requisitos1 = "Intel Core i5-6600 / AMD Ryzen 5 1400", Requisitos2 = "16 GB RAM, GTX 1070 / RX Vega 56" }
+ //           );
 
             // modelBuilder.Entity<Models.Console>().HasData(
             //    new Models.Console { Id = 1, Name = "Play Station 4", Specifications = "CPU:AMD 'Jaguar' x86-64, 8 núcleos; GPU: motor gráfico AMD de 1,84 TFLOPS basado en Radeon; Memoria:8 GB GDDR5; Almacenamiento:1 TB; Peso: Aprox. 2,1 Kg; Entrada/Salida:2 puertos de altísima velocidad USB (USB 3.1 Gen1) y 1 puerto AUX; Red:1 puerto Ethernet (10BASE-T, 100BASE-TX, 1000BASE-T) / IEEE 802.11 a/b/g/n/ac / Bluetooth® 4.0; Alimentacion:AC de 100-240 V, 50/60 Hz; Consumo de energia: 165W; Salida AV:Salida HDMI™ (compatible con salida HDR)", Price = 300, Stock = 16, PrincipalImageURL = "https://gmedia.playstation.com/is/image/SIEPDC/ps4-pro-product-thumbnail-01-en-14sep21", Brand = "Sony", Description = "Consola muy buena", Discount = 50, ProductId = 4, ReleaseDate = new DateTime(2023, 2, 10) },
@@ -252,13 +258,13 @@ namespace GamingCorner.Data
             // );
 
 
-            modelBuilder.Entity<Gender>().HasData(
-               new Gender { GenderId = 1, Name = "RPG" },
-               new Gender { GenderId = 2, Name = "Shooter" },
-               new Gender { GenderId = 3, Name = "Estrategia" },
-               new Gender { GenderId = 4, Name = "Accion" },
-               new Gender { GenderId = 5, Name = "Deportes" }
-            );
+            //modelBuilder.Entity<Gender>().HasData(
+            //   new Gender { GenderId = 1, Name = "RPG" },
+            //   new Gender { GenderId = 2, Name = "Shooter" },
+            //   new Gender { GenderId = 3, Name = "Estrategia" },
+            //   new Gender { GenderId = 4, Name = "Accion" },
+            //   new Gender { GenderId = 5, Name = "Deportes" }
+            //);
 
             // 
 
@@ -277,8 +283,8 @@ namespace GamingCorner.Data
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<Favourite> Favourites { get; set; }
-        public DbSet<Review> Reviews{ get; set; }
-        public DbSet<OrderLine> OrderLines{ get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<OrderLine> OrderLines { get; set; }
 
 
 

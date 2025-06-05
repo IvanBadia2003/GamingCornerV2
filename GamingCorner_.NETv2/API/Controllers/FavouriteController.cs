@@ -44,8 +44,23 @@ public class FavouriteController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        _favouriteService.Add(favouriteCreateDTO);
-        return Ok();
+
+        try
+        {
+            _favouriteService.Add(favouriteCreateDTO);
+            return Ok();
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Conflicto: el producto ya estaba en el carrito
+            return Conflict(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            // Otro error inesperado
+            return StatusCode(500, new { message = "Error interno del servidor", details = ex.Message });
+        }
+    
     }
 
 

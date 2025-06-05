@@ -77,6 +77,8 @@ namespace GamingCorner.Data
                     .ThenInclude(v => v.VideogameGenders)
                         .ThenInclude(vg => vg.Gender)
                 .Include(p => p.Platform)
+                .Include(p => p.SecondHandProduct)
+                    .ThenInclude(s => s.User)
                 .FirstOrDefault(p => p.Id == id);
 
             return product;

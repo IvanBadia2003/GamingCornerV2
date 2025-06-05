@@ -10,5 +10,15 @@ public interface ISecondHandProductRepository
     SecondHandProductDTO Get(int id);
     void Update(SecondHandProduct product);
     void Delete(int id);
+    /// <summary>
+    /// cambia isChecked de false a true o viceversa
+    /// </summary>
+    /// <param name="id"></param>
+    void CangeStatus(int id);
 
+    /// <summary>
+    /// Obtener todos los productos que están chequeados
+    /// </summary>
+    /// <returns></returns>
+    List<SecondHandProductDTO> GetAllChecked();
 }

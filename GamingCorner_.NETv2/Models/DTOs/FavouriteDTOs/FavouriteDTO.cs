@@ -11,7 +11,8 @@ public class FavouriteDTO
     public int UserId { get; set; }
     public ProductDTOBase Product { get; set; }
     public DateTime DateAdd { get; set; }
-    
+    public string platformName { get; set; }
+
     public Favourite ToBasket()
     {
         return new Favourite

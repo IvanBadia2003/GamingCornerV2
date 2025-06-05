@@ -41,11 +41,9 @@ public class User
     public List<Favourite> Favourites { get; set; } = new List<Favourite>();
     public List<Review> Reviews { get; set; } = new List<Review>();
     public List<OrderHeader> OrderHeaders { get; set; } = new List<OrderHeader>();
+    public List<SecondHandProduct> SecondHandProducts { get; set;  } = new List<SecondHandProduct>();
 
-    // public List<Console_> Consoles { get; set; } = new List<Console_>();
 
-    //public List<Videogame> Videogames { get; set; } = new List<Videogame>();
-    // public List<Transaction> Transactions { get; set; }
 
 
     public User() { }

@@ -19,10 +19,16 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:5173","https://7dz6xgfs-5173.uks1.devtunnels.ms")
+                          policy.WithOrigins("http://localhost:5173", "https://7dz6xgfs-5173.uks1.devtunnels.ms")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader()
                                 .AllowCredentials();
+
+                          //Para lo de diego
+                          //policy.WithOrigins()
+                          //      .AllowAnyMethod()
+                          //      .AllowAnyHeader()
+                          //      .AllowCredentials();
                       });
 });
 
@@ -100,12 +106,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Configura Kestrel para permitir HTTP
-builder.WebHost.ConfigureKestrel(options =>
-{
+builder.WebHost.ConfigureKestrel(options =>{
     options.ListenAnyIP(5000); // HTTP
     options.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps());
 });
 
+
+//Para lo de diego
+//builder.WebHost.ConfigureKestrel(options =>
+//{
+//    options.ListenAnyIP(80); // Solo HTTP
+//    // options.ListenAnyIP(443, listenOptions => listenOptions.UseHttps()); // Comentar esta línea
+//});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -44,8 +44,22 @@ public class BasketController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        _basketService.Add(basketCreateDTO);
-        return Ok();
+
+        try
+        {
+            _basketService.Add(basketCreateDTO);
+            return Ok();
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Conflicto: el producto ya estaba en el carrito
+            return Conflict(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            // Otro error inesperado
+            return StatusCode(500, new { message = "Error interno del servidor", details = ex.Message });
+        }
     }
 
 

@@ -40,9 +40,25 @@ public class BasketEFRepository : IBasketRepository
 
     public void Add(Basket basket)
     {
-        _context.Baskets.Add(basket);
-        SaveChanges();
+        try
+        {
+            _context.Baskets.Add(basket);
+            SaveChanges();
+        }
+        catch (DbUpdateException ex)
+        {
+            if (ex.InnerException?.Message.Contains("duplicate key") == true ||
+                ex.InnerException?.Message.Contains("clave duplicada") == true)
+            {
+                // Aquí puedes lanzar una excepción más clara o simplemente ignorarlo
+                throw new InvalidOperationException("Este producto ya está en el carrito del usuario.");
+            }
+
+            // Si no es por clave duplicada, relanzamos la excepción original
+            throw;
+        }
     }
+
 
     public List<BasketDTO> Get(int idUser)
     {
@@ -70,8 +86,8 @@ public class BasketEFRepository : IBasketRepository
                 Sales = b.Product.Sales,
                 PlatformId = b.Product.Platform.PlatformId,
                 Name = b.Product.Videogame?.Name ?? b.Product.Console?.Name,
-                Price = b.Product.Videogame?.Price ?? b.Product.Console?.Price,
-                Discount = b.Product.Videogame?.Discount ?? b.Product.Console?.Discount,
+                Price = b.Product.Videogame?.Price ?? b.Product.Console.Price,
+                Discount = b.Product.Videogame?.Discount ?? b.Product.Console.Discount,
                 PrincipalImageURL = b.Product.Videogame?.PrincipalImageURL ?? b.Product.Console?.PrincipalImageURL,
                 Videogame = b.Product.Videogame != null ? b.Product.Videogame.mapToReadDto() : null,
                 Console = b.Product.Console != null ? b.Product.Console.mapToReadDto() : null

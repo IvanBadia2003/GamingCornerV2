@@ -61,7 +61,8 @@ public class OrderHeader
             CreatedAt = this.CreatedAt,
             OrderNumber = this.OrderNumber,
             PaymentMethod = this.PaymentMethod,
-            OrderLines = this.OrderLines.Select(ol => ol.ToOrderLineDTO()).ToList()
+            OrderLines = this.OrderLines.Select(ol => ol.ToOrderLineDTO()).ToList(),
+            TotalPrice = this.OrderLines.Sum(ol => ol.Price)
         };
     }
 

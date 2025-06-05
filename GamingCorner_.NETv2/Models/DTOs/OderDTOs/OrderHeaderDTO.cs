@@ -16,6 +16,7 @@ namespace GamingCorner.Models
         public string OrderNumber { get; set; }
         public PaymentMethodEnum PaymentMethod { get; set; }
         public List<OrderLineDTO> OrderLines { get; set; } = new();
+        public decimal TotalPrice { get; set; }
 
         public static OrderHeader ToOrderHeaderEntite(OrderHeaderDTO dto)
         {
