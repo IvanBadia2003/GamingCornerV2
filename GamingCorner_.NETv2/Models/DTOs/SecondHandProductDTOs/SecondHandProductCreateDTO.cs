@@ -41,5 +41,13 @@ public class SecondHandProductCreateDTO
     /// </summary>
     public int UserId { get; set; }
 
+    public string? MainImage { get; set; }
+    public string? BackgroundImage { get; set; }
+    public string? ContentImages1 { get; set; }
+    public string? ContentImages2 { get; set; }
+    public string? ContentImages3 { get; set; }
+    public string? ContentImages4 { get; set; }
+
+
 
 }

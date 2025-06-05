@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata;
+using GamingCorner.Models.DTOs.ProductDTOs;
 
 namespace GamingCorner.Models;
 
@@ -47,13 +48,6 @@ public class ConsoleDTO
     /// Plataforma de la cosola
     /// </summary>
     public int PlatformId { get; set; }
-    //public int GenderId { get; set; }
-
-    /// <summary>
-    /// Imagen Principal de la consola
-    /// </summary>
-    public string? PrincipalImageURL { get; set; }
-
 
     /// <summary>
     /// Especificaciones de la consola
@@ -95,6 +89,7 @@ public class ConsoleDTO
     /// </summary>
 
     // public List<ConsoleDTO> Consoles { get; set; }Ç
+    public ProductsImagesDto ProductImages { get; set; }
 
 
     public Console ToConsole()
@@ -108,7 +103,6 @@ public class ConsoleDTO
             Stock = this.Stock,
             Discount = this.Discount,
             Price = this.Price,
-            PrincipalImageURL = this.PrincipalImageURL,
             Specifications = this.Specifications,
             ReleaseDate = this.ReleaseDate,
             Brand = this.Brand,

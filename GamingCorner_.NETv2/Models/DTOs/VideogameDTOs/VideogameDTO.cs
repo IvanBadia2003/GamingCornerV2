@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata;
+using GamingCorner.Models.DTOs.ProductDTOs;
 
 namespace GamingCorner.Models;
 
@@ -67,10 +68,7 @@ public class VideogameDTO
     /// </summary>
     public List<int> GenderId { get; set; }
 
-    /// <summary>
-    /// Imagen Principal del juego
-    /// </summary>
-    public string? PrincipalImageURL { get; set; }
+
 
     /// <summary>
     /// Fecha de lanzamiento del juego
@@ -92,6 +90,9 @@ public class VideogameDTO
     /// </summary>
     public int? Sales { get; set; }
 
+    public ProductsImagesDto ProductImages { get; set; }
+
+
     public Videogame ToVideogame()
     {
         return new Videogame
@@ -111,7 +112,6 @@ public class VideogameDTO
             ReleaseDate = this.ReleaseDate,
             //PlatformId = this.PlatformId,
             //GenderId = this.GenderId,
-            PrincipalImageURL = this.PrincipalImageURL
         };
     }
 }

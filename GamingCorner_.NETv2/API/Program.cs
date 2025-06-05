@@ -93,6 +93,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 // builder.Services.AddScoped<IIngredienteService, IngredienteService>();
 // builder.Services.AddScoped<IIngredientesRepository, IngredienteEFRepository>();
+builder.Services.AddSingleton<CloudinaryService>();
 
 // builder.Services.AddDbContext<ObraContext>(options =>
 //     options.UseSqlServer(connectionString)
@@ -110,6 +111,8 @@ builder.WebHost.ConfigureKestrel(options =>{
     options.ListenAnyIP(5000); // HTTP
     options.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps());
 });
+
+builder.Services.AddHttpClient<CloudinaryService>();
 
 
 //Para lo de diego

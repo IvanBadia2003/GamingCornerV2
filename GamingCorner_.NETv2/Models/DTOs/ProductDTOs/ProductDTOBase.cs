@@ -46,12 +46,12 @@ namespace GamingCorner.Models
         public SystemEnum? System { get; set; }
 
 
-        /// <summary>
-        /// Imagen Principal del producto
-        /// </summary>
-        public string? PrincipalImageURL { get; set; }
-        // public VideogameDTO? Videogame { get; set; }
-        // public ConsoleDTO? Console { get; set; }
+        public string? Main { get; set; }
+        public string? Background { get; set; }
+        public string? Content1 { get; set; }
+        public string? Content2 { get; set; }
+        public string? Content3 { get; set; }
+        public string? Content4 { get; set; }
 
         // public Platform? Platform { get; set; }
 

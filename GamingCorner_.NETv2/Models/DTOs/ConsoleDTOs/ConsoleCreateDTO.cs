@@ -40,10 +40,6 @@ public class ConsoleCreateDTO
     /// </summary>
     public int ProductId { get; set; }
 
-    /// <summary>
-    /// Imagen Principal de la consola
-    /// </summary>
-    public string? PrincipalImageURL { get; set; }
 
     /// <summary>
     /// Fecha de lanzamiento de la consola
@@ -80,6 +76,14 @@ public class ConsoleCreateDTO
     /// </summary>
     public string Services{ get; set; }
 
+    public string? Main { get; set; }
+    public string? Background { get; set; }
+    public string? Content1 { get; set; }
+    public string? Content2 { get; set; }
+    public string? Content3 { get; set; }
+    public string? Content4 { get; set; }
+
+
 }
 
 
@@ -87,6 +91,6 @@ public class ConsoleCreateDTO
 
 
 
- 
+
 
 

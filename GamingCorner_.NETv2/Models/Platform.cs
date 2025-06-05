@@ -31,7 +31,6 @@ public class Platform
         {
            Name = platformCreateDTO.Name,
            System = platformCreateDTO.System
-           //PrincipalImageURL = platformCreateDTO.PrincipalImageURL,
         };
 
         return platform;

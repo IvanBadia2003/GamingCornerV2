@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using GamingCorner.Models.Enums.OrderDirectionEnum;
 using System;
+using GamingCorner.Models.DTOs.ProductDTOs;
 
 public class ConsoleEFRepository : IConsoleRepository
 {
@@ -40,14 +41,22 @@ public class ConsoleEFRepository : IConsoleRepository
                 Stock = c.Stock,
                 Brand = c.Brand,
                 Discount = c.Discount,
-                PrincipalImageURL = c.PrincipalImageURL,
                 ProductId = c.Product.Id,
                 ReleaseDate = c.ReleaseDate,
                 Sales = c.Product.Sales,
                 Colors = c.Colors,
                 Generation = c.Generation,
                 PlatformId = c.Product.Platform.PlatformId,
-                Services = c.Services
+                Services = c.Services,
+                ProductImages = new ProductsImagesDto
+                {
+                    Background = c.Product.BackgroundImage,
+                    Content1 = c.Product.ContentImages1,
+                    Content3 = c.Product.ContentImages3,
+                    Content2 = c.Product.ContentImages2,
+                    Content4 = c.Product.ContentImages4,
+                    Main = c.Product.MainImage,
+                }
 
             }).ToList();
             return consoleDto;
@@ -130,14 +139,22 @@ public class ConsoleEFRepository : IConsoleRepository
             Stock = c.Stock,
             Brand = c.Brand,
             Discount = c.Discount,
-            PrincipalImageURL = c.PrincipalImageURL,
             ProductId = c.Product.Id,
             ReleaseDate = c.ReleaseDate,
             Sales = c.Product.Sales,
             Colors = c.Colors,
             Generation = c.Generation,
             PlatformId = c.Product.Platform.PlatformId,
-            Services = c.Services
+            Services = c.Services,
+            ProductImages = new ProductsImagesDto
+            {
+                Background = c.Product.BackgroundImage,
+                Content1 = c.Product.ContentImages1,
+                Content3 = c.Product.ContentImages3,
+                Content2 = c.Product.ContentImages2,
+                Content4 = c.Product.ContentImages4,
+                Main = c.Product.MainImage,
+            }
 
         }).ToList();
 
@@ -173,10 +190,18 @@ public class ConsoleEFRepository : IConsoleRepository
                 Stock = console.Stock,
                 Brand = console.Brand,
                 Discount = console.Discount,
-                PrincipalImageURL = console.PrincipalImageURL,
                 ProductId = console.Product.Id,
                 ReleaseDate = console.ReleaseDate,
-                Sales = console.Product.Sales
+                Sales = console.Product.Sales,
+                ProductImages = new ProductsImagesDto
+                {
+                    Background = console.Product.BackgroundImage,
+                    Content1 = console.Product.ContentImages1,
+                    Content3 = console.Product.ContentImages3,
+                    Content2 = console.Product.ContentImages2,
+                    Content4 = console.Product.ContentImages4,
+                    Main = console.Product.MainImage,
+                }
 
             };
             return consoleDto;
@@ -241,14 +266,22 @@ public class ConsoleEFRepository : IConsoleRepository
             Stock = c.Stock,
             Brand = c.Brand,
             Discount = c.Discount,
-            PrincipalImageURL = c.PrincipalImageURL,
             ProductId = c.Product.Id,
             ReleaseDate = c.ReleaseDate,
             Sales = c.Product.Sales,
             Colors = c.Colors,
             Generation = c.Generation,
             //PlatformId = c.Product.Platform.PlatformId,
-            Services = c.Services
+            Services = c.Services,
+            ProductImages = new ProductsImagesDto
+            {
+                Background = c.Product.BackgroundImage,
+                Content1 = c.Product.ContentImages1,
+                Content3 = c.Product.ContentImages3,
+                Content2 = c.Product.ContentImages2,
+                Content4 = c.Product.ContentImages4,
+                Main = c.Product.MainImage,
+            }
 
         }).ToList();
 

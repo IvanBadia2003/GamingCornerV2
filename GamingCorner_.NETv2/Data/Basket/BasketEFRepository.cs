@@ -88,7 +88,7 @@ public class BasketEFRepository : IBasketRepository
                 Name = b.Product.Videogame?.Name ?? b.Product.Console?.Name,
                 Price = b.Product.Videogame?.Price ?? b.Product.Console.Price,
                 Discount = b.Product.Videogame?.Discount ?? b.Product.Console.Discount,
-                PrincipalImageURL = b.Product.Videogame?.PrincipalImageURL ?? b.Product.Console?.PrincipalImageURL,
+                Main = b.Product.MainImage,
                 Videogame = b.Product.Videogame != null ? b.Product.Videogame.mapToReadDto() : null,
                 Console = b.Product.Console != null ? b.Product.Console.mapToReadDto() : null
             }

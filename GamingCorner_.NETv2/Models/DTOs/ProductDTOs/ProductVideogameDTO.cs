@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GamingCorner.Models.DTOs.ProductDTOs;
 
 namespace GamingCorner.Models
 {
@@ -58,12 +59,7 @@ namespace GamingCorner.Models
         //public int PlatformId { get; set; }
         public List<GenderDTO>? Genders { get; set; }
 
-        /// <summary>
-        /// Imagen Principal del juego
-        /// </summary>
-        public string? PrincipalImageURL { get; set; }
-
-        /// <summary>
+             /// <summary>
         /// Fecha de lanzamiento del juego
         /// </summary>
         public DateTime ReleaseDate { get; set; }
@@ -77,6 +73,8 @@ namespace GamingCorner.Models
         /// Desarrollador del juego
         /// </summary>
         public string Developer { get; set; }
+
+        public ProductsImagesDto ProductImages { get; set; }
 
         public Product ToProduct()
         {

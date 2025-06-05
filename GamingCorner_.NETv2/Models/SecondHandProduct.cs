@@ -44,7 +44,7 @@ public class SecondHandProduct
 
     public SecondHandProduct() { }
 
-    //public SecondHandProduct(int id, string name, string description, bool isChecked, decimal price, string principalImageURL, int stock, int discount, DateTime releaseDate)
+    //public SecondHandProduct(int id, string name, string description, bool isChecked, decimal price, int stock, int discount, DateTime releaseDate)
     public SecondHandProduct(string name, string description, bool isChecked, decimal price, string imageURL, DateTime releaseDate, int userId)
     {
         Name = name;

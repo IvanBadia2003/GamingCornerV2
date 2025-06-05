@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata;
+using GamingCorner.Models.DTOs.ProductDTOs;
 
 namespace GamingCorner.Models;
 
@@ -26,8 +27,6 @@ public class Console
     [Required]
     public string Specifications { get; set; }
 
-    [Required]
-    public string PrincipalImageURL { get; set; }
     
     [Required]
     public string Generation { get; set; }
@@ -47,7 +46,7 @@ public class Console
 
     public Console() { }
 
-    public Console(string name, string description, int discount, DateTime releaseDate, string specifications, int stock, decimal price, string? principalImageURL, string brand, string generation, string services, string colors, int productId)
+    public Console(string name, string description, int discount, DateTime releaseDate, string specifications, int stock, decimal price, string brand, string generation, string services, string colors, int productId)
     {
         Name = name;
         Description = description;
@@ -56,7 +55,6 @@ public class Console
         Stock = stock;
         Price = price;
         Specifications = specifications;
-        PrincipalImageURL = principalImageURL;
         Brand = brand;
         Generation = generation;
         Services = services;
@@ -78,7 +76,6 @@ public class Console
             Discount = dto.Discount,
             ReleaseDate = dto.ReleaseDate,
             Specifications = dto.Specifications,
-            PrincipalImageURL = dto.PrincipalImageURL,
             Brand = dto.Brand,
             Colors = dto.Colors,
             Generation = dto.Generation,
@@ -99,12 +96,20 @@ public class Console
             Discount = this.Discount,
             ReleaseDate = this.ReleaseDate,
             Specifications = this.Specifications,
-            PrincipalImageURL = this.PrincipalImageURL,
             Brand = this.Brand,
             Colors = this.Colors,
             Generation = this.Generation,
             Services = this.Services,
             ProductId = this.ProductId,
+            ProductImages = new ProductsImagesDto
+            {
+                Main = this.Product.MainImage,
+                Background = this.Product.BackgroundImage,
+                Content1 = this.Product.ContentImages1,
+                Content2 = this.Product.ContentImages2,
+                Content3 = this.Product.ContentImages3,
+                Content4 = this.Product.ContentImages4,
+            }
         };
     }
 }
