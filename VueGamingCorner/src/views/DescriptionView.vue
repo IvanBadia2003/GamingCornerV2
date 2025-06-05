@@ -307,7 +307,7 @@ const sendReview = () => {
                         <v-col v-for="(similarProduct, i) in productStore.similarsProducts" :key="i" cols="6" lg="3">
                             <CardComponent :title="similarProduct.name" :discount="similarProduct.discount"
                                 :price="similarProduct.price" :product-id="similarProduct.id"
-                                :src="similarProduct.principalImageURL as string" />
+                                :src="similarProduct.productImages.main || ''" />
                         </v-col>
 
                     </v-row>
@@ -325,7 +325,7 @@ const sendReview = () => {
                             lg="3">
                             <CardComponent :title="compatibleProduct.name" :discount="compatibleProduct.discount"
                                 :price="compatibleProduct.price" :product-id="compatibleProduct.id"
-                                :src="compatibleProduct.principalImageURL as string" />
+                                :src="compatibleProduct.productImages?.main || ''" />
                         </v-col>
 
                     </v-row>

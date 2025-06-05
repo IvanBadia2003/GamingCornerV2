@@ -79,7 +79,7 @@ function pay() {
                                     <v-row align="center">
                                         <!-- Imagen del producto -->
                                         <v-col cols="4">
-                                            <v-img :src="item.principalImageURL" class="product-image rounded-lg"
+                                            <v-img :src="item.productImages.main || ''" class="product-image rounded-lg"
                                                 cover></v-img>
                                         </v-col>
 

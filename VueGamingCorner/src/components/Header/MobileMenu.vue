@@ -36,7 +36,7 @@ defineProps<{
             </template>
 
             <v-list v-if="user.isAuthenticated">
-                <v-list-item :to="'/perfil'">
+                <v-list-item :to="'/profile'">
                     <v-list-item-title>Mi perfil</v-list-item-title>
                 </v-list-item>
                 <v-list-item :to="'/orders'">

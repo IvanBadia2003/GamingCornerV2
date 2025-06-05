@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { useGenderStore, type GenderCreate } from '@/stores/GenderStore';
-import { useProductStore, type ConsoleCreate, type UpdateConsole, type VideogameCreate } from '@/stores/ProductStore';
+import { useProductStore, type ConsoleCreate, type SecondHandProductsCreate, type UpdateConsole, type VideogameCreate } from '@/stores/ProductStore';
 import { SystemEnum, usePlatformStore, type PlatformCreate } from '@/stores/PlatformStore';
 import { de } from 'vuetify/locale';
-import UploadImagesComponent from '../UploadImagesComponent.vue';
 import { useCloudinaryStore } from '@/stores/CloudinaryStore';
 
 const genderStore = useGenderStore()
@@ -19,7 +18,7 @@ interface Gender {
 }
 
 const props = defineProps<{
-    type: 'juego' | 'consola' | 'genero' | 'plataforma'
+    type: 'juego' | 'consola' | 'genero' | 'plataforma' | 'segundamano'
     initialData?: Partial<FormDataType>
 }>()
 
@@ -58,7 +57,6 @@ interface FormDataType {
     pegi: number | null
     discount: number | null
     // provisional
-    principalImageURL?: string | null
     developer?: string | null
     distributor?: string | null
     releaseDate?: Date | null
@@ -82,6 +80,7 @@ const isGame = computed(() => props.type === 'juego')
 const isConsole = computed(() => props.type === 'consola')
 const isPlatform = computed(() => props.type === 'plataforma')
 const isGender = computed(() => props.type === 'genero')
+const isSecondHand = computed(() => props.type === 'segundamano')
 const isGenderOrPlatform = computed(() => props.type === 'genero' || props.type === 'plataforma')
 const isEditing = computed(() => !!props.initialData) // Si hay datos iniciales, estamos editando
 const previewImages = ref<File[]>([]) // Imágenes para la vista previa
@@ -114,7 +113,6 @@ const formData = ref<FormDataType>({
     specifications: props.initialData?.specifications || null,
     pegi: props.initialData?.pegi || null,
     discount: props.initialData?.discount || null,
-    principalImageURL: props.initialData?.principalImageURL || null,
     distributor: props.initialData?.distributor || null,
     developer: props.initialData?.developer || null,
     releaseDate: props.initialData?.releaseDate || null,
@@ -179,7 +177,6 @@ const handleSubmit = async () => {
         stock: formData.value.stock || 0,
         discount: formData.value.discount || 0,
         price: formData.value.price || 0,
-        principalImageURL: formData.value.principalImageURL || '',
         releaseDate: formData.value.releaseDate || new Date(),
         distributor: formData.value.distributor || '',
         developer: formData.value.developer || '',
@@ -202,7 +199,6 @@ const handleSubmit = async () => {
         stock: formData.value.stock || 0,
         discount: formData.value.discount || 0,
         price: formData.value.price || 0,
-        principalImageURL: formData.value.principalImageURL || '',
         releaseDate: formData.value.releaseDate || new Date(),
         distributor: formData.value.distributor || '',
         developer: formData.value.developer || '',
@@ -223,7 +219,6 @@ const handleSubmit = async () => {
         stock: formData.value.stock || 0,
         discount: formData.value.discount || 0,
         price: formData.value.price || 0,
-        principalImageURL: formData.value.principalImageURL || '',
         releaseDate: formData.value.releaseDate || new Date(),
         brand: formData.value.brand || '',
         specifications: specificationsConsole.value.map(items => items.map(i => `${i}`).join(', ')).join('; ') || '',
@@ -246,13 +241,28 @@ const handleSubmit = async () => {
         stock: formData.value.stock || 0,
         discount: formData.value.discount || 0,
         price: formData.value.price || 0,
-        principalImageURL: formData.value.principalImageURL || '',
         releaseDate: formData.value.releaseDate || new Date(),
         brand: formData.value.brand || '',
         specifications: specificationsConsole.value.map(items => items.map(i => `${i}`).join(', ')).join('; ') || '',
         colors: formData.value.colors || '',
         generation: formData.value.generation || '',
         services: formData.value.services || '',
+    }
+
+    const formDataCreateSecondHand: SecondHandProductsCreate = {
+        name: formData.value.name,
+        description: formData.value.description,
+        price: formData.value.price || 0,
+        releaseDate: formData.value.releaseDate || new Date(),
+        content1: media.content1,
+        content2: media.content2,
+        content3: media.content3,
+        content4: media.content4,
+        main: media.main,
+        userId: 0
+        
+
+
     }
 
     const formDataGender: GenderCreate = {
@@ -323,6 +333,13 @@ const handleSubmit = async () => {
         console.log('Formulario de edición listo:', formDataPlatform, isEditing.value)
         emit('cancel')
 
+    }    //Si es Segunda Mano y creación
+    else if (!isEditing.value && isSecondHand.value) {
+        console.log('Formulario de creación listo:', formDataCreateSecondHand)
+        debugger
+        productStore.createSecondHand(formDataCreateSecondHand)
+        emit('cancel')
+
     }
 
     // Aquí puedes emitir el formulario o hacer algo con los datos
@@ -344,17 +361,17 @@ const handleSubmit = async () => {
                 <v-text-field label="Nombre" v-model="formData.name" :rules="[rules.required]" />
                 <v-row v-if="!isGenderOrPlatform">
                     <v-col>
-                        <v-text-field label="Precio (€)" type="number" v-model="formData.price"
+                        <v-text-field  label="Precio (€)" type="number" v-model="formData.price"
                             :rules="[rules.required]" />
                     </v-col>
-                    <v-col>
+                    <v-col v-if="!isSecondHand">
                         <v-text-field label="Descuento" type="number" v-model="formData.discount"
                             :rules="[rules.required]" />
                     </v-col>
 
                 </v-row>
 
-                <v-text-field v-if="!isGenderOrPlatform" label="Stock" type="number" v-model="formData.stock"
+                <v-text-field v-if="!isGenderOrPlatform && !isSecondHand" label="Stock" type="number" v-model="formData.stock"
                     :rules="[rules.required]" />
                 <v-textarea v-if="!isGenderOrPlatform" label="Descripción" v-model="formData.description"
                     :rules="[rules.required]" />
@@ -368,7 +385,7 @@ const handleSubmit = async () => {
                 <v-select v-if="isGame || isConsole" label="Plataforma" :items="platformStore.platforms"
                     v-model="formData.platformId" :rules="[rules.required]" item-title="name" item-value="platformId" />
 
-                <v-text-field v-if="!isGenderOrPlatform" v-model="releaseDateFormatted" label="Fecha de lanzamiento"
+                <v-text-field v-if="!isGenderOrPlatform && !isSecondHand" v-model="releaseDateFormatted" label="Fecha de lanzamiento"
                     type="date" :rules="[rules.required]" />
 
                 <v-select v-if="isGame" label="PEGI" :items="pegiOptions" v-model="formData.pegi"
@@ -503,19 +520,19 @@ const handleSubmit = async () => {
 
                 <!-- <v-file-input v-if="entityType === 'users'" v-model="cloudinaryStore.avatarImage" label="Avatar" /> -->
 
-                <v-file-input v-if="isConsole || isGame || isPlatform" 
+                <v-file-input v-if="isConsole || isGame || isPlatform || isSecondHand" 
                     v-model="cloudinaryStore.mainImage" label="Imagen principal" />
 
                 <v-file-input v-if="isGame"  v-model="cloudinaryStore.backgroundImage"
                     label="Imagen de fondo" />
 
-                <v-file-input v-if="isConsole || isGame"  v-model="cloudinaryStore.contentImages[0]"
+                <v-file-input v-if="isConsole || isGame  || isSecondHand"  v-model="cloudinaryStore.contentImages[0]"
                     label="Contenido 1" />
-                <v-file-input v-if="isConsole || isGame"  v-model="cloudinaryStore.contentImages[1]"
+                <v-file-input v-if="isConsole || isGame || isSecondHand"  v-model="cloudinaryStore.contentImages[1]"
                     label="Contenido 2" />
-                <v-file-input v-if="isConsole || isGame"  v-model="cloudinaryStore.contentImages[2]"
+                <v-file-input v-if="isConsole || isGame || isSecondHand"  v-model="cloudinaryStore.contentImages[2]"
                     label="Contenido 3" />
-                <v-file-input v-if="isConsole || isGame"  v-model="cloudinaryStore.contentImages[3]"
+                <v-file-input v-if="isConsole || isGame || isSecondHand"  v-model="cloudinaryStore.contentImages[3]"
                     label="Contenido 4" />
                 <!-- <div v-if="!isGenderOrPlatform" class="my-4">
                     <p>Subir imágenes (máx. 6):</p>

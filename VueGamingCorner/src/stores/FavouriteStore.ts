@@ -3,7 +3,7 @@ import { ref, computed, reactive, nextTick } from 'vue'
 import axios from 'axios'
 import router from '@/router'
 import { de } from 'vuetify/locale'
-import type { Videogame } from './ProductStore'
+import type { ProductImages, Videogame } from './ProductStore'
 import type { Console } from './ProductStore'
 import { useProductStore } from './ProductStore'
 import { useUserStore } from './UserStore'
@@ -16,7 +16,7 @@ export interface Productfavourite {
     price: number
     discount: number
     system: number
-    principalImageURL: string
+    productImages: ProductImages
   }
   
   export interface Favourite {

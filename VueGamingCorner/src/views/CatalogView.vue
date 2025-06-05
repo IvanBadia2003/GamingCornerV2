@@ -26,6 +26,7 @@ const sortOptions = [
 ]
 
 onMounted(() => {
+  productStore.getProductsToCatalog("videogame");
   productStore.getAllVideogames();
   productStore.getAllConsoles();
   platformStore.getAllPlatforms();

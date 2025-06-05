@@ -107,6 +107,7 @@ const cartStore = useCartStore()
   const logout = async () => {
     try {
       await axios.post('http://localhost:5000/User/logout', {}, { withCredentials: true })
+      router.push('/')
     } catch (err) {
       // No pasa nada si falla
     } finally {
@@ -120,8 +121,10 @@ const cartStore = useCartStore()
     try {
       const response = await axios.get('http://localhost:5000/User/me', { withCredentials: true })
       Object.assign(user, response.data.value);
+      
     } catch {
       Object.assign(user, null);
+      
     }
   }
 

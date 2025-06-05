@@ -16,21 +16,23 @@ const cartStore = useCartStore()
 const { cartCountCookies } = storeToRefs(cartStore) //Si no lo hago así, no sale el valor actualizado de cartCountCookies
 
 onMounted(() => {
-  cartStore.updateCartCount();
+    cartStore.updateCartCount();
 });
 
 const theme = useTheme()
 
 const { xs, sm, mdAndUp } = useDisplay()
 
-const cartCountItems = computed(() => cartCountCookies.value )
+const cartCountItems = computed(() => cartCountCookies.value)
 // Para ordenadores
-const showFullMenu = computed(() => mdAndUp.value )
+const showFullMenu = computed(() => mdAndUp.value)
 // Para móviles y tablets
 const showMobileMenu = computed(() => xs.value || sm.value)
 const toggleMenuManual = ref(false)
 
 const toggleMenu = computed(() => mdAndUp.value || toggleMenuManual.value)
+
+const isDarkTheme = ref(theme.global.current.value.dark)
 
 const toggleTheme = () => {
     const current = theme.global.name.value
@@ -41,10 +43,13 @@ const toggleTheme = () => {
 }
 
 
+
+const selectedProductType = ref('')
+
 const Products = [
-    { name: 'Juegos', route: '/catalog', type: 'videogame' as string},
-    { name: 'Consolas', route: '/catalog', type: 'console'as string},
-    { name: 'Segunda Mano', route: '/catalog' }
+    { name: 'Juegos', route: '/catalog', type: 'videogame' as string },
+    { name: 'Consolas', route: '/catalog', type: 'console' as string },
+    { name: 'Segunda Mano', route: '/catalog', type: 'secondHand' as string }
 ];
 </script>
 <template>
@@ -56,7 +61,7 @@ const Products = [
                 </router-link>
             </v-col>
 
-            <v-col  cols="6" sm="6" md="6" class="d-flex flex-column flex-md-row justify-center align-center my-2">
+            <v-col cols="6" sm="6" md="6" class="d-flex flex-column flex-md-row justify-center align-center my-2">
                 <div v-if="showMobileMenu && toggleMenu">
                     <v-btn icon :to="'/cart'" color="white" class="me-4">
                         <v-badge :content="cartCountItems" color="background" overlap>
@@ -70,36 +75,41 @@ const Products = [
                             </v-btn>
                         </template>
 
-                        <v-list v-if="user.isAuthenticated">
-                            <v-list-item :to="'/perfil'">
+                        <v-list v-if="user.isAuthenticated" class="text-center">
+                            <v-list-item :to="'/profile'" class="justify-center">
                                 <v-list-item-title>Mi perfil</v-list-item-title>
                             </v-list-item>
-                            <v-list-item :to="'/orders'">
-                                <v-list-item-title>Mis pedidos</v-list-item-title>
-                            </v-list-item>
-                            <v-list-item :to="'/admin'" v-if="user.user?.admin">
+                            <v-list-item :to="'/admin'" v-if="user.user.rol == RolEnum.Admin" class="justify-center">
                                 <v-list-item-title>Pantalla Admin</v-list-item-title>
                             </v-list-item>
-                            <v-list-item>
+                            <v-list-item class="justify-center">
                                 <v-list-item-title @click="user.logout">Cerrar sesión</v-list-item-title>
                             </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title>
-                                </v-list-item-title>
+                            <v-list-item class="justify-center">
+                                <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
                             </v-list-item>
                         </v-list>
-                        <v-list v-else>
-                            <v-list-item :to="'/login'">
+
+                        <v-list v-else class="text-center">
+                            <v-list-item :to="'/login'" class="justify-center">
                                 <v-list-item-title>Iniciar Sesión</v-list-item-title>
                             </v-list-item>
-
+                            <v-list-item class="justify-center">
+                                <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
+                            </v-list-item>
                         </v-list>
                     </v-menu>
+
                 </div>
-                <v-btn v-if=" toggleMenu" v-for="product in Products" :key="product.name" :to="product.route" class="mx-0"
-                    variant="text" color="white" @click="productStore.getProductsToCatalog(product.type as string); productStore.productType = product.type as string">
+                <v-btn v-for="product in Products" :key="product.name" :value="product.type" :to="{ path: '/catalog' }"
+                    variant="text" color="white" @click="
+                        productStore.getProductsToCatalog(product.type || '');
+                    productStore.productType = product.type || '';
+                    ">
                     {{ product.name }}
                 </v-btn>
+
+
             </v-col>
 
             <v-col v-if="showFullMenu" cols="3" sm="3" md="3" class="d-flex justify-end align-center px-10 ">
@@ -115,33 +125,33 @@ const Products = [
                         </v-btn>
                     </template>
 
-                    <v-list v-if="user.isAuthenticated">
-                        <v-list-item :to="'/perfil'">
+                    <v-list v-if="user.isAuthenticated" class="text-center">
+                        <v-list-item :to="'/profile'" class="justify-center">
                             <v-list-item-title>Mi perfil</v-list-item-title>
                         </v-list-item>
-                        <v-list-item :to="'/orders'">
-                            <v-list-item-title>Mis pedidos</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item :to="'/admin'" v-if="user.user.rol == RolEnum.Admin">
+                        <v-list-item :to="'/admin'" v-if="user.user.rol == RolEnum.Admin" class="justify-center">
                             <v-list-item-title>Pantalla Admin</v-list-item-title>
                         </v-list-item>
-                        <v-list-item>
+                        <v-list-item class="justify-center">
                             <v-list-item-title @click="user.logout">Cerrar sesión</v-list-item-title>
                         </v-list-item>
-                        <v-list-item>
-                            <v-list-item-title>
-                            </v-list-item-title>
+                        <v-list-item class="justify-center">
+                            <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
                         </v-list-item>
                     </v-list>
-                    <v-list v-else>
-                        <v-list-item :to="'/login'">
+
+                    <v-list v-else class="text-center">
+                        <v-list-item :to="'/login'" class="justify-center">
                             <v-list-item-title>Iniciar Sesión</v-list-item-title>
                         </v-list-item>
-
+                        <v-list-item class="justify-center">
+                            <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
+                        </v-list-item>
                     </v-list>
                 </v-menu>
+
             </v-col>
-            <v-col v-if="showMobileMenu"  cols="3" sm="3" md="3" class="d-flex justify-end align-center px-10">
+            <v-col v-if="showMobileMenu" cols="3" sm="3" md="3" class="d-flex justify-end align-center px-10">
                 <button @click="toggleMenuManual = !toggleMenuManual" :class="{ 'open': toggleMenu }" class="button">
                     <div></div>
                     <div></div>
@@ -151,7 +161,6 @@ const Products = [
 
 
         </v-row>
-        <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
     </header>
 </template>
 
