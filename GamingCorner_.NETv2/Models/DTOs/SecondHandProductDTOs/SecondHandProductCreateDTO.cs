@@ -23,14 +23,6 @@ public class SecondHandProductCreateDTO
     /// </summary>
     public decimal Price { get; set; }
 
-    //public int PlatformId { get; set; }
-    //public int GenderId { get; set; }
-
-    /// <summary>
-    /// Imagen Principal del producto de segunda mano
-    /// </summary>
-    public string? ImageURL { get; set; }
-
     /// <summary>
     /// Fecha de lanzamiento del producto de segunda mano
     /// </summary>
@@ -41,13 +33,10 @@ public class SecondHandProductCreateDTO
     /// </summary>
     public int UserId { get; set; }
 
-    public string? MainImage { get; set; }
-    public string? BackgroundImage { get; set; }
-    public string? ContentImages1 { get; set; }
-    public string? ContentImages2 { get; set; }
-    public string? ContentImages3 { get; set; }
-    public string? ContentImages4 { get; set; }
-
-
+    public string? Main { get; set; }
+    public string? Content1 { get; set; }
+    public string? Content2 { get; set; }
+    public string? Content3 { get; set; }
+    public string? Content4 { get; set; }
 
 }

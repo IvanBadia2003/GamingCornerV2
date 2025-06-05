@@ -123,11 +123,19 @@ namespace GamingCorner.Business
                 {
                     Id = product.Id,
                     Description = product.SecondHandProduct.Description,
-                    ImageURL = product.SecondHandProduct.ImageURL,
                     Name = product.SecondHandProduct.Name,
                     Price = product.SecondHandProduct.Price,
                     User = product.SecondHandProduct.User.ToUserDTO(),
-                    ProductId = product.SecondHandProduct.ProductId
+                    ProductId = product.SecondHandProduct.ProductId,
+                    ProductImages = new ProductsImagesDto
+                    {
+                        Background = product.BackgroundImage,
+                        Content1 = product.ContentImages1,
+                        Content2 = product.ContentImages2,
+                        Content3 = product.ContentImages3,
+                        Content4 = product.ContentImages4,
+                        Main = product.MainImage,
+                    },
                 };
 
             }
@@ -159,7 +167,15 @@ namespace GamingCorner.Business
                     Name = product.Videogame.Name,
                     Discount = product.Videogame.Discount,
                     Price = product.Videogame.Price,
-                    Main = product.MainImage
+                    ProductImages = new ProductsImagesDto
+                    {
+                        Background = product.BackgroundImage,
+                        Content1 = product.ContentImages1,
+                        Content3 = product.ContentImages3,
+                        Content2 = product.ContentImages2,
+                        Content4 = product.ContentImages4,
+                        Main = product.MainImage,
+                    }
                 }).ToList<ProductDTOBase>();
 
                 return products;
@@ -173,7 +189,15 @@ namespace GamingCorner.Business
                     Name = product.Console.Name,
                     Discount = product.Console.Discount,
                     Price = product.Console.Price,
-                    Main = product.MainImage
+                    ProductImages = new ProductsImagesDto
+                    {
+                        Background = product.BackgroundImage,
+                        Content1 = product.ContentImages1,
+                        Content3 = product.ContentImages3,
+                        Content2 = product.ContentImages2,
+                        Content4 = product.ContentImages4,
+                        Main = product.MainImage,
+                    }
                 }).ToList<ProductDTOBase>();
 
                 return products;
@@ -208,7 +232,15 @@ namespace GamingCorner.Business
                     Name = product.Videogame.Name,
                     Discount = product.Videogame.Discount,
                     Price = product.Videogame.Price,
-                    Main = product.MainImage
+                    ProductImages = new ProductsImagesDto
+                    {
+                        Background = product.BackgroundImage,
+                        Content1 = product.ContentImages1,
+                        Content3 = product.ContentImages3,
+                        Content2 = product.ContentImages2,
+                        Content4 = product.ContentImages4,
+                        Main = product.MainImage,
+                    }
                 }).ToList<ProductDTOBase>();
 
                 return products;
@@ -222,7 +254,15 @@ namespace GamingCorner.Business
                     Name = product.Console.Name,
                     Discount = product.Console.Discount,
                     Price = product.Console.Price,
-                    Main = product.MainImage
+                    ProductImages = new ProductsImagesDto
+                    {
+                        Background = product.BackgroundImage,
+                        Content1 = product.ContentImages1,
+                        Content3 = product.ContentImages3,
+                        Content2 = product.ContentImages2,
+                        Content4 = product.ContentImages4,
+                        Main = product.MainImage,
+                    }
                 }).ToList<ProductDTOBase>();
 
                 return products;

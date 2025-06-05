@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
 using GamingCorner.Models.Enums.SystemEnum;
+using GamingCorner.Models.DTOs.ProductDTOs;
 
 namespace GamingCorner.Models
 {
@@ -46,12 +47,8 @@ namespace GamingCorner.Models
         public SystemEnum? System { get; set; }
 
 
-        public string? Main { get; set; }
-        public string? Background { get; set; }
-        public string? Content1 { get; set; }
-        public string? Content2 { get; set; }
-        public string? Content3 { get; set; }
-        public string? Content4 { get; set; }
+        public ProductsImagesDto ProductImages { get; set; }
+
 
         // public Platform? Platform { get; set; }
 

@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Data;
 using GamingCorner.Data;
 using Microsoft.EntityFrameworkCore;
+using GamingCorner.Models.DTOs.ProductDTOs;
 
 public class BasketEFRepository : IBasketRepository
 {
@@ -88,9 +89,17 @@ public class BasketEFRepository : IBasketRepository
                 Name = b.Product.Videogame?.Name ?? b.Product.Console?.Name,
                 Price = b.Product.Videogame?.Price ?? b.Product.Console.Price,
                 Discount = b.Product.Videogame?.Discount ?? b.Product.Console.Discount,
-                Main = b.Product.MainImage,
                 Videogame = b.Product.Videogame != null ? b.Product.Videogame.mapToReadDto() : null,
-                Console = b.Product.Console != null ? b.Product.Console.mapToReadDto() : null
+                Console = b.Product.Console != null ? b.Product.Console.mapToReadDto() : null,
+                ProductImages = new ProductsImagesDto
+                {
+                    Background = b.Product.BackgroundImage,
+                    Content1 = b.Product.ContentImages1,
+                    Content3 = b.Product.ContentImages3,
+                    Content2 = b.Product.ContentImages2,
+                    Content4 = b.Product.ContentImages4,
+                    Main = b.Product.MainImage,
+                }
             }
         }).ToList();
 

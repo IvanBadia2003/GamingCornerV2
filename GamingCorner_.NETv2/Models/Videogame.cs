@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata;
+using GamingCorner.Models.DTOs.ProductDTOs;
 
 namespace GamingCorner.Models;
 
@@ -110,7 +111,16 @@ public class Videogame
             ReleaseDate = this.ReleaseDate,
             Distributor = this.Distributor,
             Developer = this.Developer,
-            Sales = this.Product?.Sales ?? 0 // Ejemplo si quieres incluir datos del Product
+            Sales = this.Product?.Sales ?? 0,
+            ProductImages = new ProductsImagesDto
+            {
+                Background = this.Product.BackgroundImage,
+                Content1 = this.Product.ContentImages1,
+                Content3 = this.Product.ContentImages3,
+                Content2 = this.Product.ContentImages2,
+                Content4 = this.Product.ContentImages4,
+                Main = this.Product.MainImage,
+            }// Ejemplo si quieres incluir datos del Product
         };
     }
 }
