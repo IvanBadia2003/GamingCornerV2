@@ -4,6 +4,7 @@ import { useGenderStore, type GenderCreate } from '@/stores/GenderStore';
 import { useProductStore, type ConsoleCreate, type UpdateConsole, type VideogameCreate } from '@/stores/ProductStore';
 import { SystemEnum, usePlatformStore, type PlatformCreate } from '@/stores/PlatformStore';
 import { de } from 'vuetify/locale';
+import UploadImagesComponent from '../UploadImagesComponent.vue';
 
 const genderStore = useGenderStore()
 const productStore = useProductStore()
@@ -462,7 +463,8 @@ const handleSubmit = async () => {
 
 
                 <!-- Subida de imágenes -->
-                <div v-if="!isGenderOrPlatform" class="my-4">
+                <UploadImagesComponent/>
+                <!-- <div v-if="!isGenderOrPlatform" class="my-4">
                     <p>Subir imágenes (máx. 6):</p>
                     <v-file-input v-model="previewImages" accept="image/*" multiple show-size counter
                         :rules="[rules.maxImages]" label="Seleccionar imágenes" prepend-icon="mdi-camera" />
@@ -473,7 +475,7 @@ const handleSubmit = async () => {
                             <v-img :src="image" height="100" width="100" cover />
                         </v-col>
                     </v-row>
-                </div>
+                </div> -->
             </v-form>
         </v-card-text>
 

@@ -3,6 +3,7 @@ import { ref, computed, reactive } from 'vue'
 import axios from 'axios'
 import router from '@/router'
 import { de } from 'vuetify/locale'
+import { useCartStore } from './CartStore'
 
 export enum RolEnum {
   Admin = 1,
@@ -36,8 +37,8 @@ export interface UpdateUser {
   email: string
   password: string
   phoneNumber: string | null
-  rol: RolEnum
-  state: UserStateEnum
+  rol: number | null
+  state: number | null
   avatar: string
 }
 
@@ -46,7 +47,7 @@ export const useUserStore = defineStore('userStore', () => {
 
   const users = reactive<User[]>([])
   const addressTags = ['Direccion', 'Pais', 'Ciudad', 'Zip']
-
+const cartStore = useCartStore()
 
   // Objeto reactivo con valores por defecto
   const user = reactive<User>({
@@ -75,6 +76,7 @@ export const useUserStore = defineStore('userStore', () => {
       const response = await axios.post('http://localhost:5000/User/login', { email, password }, { withCredentials: true })
       Object.assign(user, response.data.user);
       console.log('Usuario logueado:', user);
+      cartStore.transferCookieCartToDatabase()// Transfiere el carrito de cookies a la base de datos
 
       router.push('/')
     } catch (err: any) {

@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useTheme } from 'vuetify';
 import { useThemeStore } from '@/stores/themeStore'
-import { useUserStore } from '@/stores/UserStore'
+import { RolEnum, useUserStore } from '@/stores/UserStore'
 import { useProductStore } from '@/stores/ProductStore'
 import { useDisplay } from 'vuetify'
 import { useCartStore } from '@/stores/CartStore';
@@ -23,6 +23,7 @@ const theme = useTheme()
 
 const { xs, sm, mdAndUp } = useDisplay()
 
+const cartCountItems = computed(() => cartCountCookies.value )
 // Para ordenadores
 const showFullMenu = computed(() => mdAndUp.value )
 // Para móviles y tablets
@@ -58,7 +59,7 @@ const Products = [
             <v-col  cols="6" sm="6" md="6" class="d-flex flex-column flex-md-row justify-center align-center my-2">
                 <div v-if="showMobileMenu && toggleMenu">
                     <v-btn icon :to="'/cart'" color="white" class="me-4">
-                        <v-badge :content="cartCountCookies" color="background" overlap>
+                        <v-badge :content="cartCountItems" color="background" overlap>
                             <v-icon icon="mdi-cart" size="x-large"></v-icon>
                         </v-badge>
                     </v-btn>
@@ -103,7 +104,7 @@ const Products = [
 
             <v-col v-if="showFullMenu" cols="3" sm="3" md="3" class="d-flex justify-end align-center px-10 ">
                 <v-btn icon :to="'/cart'" color="white" class="me-4">
-                    <v-badge :content="cartCountCookies" color="background" overlap>
+                    <v-badge :content="cartCountItems" color="background" overlap>
                         <v-icon icon="mdi-cart" size="x-large"></v-icon>
                     </v-badge>
                 </v-btn>
@@ -121,7 +122,7 @@ const Products = [
                         <v-list-item :to="'/orders'">
                             <v-list-item-title>Mis pedidos</v-list-item-title>
                         </v-list-item>
-                        <v-list-item :to="'/admin'" v-if="user.user.admin">
+                        <v-list-item :to="'/admin'" v-if="user.user.rol == RolEnum.Admin">
                             <v-list-item-title>Pantalla Admin</v-list-item-title>
                         </v-list-item>
                         <v-list-item>

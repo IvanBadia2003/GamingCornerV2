@@ -6,6 +6,7 @@ import { computed, onMounted, ref } from 'vue';
 
 import { useRouter } from 'vue-router'
 import { tr } from 'vuetify/locale';
+import { PaymentMethodEnum, useOrderStore, type CreateOrder } from '@/stores/OrderStore';
 const router = useRouter()
 
 const quantity = ref(1);
@@ -16,12 +17,13 @@ const step2completed = ref(false);
 const step3completed = ref(false);
 const currentStep = ref(1);
 
-const panel = ref([])
-const panel2 = ref([0])
+const addressPanel = ref<number>()
+const paidMetodPanel = ref<number>()
 
 const wishList = ref([])
 const cartStore = useCartStore();
 const userStore = useUserStore();
+const orderStore = useOrderStore();
 
 const codigoActivacion = 'ABCD-1234-EFGH-5678' // Ejemplo de código
 const mostrarCodigo = ref(false)
@@ -30,6 +32,22 @@ onMounted(() => {
     // Cargar la lista de deseos desde el store
     cartStore.getCartProducts()
 });
+
+function eliminarDelCarrito(productId: number) {
+    cartStore.removeFromCart(productId);
+}
+
+function pay() {
+    debugger
+    const createOrder: CreateOrder = {
+        billingAddress: userStore.user.address as string,
+        createdAt: new Date(),
+        paymentMethod: paidMetodPanel.value as number,
+        userId: userStore.user.userId
+    };
+
+    orderStore.addOrder(createOrder)
+}
 
 </script>
 
@@ -61,9 +79,8 @@ onMounted(() => {
                                     <v-row align="center">
                                         <!-- Imagen del producto -->
                                         <v-col cols="4">
-                                            <v-img
-                                                :src="item.principalImageURL"
-                                                class="product-image rounded-lg" cover></v-img>
+                                            <v-img :src="item.principalImageURL" class="product-image rounded-lg"
+                                                cover></v-img>
                                         </v-col>
 
                                         <!-- Información del producto -->
@@ -87,16 +104,17 @@ onMounted(() => {
                                         <!-- Precio y selector de cantidad -->
                                         <v-col cols="3" class="text-right">
                                             <v-row class="align-center">
-                                                <v-col cols="5" class="text-center">
+                                                <v-col cols="7" class="text-center">
 
                                                     <p>{{ ((item.price as number) - ((item.price as
                                                         number) * (item.discount as number) / 100)).toFixed(2) }}€</p>
                                                 </v-col>
-                                                <v-col cols="7" class="text-center">
-                                                    <v-select v-model="quantity" :items="[1, 2, 3, 4, 5]"
-                                                        class="quantity-selector" density="compact" variant="outlined"
-                                                        hide-details></v-select>
+                                                <v-col cols="5" class="text-center">
+                                                    <v-btn icon color="" @click="eliminarDelCarrito(item.id)">
+                                                        <v-icon>mdi-delete</v-icon>
+                                                    </v-btn>
                                                 </v-col>
+
                                             </v-row>
                                         </v-col>
                                     </v-row>
@@ -152,20 +170,24 @@ onMounted(() => {
                         </v-row>
                     </v-stepper-window-item>
                     <v-stepper-window-item :value="2">
-                        <v-row >
+                        <v-row>
                             <v-col cols="12">
                                 <h3>DIRECCIÓN FACTURACIÓN/ENVÍO</h3>
-                                <v-expansion-panels v-model="panel">
+                                <v-expansion-panels v-model="addressPanel">
                                     <v-expansion-panel class="my-2" v-if="userStore.user.address != null">
                                         <v-expansion-panel-title>Usar mi dirección</v-expansion-panel-title>
                                         <v-expansion-panel-text>
-                                            <AddressForm :newAddress="true" :direction="userStore.addressFormatted[0].valor" :city="userStore.addressFormatted[2].valor" :country="userStore.addressFormatted[1].valor" :zip="userStore.addressFormatted[3].valor"/>
+                                            <AddressForm :newAddress="true"
+                                                :direction="userStore.addressFormatted[0].valor"
+                                                :city="userStore.addressFormatted[2].valor"
+                                                :country="userStore.addressFormatted[1].valor"
+                                                :zip="userStore.addressFormatted[3].valor" />
                                         </v-expansion-panel-text>
                                     </v-expansion-panel>
                                     <v-expansion-panel class="my-2">
                                         <v-expansion-panel-title>Escribir dirección nueva</v-expansion-panel-title>
                                         <v-expansion-panel-text>
-                                            <AddressForm :newAddress="true" direction="" city="" country="" zip=""/>
+                                            <AddressForm :newAddress="true" direction="" city="" country="" zip="" />
                                         </v-expansion-panel-text>
                                     </v-expansion-panel>
                                 </v-expansion-panels>
@@ -177,13 +199,11 @@ onMounted(() => {
                         <v-row>
                             <v-col cols="12">
                                 <h3>Método de pago</h3>
-                                <v-expansion-panels v-model="panel2">
+                                <v-expansion-panels v-model="paidMetodPanel">
                                     <v-expansion-panel class="my-2">
                                         <v-expansion-panel-title>
                                             <v-col cols="3">
-                                                <v-img
-                                                    src="data:image/png;base64,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"
-                                                    class="product-image rounded-lg" cover></v-img>
+                                                <v-img src="C" class="product-image rounded-lg" cover></v-img>
                                             </v-col>
 
                                             <v-col cols="8">
@@ -219,9 +239,7 @@ onMounted(() => {
                                     <v-expansion-panel class="my-2">
                                         <v-expansion-panel-title>
                                             <v-col cols="3">
-                                                <v-img
-                                                    src="data:image/png;base64,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"
-                                                    class="product-image rounded-lg" cover></v-img>
+                                                <v-img src="CC" class="product-image rounded-lg" cover></v-img>
                                             </v-col>
 
                                             <v-col cols="8">
@@ -246,9 +264,7 @@ onMounted(() => {
                                     <v-expansion-panel class="my-2">
                                         <v-expansion-panel-title>
                                             <v-col cols="3">
-                                                <v-img
-                                                    src="data:image/jpeg;base64,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"
-                                                    class="product-image rounded-lg" cover></v-img>
+                                                <v-img src="k=" class="product-image rounded-lg" cover></v-img>
                                             </v-col>
 
                                             <v-col cols="8">
@@ -273,10 +289,10 @@ onMounted(() => {
                                     <v-card-title class="text-h5">Gracias por tu compra</v-card-title>
                                     <v-card-text>Puedes activar tu producto ahora o más tarde en tu perfil</v-card-text>
 
-                                    <v-card class="pa-3 my-4" elevation="2">
-                                        <v-card-title class="text-subtitle-1">Código de Activación</v-card-title>
+                                    <v-card v-for="(videogame, index) in orderStore.VideogamePurchases" :key="index" class="pa-3 my-4" elevation="2">
+                                        <v-card-title class="text-subtitle-1">Código de Activación - {{ videogame.name }}</v-card-title>
                                         <v-card-text>
-                                            <span :class="{ 'blur-text': !mostrarCodigo }">{{ codigoActivacion }}</span>
+                                            <span :class="{ 'blur-text': !mostrarCodigo }">{{ videogame.digitalCode }}</span>
                                         </v-card-text>
                                         <v-btn color="secondary" variant="outlined"
                                             @click="mostrarCodigo = !mostrarCodigo">
@@ -299,20 +315,24 @@ onMounted(() => {
             </v-col>
 
             <!-- Resumen (se mantiene fijo) -->
-            <v-col cols="12" md="5" class="summary-card" v-if="currentStep === 1 || currentStep === 2">
+            <v-col cols="12" md="4" class="summary-card" v-if="currentStep === 1 || currentStep === 2">
                 <h3>RESUMEN</h3>
 
                 <v-card class=" pa-5 bg-primary" elevation="2">
                     <!-- Precios -->
                     <v-row class="mb-3">
                         <v-col cols="6" class="text-body-1 text-primary-darken-1">Precio oficial</v-col>
-                        <v-col cols="6" class="text-body-1 text-secondary text-right">{{ cartStore.totalCartOficialPrice }}€</v-col>
+                        <v-col cols="6" class="text-body-1 text-secondary text-right">{{
+                            cartStore.totalCartOficialPriceRounded
+                        }}€</v-col>
 
                         <v-col cols="6" class="text-body-1 text-secondary">Descuento</v-col>
-                        <v-col cols="6" class="text-body-1 text-success text-right">-{{ cartStore.totalCartDiscountPrice }}€</v-col>
+                        <v-col cols="6" class="text-body-1 text-success text-right">-{{ cartStore.totalCartDiscountPrice
+                        }}€</v-col>
 
                         <v-col cols="6" class="text-h6 font-weight-bold">Subtotal</v-col>
-                        <v-col cols="6" class="text-h6 font-weight-bold text-right">{{ cartStore.totalCartPrice }}€</v-col>
+                        <v-col cols="6" class="text-h6 font-weight-bold text-right">{{ cartStore.totalCartPriceRounded
+                        }}€</v-col>
                     </v-row>
 
                     <!-- Botón de pago -->
@@ -324,16 +344,19 @@ onMounted(() => {
                         v-if="currentStep === 1 && userStore.isAuthenticated">
                         Proceder con el pago <v-icon>mdi-chevron-right</v-icon>
                     </v-btn>
-                    <v-btn v-else-if="currentStep === 2" block class="payment-btn" height="50" @click="currentStep = 3; step2completed = true" >
+                    <v-btn v-else-if="currentStep === 2" block class="payment-btn" height="50"
+                        @click="currentStep = 3; step2completed = true; pay()"
+                        :disabled="addressPanel === undefined || paidMetodPanel === undefined">
                         Proceder con el pago <v-icon>mdi-chevron-right</v-icon>
                     </v-btn>
+
 
                     <!-- Separador -->
                     <v-divider class="my-4"></v-divider>
 
                     <!-- Botón "Continuar comprando" -->
                     <div class="d-flex justify-center align-center text-secondary" v-if="currentStep === 1"
-                    @click="router.back()">
+                        @click="router.back()">
                         <v-icon size="20">mdi-arrow-left</v-icon>
                         <span class="ml-2 text-body-2">Continuar comprando</span>
                     </div>

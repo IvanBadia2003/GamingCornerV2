@@ -2,11 +2,11 @@
 import PrincipalImage from '@/components/Images/PrincipalImage.vue';
 import VideogameCardInformation from '@/components/Description/InformationCard.vue';
 import Specifications from '@/components/Description/Specifications.vue';
-import { computed, onMounted, ref } from 'vue';
+import { computed, nextTick, onMounted, ref } from 'vue';
 import CardComponent from '@/components/CardComponent.vue'
 import { useProductStore, type Videogame } from '@/stores/ProductStore';
 import { useRoute } from 'vue-router';
-
+import ReviewCard from '@/components/ReviewCard.vue'
 import pegi3 from '@/assets/Pegi/Pegi3.svg'
 import pegi7 from '@/assets/Pegi/Pegi7.svg'
 import pegi12 from '@/assets/Pegi/Pegi12.svg'
@@ -14,12 +14,18 @@ import pegi16 from '@/assets/Pegi/Pegi16.svg'
 import pegi18 from '@/assets/Pegi/Pegi18.svg'
 import { useCartStore } from '@/stores/CartStore';
 import { useUserStore } from '@/stores/UserStore';
-
+import router from '@/router';
+import { useFavouriteStore } from '@/stores/FavouriteStore';
+import { useReviewStore, type CreateReview, type Review } from '@/stores/ReviewStore';
 
 onMounted(() => {
     const id = parseInt(route.params.id as string)
     productStore.getProductById(id);
+    reviewStore.getAverageRatingByProductId(id);
+    reviewStore.getReviewByProductId(id)
+
 });
+
 
 const pegiMap: Record<number, string> = {
     3: pegi3,
@@ -32,32 +38,23 @@ const pegiMap: Record<number, string> = {
 const route = useRoute()
 
 const productStore = useProductStore();
+const favouriteStore = useFavouriteStore();
+const reviewStore = useReviewStore();
 const userStore = useUserStore();
 const cartStore = useCartStore();
 const loading = ref(false)
 const dialog = ref(false)
-const review = ref('')
 
 // Es juego
 const isGame = computed(() => {
     return !!productStore.product && 'developer' in productStore.product && 'distributor' in productStore.product
 })
 
-
-function reserve(productId: number) {
-
-    if (userStore.isAuthenticated) {
-        /* cartStore.addBasket({
-            userId: userStore.user?.userId,
-            productId: productId,
-        }) */
-    } else {
-        cartStore.addToCartCookie(productId)
-
-    }
-
+async function reserve(productId: number) {
+    await cartStore.addToCart(productId); // Espera que se añada correctamente
+    await nextTick()
+    router.push('/cart'); // Luego navega al carrito
 }
-
 
 
 /* PARA EL CARRUSEL */
@@ -86,6 +83,7 @@ const descriptionTxt = computed(() => {
 
 });
 
+
 // Truncar la descripción si excede el maxLength
 const truncatedDescription = computed(() => {
     const description = descriptionTxt.value ?? ''
@@ -102,9 +100,24 @@ const toggleExpand = () => {
 };
 
 
+const rating = ref<number>(0)
+const review = ref('')
 
-/* RESEÑAS */
-const rating = ref(4.5)
+const sendReview = () => {
+
+    const reviewData: CreateReview = {
+        comment: review.value,
+        rating: rating.value,
+        userId: userStore.user.userId,
+        productId: productStore.product.id
+    };
+
+    reviewStore.addReview(reviewData)
+    rating.value = 0
+    review.value = ''
+
+
+};
 
 </script>
 
@@ -120,15 +133,15 @@ const rating = ref(4.5)
             </v-card-title>
 
             <v-card-text>
-                <v-rating v-model="rating" color="yellow darken-3" background-color="grey lighten-1" length="5"
-                    size="32" class="mb-4"></v-rating>
+                <v-rating v-model="rating" color="yellow darken-3" background-color="grey lighten-1" length="10"
+                    half-increments hover size="32" class="mb-4"></v-rating>
 
                 <v-textarea v-model="review" label="Escribir reseña" rows="4" auto-grow outlined></v-textarea>
             </v-card-text>
 
             <v-card-actions class="justify-end">
                 <v-btn @click="dialog = false">Cancelar</v-btn>
-                <v-btn color="primary">Enviar</v-btn>
+                <v-btn @click="sendReview" color="primary">Enviar</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -202,10 +215,12 @@ const rating = ref(4.5)
 
                         <v-card-actions>
                             <v-btn color="deep-purple-lighten-2" text="Añadir a favoritos" border
-                                @click="reserve"></v-btn>
-                            <router-link to="/cart">
-                                <v-btn color="deep-purple-lighten-2" text="Comprar Ahora" border
-                                    @click="reserve(productStore.product?.id)"></v-btn></router-link>
+                                @click="favouriteStore.addFavourite(productStore.product?.id)"></v-btn>
+
+                            <v-btn v-if="productStore.product?.stock > 0" color="deep-purple-lighten-2"
+                                text="Comprar Ahora" border @click="reserve(productStore.product?.id)"></v-btn>
+                            <v-btn v-else color="deep-purple-lighten-2" text="Avisar cuando repongan stock"
+                                border></v-btn>
                         </v-card-actions>
 
                     </v-card>
@@ -235,8 +250,9 @@ const rating = ref(4.5)
                     <v-card class="game-card">
                         <v-card-text>
                             <div class="review-score">
-                                <v-avatar class="score-circle" color="green-darken-2">9</v-avatar>
-                                <span class="reviews">Basado en 30 reseñas</span>
+                                <v-avatar class="score-circle" color="green-darken-2">{{ reviewStore.AverageRating
+                                    }}</v-avatar>
+                                <span class="reviews">Basado en {{ reviewStore.ReviewCount }} reseña(s)</span>
                             </div>
                             <v-divider class="my-3"></v-divider>
                             <v-container>
@@ -313,35 +329,13 @@ const rating = ref(4.5)
                         <v-col cols="6">
                             <h3>RESEÑAS</h3>
                         </v-col>
-                        <v-col cols="6" class="text-right">
+                        <v-col cols="6" class="text-right" v-if="userStore.isAuthenticated">
                             <v-btn prepend-icon="mdi-plus" text="Hacer Reseña" @click="dialog = true"></v-btn>
                         </v-col>
 
                     </v-row>
                     <v-row>
-                        <v-col cols="12" sm="6" md="4" lg="3" v-for="(item, index) in 4" :key="index">
-                            <v-card class="review-card pa-4" elevation="3">
-                                <v-card-title class="text-center font-weight-bold text-white">
-                                    Usuario
-                                </v-card-title>
-
-                                <v-divider class="mx-auto mb-3" thickness="2" width="90%"></v-divider>
-
-                                <v-card-subtitle class="text-h6 font-weight-bold text-center">
-                                    GOD OF WAR: RAGNAROK
-                                </v-card-subtitle>
-
-                                <v-card-text class="">
-                                    <p>Hermano que juegazo, lo recomiendo a todos ¡Aún estoy flipando! ¡Hermano!</p>
-                                </v-card-text>
-
-                                <v-divider class="mx-auto mt-3" thickness="2" width="90%"></v-divider>
-
-                                <v-rating v-model="rating" active-color="yellow-accent-4" color="white" half-increments
-                                    density="comfortable" hover></v-rating>
-
-                            </v-card>
-                        </v-col>
+                        <ReviewCard v-for="(item, index) in reviewStore.reviews" :key="index" :review="item" />
                     </v-row>
                 </v-col>
             </v-row>

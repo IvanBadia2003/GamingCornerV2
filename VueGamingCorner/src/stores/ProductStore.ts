@@ -312,7 +312,7 @@ export const useProductStore = defineStore('ProductStore', () => {
                 },
                 body: JSON.stringify(game),
             });
-            if (response.ok) {
+            if (response.ok) {  
                 getAllVideogames()
                 alert('Juego creado exitosamente.' + response);
             } else {

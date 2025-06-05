@@ -1,6 +1,6 @@
 <template>
   <v-card class="pa-5">
-    <v-card-title >Dirección de Envío</v-card-title>
+    <v-card-title>Dirección de Envío</v-card-title>
     <v-form>
       <v-row>
         <v-col cols="12" md="12">
@@ -51,7 +51,9 @@ const editedUser = reactive({
   admin: false,
   dateCreated: ''
 })
-
+onMounted(() => {
+  Object.assign(editedUser, userStore.user)
+})
 
 const userStore = useUserStore()
 
@@ -79,12 +81,20 @@ function setAddress(direccion: {
 // Guardar dirección
 function saveAddress() {
 
+  try {
     const envioFinal = setAddress(addressShipping.value)
     userStore.updateUser(userStore.user.userId, {
       ...editedUser,
       address: envioFinal
     })
     console.log('Dirección de envío:', envioFinal)
-  
+
+  } catch (error) {
+    console.error('Error al guardar los datos:', error)
+    alert('Hubo un error al actualizar el usuario')
+  }
+
+
+
 }
 </script>

@@ -30,12 +30,12 @@
           <!-- BLOQUE EXPANDIBLE -->
               <v-col cols="12" md="6">
                 <v-text-field label="Nueva contraseña" type="password" v-model="newPassword"
-                  :rules="[v => !!v || 'La nueva contraseña es obligatoria']" />
+                  />
               </v-col>
 
               <v-col cols="12" md="6">
                 <v-text-field label="Repetir nueva contraseña" type="password" v-model="repeatNewPassword" :rules="[
-                  v => !!v || 'Repite la contraseña',
+                  
                   v => v === newPassword || 'Las contraseñas no coinciden'
                 ]" />
               </v-col>
@@ -110,10 +110,6 @@ async function guardar() {
 
   // Validar contraseñas si se cambió
   if (mostrarCambioContrasena.value) {
-    if (!newPassword.value || newPassword.value !== repeatNewPassword.value) {
-      alert('Las contraseñas no coinciden o están vacías')
-      return
-    }
     editedUser.password = newPassword.value
   }
 
