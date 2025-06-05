@@ -32,6 +32,15 @@ export interface Filters {
     brand: string | null
 }
 
+export interface ProductImages {
+    main?: string | null;
+    background?: string | null;
+    content1?: string | null;
+    content2?: string | null;
+    content3?: string | null;
+    content4?: string | null;
+  }
+  
 
 // Interfaz del videojuego
 export interface Videogame extends Product {
@@ -50,6 +59,8 @@ export interface Videogame extends Product {
     releaseDate: Date //Fecha de lanzamiento del juego 
     distributor: string  //Distribuidor del juego
     developer: string //Desarrollador del juego
+    productImages: ProductImages
+
 }
 
 
@@ -70,6 +81,12 @@ export interface VideogameCreate {
     releaseDate: Date //Fecha de lanzamiento del juego 
     distributor: string  //Distribuidor del juego
     developer: string //Desarrollador del juego
+    main: string,
+    background: string,
+    content1: string,
+    content2: string,
+    content3: string,
+    content4: string
 }
 // Interfaz para editar el videojuego
 
@@ -104,6 +121,8 @@ export interface Console extends Product {
     principalImageURL?: string //Imagen principal de la consola
     releaseDate: Date //Fecha de lanzamiento de la consola
     brand: string  //Distribuidor de la consola
+    productImages: ProductImages
+
 
 }
 // Interfaz para crear la consola 
@@ -121,6 +140,12 @@ export interface ConsoleCreate {
     generation: string // Generación de la consola
     colors: string // Colores disponibles
     services: string // Servicios compatibles
+    main: string,
+    background: string,
+    content1: string,
+    content2: string,
+    content3: string,
+    content4: string
 }
 
 // Interfaz para editar la consola 
@@ -198,11 +223,13 @@ export const useProductStore = defineStore('ProductStore', () => {
     // Obtener todos los productos para el catálogo
     const getProductsToCatalog = async (type: string) => {
         try {
-
+debugger
             if (type === 'videogame') {
                 const response = await axios.get('http://localhost:5000/Videogame')
                 products.splice(0, products.length) // Actualiza el array de videojuegos
                 products.push(...response.data)// Añade los nuevos videojuegos al array
+                console.log(products);
+                
             } else if (type === 'console') {
                 const response = await axios.get('http://localhost:5000/Console')
                 products.splice(0, products.length) // Borra el array de consolas
@@ -435,6 +462,7 @@ export const useProductStore = defineStore('ProductStore', () => {
 
     async function createConsole(_console: ConsoleCreate) {
         try {
+            debugger
             const response = await fetch('http://localhost:5000/Console', {
                 method: 'POST',
                 headers: {

@@ -2,37 +2,45 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-type EntityType = 'products' | 'users' | 'platforms' | 'genres';
+type EntityType = 'juego' | 'consola' | 'genero' | 'plataforma';
 
 type MediaMap = {
-  [entityType: string]: Record<number, Record<string, string>>;
-};
+    [entityType: string]: Record<string, Record<string, string>>; // ahora key es el nombre
+  };
 
 export const useCloudinaryStore = defineStore('cloudinaryStore', () => {
   const media = ref<MediaMap>({
-    products: {},
-    users: {},
-    platforms: {},
-    genres: {},
+    juego: {},
+    consola: {},
+    genero: {},
+    plataforma: {},
   });
+
+// Añade en CloudinaryStore
+const avatarImage = ref<File | null>(null);
+const mainImage = ref<File | null>(null);
+const backgroundImage = ref<File | null>(null);
+const contentImages = ref<(File | null)[]>([null, null, null, null]);
+
 
   function setMedia(
     entity: EntityType,
-    id: number,
+    name: string,
     key: string,
     url: string
   ) {
-    if (!media.value[entity][id]) {
-      media.value[entity][id] = {};
+    if (!media.value[entity][name]) {
+      media.value[entity][name] = {};
     }
-    media.value[entity][id][key] = url;
+    media.value[entity][name][key] = url;
   }
-
-  function getMedia(entity: EntityType, id: number) {
-    return media.value[entity][id] || {};
+  
+  function getMedia(entity: EntityType, name: string) {
+    
+    return media.value[entity][name] || {};
   }
+  
 
-// composables/useCloudinaryUpload.ts
 async function uploadToCloudinary(
     file: File,
     publicPath: string // ejemplo: 'products/123/main'
@@ -42,7 +50,7 @@ async function uploadToCloudinary(
     formData.append('upload_preset', 'gamingcorner_unsigned'); // tu upload preset
     formData.append('public_id', publicPath); // la ruta que tú defines
   
-    const res = await fetch('https://api.cloudinary.com/v1_1/gamingcorner/image/upload', {
+    const res = await fetch('https://api.cloudinary.com/v1_1/dsaptfjxa/image/upload', {
       method: 'POST',
       body: formData,
     });
@@ -53,9 +61,51 @@ async function uploadToCloudinary(
       throw new Error(data.error?.message || 'Error subiendo imagen');
     }
   
+    debugger
     return data.secure_url; // URL pública de la imagen subida
   }
   
+  async function uploadImages(entityType: EntityType, entityName: string) {
 
-  return { media, setMedia, getMedia, uploadToCloudinary };
-});
+    
+    if (avatarImage.value) {
+      const url = await uploadToCloudinary(avatarImage.value, `${entityType}/${entityName}/avatar`);
+      setMedia(entityType, entityName, 'avatar', url);
+    }
+  
+    if (mainImage.value) {
+      const url = await uploadToCloudinary(mainImage.value, `${entityType}/${entityName}/main`);
+      setMedia(entityType, entityName, 'main', url);
+    }
+  
+    if (backgroundImage.value) {
+      const url = await uploadToCloudinary(backgroundImage.value, `${entityType}/${entityName}/background`);
+      setMedia(entityType, entityName, 'background', url);
+    }
+  
+    for (let i = 0; i < contentImages.value.length; i++) {
+      if (contentImages.value[i]) {
+        const url = await uploadToCloudinary(contentImages.value[i]!, `${entityType}/${entityName}/content${i + 1}`);
+        setMedia(entityType, entityName, `content${i + 1}`, url);
+      }
+    }
+  }
+  
+
+  function getMediaForApi(entity: EntityType, name: string): Record<string, string> {
+    return media.value[entity][name] || {};
+  }
+
+  return {
+    media,
+    setMedia,
+    getMedia,
+    uploadToCloudinary,
+    uploadImages,
+    avatarImage,
+    mainImage,
+    backgroundImage,
+    contentImages,
+    getMediaForApi
+  };
+  });

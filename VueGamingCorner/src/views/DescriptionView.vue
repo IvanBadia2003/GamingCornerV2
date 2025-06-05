@@ -27,6 +27,10 @@ onMounted(() => {
 });
 
 
+import { useCloudinaryStore } from '@/stores/CloudinaryStore';
+
+const cloudinaryStore = useCloudinaryStore();
+
 const pegiMap: Record<number, string> = {
     3: pegi3,
     7: pegi7,
@@ -69,7 +73,14 @@ const images = ref([
 
 const selectedImage = ref(images.value[0]);
 
-
+// //Obtenemos los datos de cloudinary
+// const mediaCloudinary = computed(() => cloudinaryStore.getMedia('products', productStore.product.id));
+// // Creamos un array de imágenes miniatura (solo las que existan)
+// const imagesCloudinary = computed(() =>
+//     ['main', 'background', 'content1', 'content2', 'content3', 'content4']
+//         .map(key => mediaCloudinary.value[key])
+//         .filter(url => !!url) // Solo si existe
+// );
 
 
 /* PARA LA DESCRIPCIÓN */
@@ -148,9 +159,7 @@ const sendReview = () => {
 
     <v-container fluid class="game-description">
         <!-- Imagen de fondo -->
-        <v-img class="background-image"
-            src="https://helios-i.mashable.com/imagery/articles/02aR11GDLtX9X3OuVX7Oh9E/images-4.fill.size_2000x1125.v1667406172.png"
-            cover>
+        <v-img class="background-image" :src="productStore.product?.productImages?.background || ''" cover>
         </v-img>
 
         <!-- Contenedor del contenido -->
@@ -159,7 +168,7 @@ const sendReview = () => {
                 <!-- Imagen principal del juego -->
                 <v-col cols="12" md="6">
                     <v-sheet class="game-cover" elevation="5">
-                        <v-img :src="productStore.product?.principalImageURL" cover width="100%" class="img" />
+                        <v-img :src="productStore.product?.productImages?.main || ''" cover width="100%" class="img" />
                     </v-sheet>
                 </v-col>
 
@@ -202,7 +211,7 @@ const sendReview = () => {
                             <v-col cols="auto" class="d-flex align-center">
                                 <v-icon>mdi-tag-arrow-down</v-icon>
                                 <h5 class="ml-2" style="text-decoration: line-through;">{{ productStore.product?.price
-                                }}€</h5>
+                                    }}€</h5>
                             </v-col>
                             <v-col cols="auto" class="mr-2">
                                 <h5 class="text-primary">-{{ productStore.product?.discount }}%</h5>
@@ -233,14 +242,17 @@ const sendReview = () => {
                     <h3>MULTIMEDIA</h3>
 
                     <!-- Imagen principal -->
-                    <v-img :src="selectedImage" class="main-image rounded-lg border-primary" cover></v-img>
+                    <v-img :src="selectedImage" class="main-image rounded-lg border-primary" cover height="400"></v-img>
 
                     <!-- Miniaturas -->
                     <v-row class="mt-3 thumbnails">
-                        <v-col v-for="(image, index) in images" :key="index" cols="3">
-                            <v-img :src="image" class="thumbnail rounded-lg" cover
-                                @click="selectedImage = image"></v-img>
+                        <v-col
+                            v-for="([key, image], index) in Object.entries(productStore.product?.productImages || {}).filter(([key]) => key.toLowerCase().startsWith('content'))"
+                            :key="index" cols="3">
+                            <v-img v-if="image" :src="image" class="thumbnail rounded-lg" cover height="100"
+                                @click="selectedImage = image" />
                         </v-col>
+
                     </v-row>
 
                 </v-col>
@@ -251,7 +263,7 @@ const sendReview = () => {
                         <v-card-text>
                             <div class="review-score">
                                 <v-avatar class="score-circle" color="green-darken-2">{{ reviewStore.AverageRating
-                                    }}</v-avatar>
+                                }}</v-avatar>
                                 <span class="reviews">Basado en {{ reviewStore.ReviewCount }} reseña(s)</span>
                             </div>
                             <v-divider class="my-3"></v-divider>

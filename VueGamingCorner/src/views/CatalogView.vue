@@ -170,7 +170,7 @@ const applyFilters = () => {
     <!-- Grid de Videojuegos -->
     <v-row>
       <v-col v-for="product in productStore.products" :key="product.id" cols="6" xs="6" md="4">
-        <CardComponent :title="product.name" :src="product.principalImageURL as string" :discount="product.discount"
+        <CardComponent :title="product.name" :src="product.productImages?.main || ''" :discount="product.discount"
           :price="product.price" :productId="product.productId" />
       </v-col>
     </v-row>

@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { useGenderStore, type GenderCreate } from '@/stores/GenderStore';
 import { useProductStore, type ConsoleCreate, type UpdateConsole, type VideogameCreate } from '@/stores/ProductStore';
 import { SystemEnum, usePlatformStore, type PlatformCreate } from '@/stores/PlatformStore';
 import { de } from 'vuetify/locale';
 import UploadImagesComponent from '../UploadImagesComponent.vue';
+import { useCloudinaryStore } from '@/stores/CloudinaryStore';
 
 const genderStore = useGenderStore()
 const productStore = useProductStore()
 const platformStore = usePlatformStore()
+const cloudinaryStore = useCloudinaryStore()
 
 
 interface Gender {
@@ -66,6 +68,12 @@ interface FormDataType {
     services?: string | null,
     id: number | null,
     system?: SystemEnum | null
+    main: string | null,
+    background: string | null,
+    content1: string | null,
+    content2: string | null,
+    content3: string | null,
+    content4: string | null
 }
 
 const valid = ref(false) // Estado de validación del formulario
@@ -114,21 +122,28 @@ const formData = ref<FormDataType>({
     generation: props.initialData?.generation || '',
     services: props.initialData?.services || '',
     id: props.initialData?.id || null,
-    system: props.initialData?.system || null
+    system: props.initialData?.system || null,
+    background: props.initialData?.background || null,
+    content1: props.initialData?.content1 || null,
+    content2: props.initialData?.content2 || null,
+    content3: props.initialData?.content3 || null,
+    content4: props.initialData?.content4 || null,
+    main: props.initialData?.main || null
+
 
 
 })
 
 // Formatea la fecha de lanzamiento para el input de tipo date
 const releaseDateFormatted = computed({
-  get: () => {
-    const date = formData.value.releaseDate
-    return date ? new Date(date).toISOString().split('T')[0] : null
-  },
-  // Setter para actualizar la fecha de lanzamiento
-  set: (value: string) => {
-    formData.value.releaseDate = value ? new Date(value) : null
-  }
+    get: () => {
+        const date = formData.value.releaseDate
+        return date ? new Date(date).toISOString().split('T')[0] : null
+    },
+    // Setter para actualizar la fecha de lanzamiento
+    set: (value: string) => {
+        formData.value.releaseDate = value ? new Date(value) : null
+    }
 })
 
 // Observa los cambios en las imágenes y actualiza la vista previa
@@ -146,11 +161,13 @@ const rules = {
 const handleSubmit = async () => {
     debugger
     console.log(formData.value);
-
+    await cloudinaryStore.uploadImages(props.type, formData.value.name)
+    await nextTick()
+    const media = useCloudinaryStore().getMedia(props.type, formData.value.name);
 
     const isValid = await form.value?.validate();
 
- 
+
     // Preparar los datos del formulario para crear el videojuego
     const formDataVideogame: VideogameCreate = {
         platformId: formData.value.platformId || 0,
@@ -166,7 +183,13 @@ const handleSubmit = async () => {
         releaseDate: formData.value.releaseDate || new Date(),
         distributor: formData.value.distributor || '',
         developer: formData.value.developer || '',
-        genderId: formData.value.genderId || []
+        genderId: formData.value.genderId || [],
+        background: media.background,
+        content1: media.content1,
+        content2: media.content2,
+        content3: media.content3,
+        content4: media.content4,
+        main: media.main
     }
 
     const formDataVideogameUpdate: VideogameCreate = {
@@ -184,6 +207,12 @@ const handleSubmit = async () => {
         distributor: formData.value.distributor || '',
         developer: formData.value.developer || '',
         genderId: formData.value.genderId || [],
+        background: media.background,
+        content1: media.content1,
+        content2: media.content2,
+        content3: media.content3,
+        content4: media.content4,
+        main: media.main
     }
 
     // Preparar los datos del formulario para crear la consola
@@ -200,7 +229,13 @@ const handleSubmit = async () => {
         specifications: specificationsConsole.value.map(items => items.map(i => `${i}`).join(', ')).join('; ') || '',
         colors: formData.value.colors || '',
         generation: formData.value.generation || '',
-        services: formData.value.services || ''
+        services: formData.value.services || '',
+        background: media.background,
+        content1: media.content1,
+        content2: media.content2,
+        content3: media.content3,
+        content4: media.content4,
+        main: media.main
     }
 
     // Preparar los datos del formulario para editar la consola
@@ -253,7 +288,7 @@ const handleSubmit = async () => {
     //Si es consola y edición
     else if (isEditing.value && isConsole.value) {
         console.log('Formulario de edición listo:', formDataCreateConsole, isEditing.value)
-        productStore.updateConsole( formData.value.id as number ,formDataUpdateConsole)
+        productStore.updateConsole(formData.value.id as number, formDataUpdateConsole)
         emit('cancel')
 
     }
@@ -305,8 +340,6 @@ const handleSubmit = async () => {
 
         <v-card-text>
             <v-form ref="form" v-model="valid">
-                <v-text-field v-if="!isGenderOrPlatform" label="IMAGEN PROVISIONAL" v-model="formData.principalImageURL"
-                    :rules="[rules.required]" />
                 <!-- Campos comunes -->
                 <v-text-field label="Nombre" v-model="formData.name" :rules="[rules.required]" />
                 <v-row v-if="!isGenderOrPlatform">
@@ -332,8 +365,8 @@ const handleSubmit = async () => {
                 <v-text-field v-if="isGame" label="Distribuidor" type="text" v-model="formData.distributor"
                     :rules="[rules.required]" />
 
-                <v-select v-if="isGame || isConsole" label="Plataforma" :items="platformStore.platforms" v-model="formData.platformId"
-                    :rules="[rules.required]" item-title="name" item-value="platformId" />
+                <v-select v-if="isGame || isConsole" label="Plataforma" :items="platformStore.platforms"
+                    v-model="formData.platformId" :rules="[rules.required]" item-title="name" item-value="platformId" />
 
                 <v-text-field v-if="!isGenderOrPlatform" v-model="releaseDateFormatted" label="Fecha de lanzamiento"
                     type="date" :rules="[rules.required]" />
@@ -404,8 +437,10 @@ const handleSubmit = async () => {
 
 
                 <v-text-field v-if="isConsole" label="Marca" v-model="formData.brand" :rules="[rules.required]" />
-                <v-select v-if="isConsole" label="Generación" v-model="formData.generation" :items="generationsOptions" />
-                <v-text-field v-if="isConsole" label="Servicios" v-model="formData.services" :rules="[rules.required]" />
+                <v-select v-if="isConsole" label="Generación" v-model="formData.generation"
+                    :items="generationsOptions" />
+                <v-text-field v-if="isConsole" label="Servicios" v-model="formData.services"
+                    :rules="[rules.required]" />
                 <v-text-field v-if="isConsole" label="Colores" v-model="formData.colors" :rules="[rules.required]" />
                 <v-row v-if="isConsole">
                     <v-col cols="12">
@@ -453,17 +488,35 @@ const handleSubmit = async () => {
                                 <v-select label="Salida AV" :items="AVOptions" v-model="specificationsConsole[9]"
                                     :rules="[rules.required]" multiple />
                             </v-col>
-                           
+
                         </v-row>
                     </v-col>
                 </v-row>
 
-                <v-select v-if="isPlatform" label="Sistema" :items="platformStore.systemOptions" v-model="formData.system"
-                :rules="[rules.required]" item-title="label" item-value="value"/>
+                <v-select v-if="isPlatform" label="Sistema" :items="platformStore.systemOptions"
+                    v-model="formData.system" :rules="[rules.required]" item-title="label" item-value="value" />
 
 
                 <!-- Subida de imágenes -->
-                <UploadImagesComponent/>
+                <v-divider class="my-4" />
+                <h5 class="mb-2">Subir imágenes</h5>
+
+                <!-- <v-file-input v-if="entityType === 'users'" v-model="cloudinaryStore.avatarImage" label="Avatar" /> -->
+
+                <v-file-input v-if="isConsole || isGame || isPlatform" 
+                    v-model="cloudinaryStore.mainImage" label="Imagen principal" />
+
+                <v-file-input v-if="isGame"  v-model="cloudinaryStore.backgroundImage"
+                    label="Imagen de fondo" />
+
+                <v-file-input v-if="isConsole || isGame"  v-model="cloudinaryStore.contentImages[0]"
+                    label="Contenido 1" />
+                <v-file-input v-if="isConsole || isGame"  v-model="cloudinaryStore.contentImages[1]"
+                    label="Contenido 2" />
+                <v-file-input v-if="isConsole || isGame"  v-model="cloudinaryStore.contentImages[2]"
+                    label="Contenido 3" />
+                <v-file-input v-if="isConsole || isGame"  v-model="cloudinaryStore.contentImages[3]"
+                    label="Contenido 4" />
                 <!-- <div v-if="!isGenderOrPlatform" class="my-4">
                     <p>Subir imágenes (máx. 6):</p>
                     <v-file-input v-model="previewImages" accept="image/*" multiple show-size counter
