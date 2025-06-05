@@ -55,7 +55,13 @@ public class VideogameService : IVideogameService
         var product = new Product()
         {
             PlatformId = videogameCreateDTO.PlatformId,
-            Sales = 0            
+            Sales = 0,
+            BackgroundImage = videogameCreateDTO.Background,
+            ContentImages1 = videogameCreateDTO.Content1,
+            ContentImages2 = videogameCreateDTO.Content2,
+            ContentImages3 = videogameCreateDTO.Content3,
+            ContentImages4 = videogameCreateDTO.Content4,
+            MainImage = videogameCreateDTO.Main
         };
 
         //Creo el producto
@@ -105,7 +111,6 @@ public class VideogameService : IVideogameService
         videogameDto.Discount = videogameUpdateDTO.Discount;
         videogameDto.Price = videogameUpdateDTO.Price;
         videogameDto.ReleaseDate = videogameUpdateDTO.ReleaseDate;
-        videogameDto.PrincipalImageURL = videogameUpdateDTO.PrincipalImageURL;
         videogameDto.Distributor = videogameUpdateDTO.Distributor;
         videogameDto.Developer = videogameUpdateDTO.Developer;
         videogameDto.PlatformId = videogameUpdateDTO.PlatformId;

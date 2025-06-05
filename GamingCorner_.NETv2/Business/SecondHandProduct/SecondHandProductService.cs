@@ -42,7 +42,13 @@ public class SecondHandProductService : ISecondHandProductService
         //Inicializo el produtco
         var product = new Product()
         {
-            Sales = 0
+            Sales = 0,
+            BackgroundImage = productCreateDTO.BackgroundImage,
+            ContentImages1 = productCreateDTO.ContentImages1,
+            ContentImages2 = productCreateDTO.ContentImages2,
+            ContentImages3 = productCreateDTO.ContentImages3,
+            ContentImages4 = productCreateDTO.ContentImages4,
+            MainImage = productCreateDTO.MainImage
         };
 
         //Creo el producto

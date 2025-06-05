@@ -34,11 +34,6 @@ public class ConsoleUpdateDTO
     public decimal Price { get; set; }
 
     /// <summary>
-    /// URL de la imagen principal de la consola.
-    /// </summary>
-    public string PrincipalImageURL { get; set; }
-
-    /// <summary>
     /// Fecha de lanzamiento de la consola.
     /// </summary>
     public DateTime ReleaseDate { get; set; }
@@ -83,7 +78,6 @@ public class ConsoleUpdateDTO
             Stock = this.Stock,
             Discount = this.Discount,
             Price = this.Price,
-            PrincipalImageURL = this.PrincipalImageURL,
             Specifications = this.Specifications,
             ReleaseDate = this.ReleaseDate,
             Brand = this.Brand,

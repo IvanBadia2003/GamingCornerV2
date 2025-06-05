@@ -41,10 +41,7 @@ namespace GamingCorner.Models.DTOs.ProductDTOs
         //public int PlatformId { get; set; }
         //public int GenderId { get; set; }
 
-        /// <summary>
-        /// Imagen Principal de la consola
-        /// </summary>
-        public string? PrincipalImageURL { get; set; }
+
 
 
         /// <summary>
@@ -65,6 +62,8 @@ namespace GamingCorner.Models.DTOs.ProductDTOs
         /// Marca de la consola (Sony, Microsoft, Nintendo...)
         /// </summary>
         public string Brand { get; set; }
+
+        public ProductsImagesDto ProductImages { get; set; }
 
         public Product ToProduct()
         {

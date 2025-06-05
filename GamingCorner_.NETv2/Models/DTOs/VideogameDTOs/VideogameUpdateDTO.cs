@@ -58,10 +58,6 @@ public class VideogameUpdateDTO
     /// </summary>
     public int PlatformId { get; set; }
 
-    /// <summary>
-    /// Imagen principal del juego.
-    /// </summary>
-    public string? PrincipalImageURL { get; set; }
 
     /// <summary>
     /// Fecha de lanzamiento del juego.
@@ -95,7 +91,6 @@ public class VideogameUpdateDTO
             ReleaseDate = this.ReleaseDate,
             //PlatformId = this.PlatformId,
             //GenderId = this.GenderId,
-            PrincipalImageURL = this.PrincipalImageURL
         };
     }
 }

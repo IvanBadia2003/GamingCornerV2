@@ -37,7 +37,13 @@ public class ConsoleService : IConsoleService
         var product = new Product()
         {
             PlatformId = consoleCreateDTO.PlatformId,
-            Sales = 0
+            Sales = 0,
+            BackgroundImage = consoleCreateDTO.Background,
+            ContentImages1 = consoleCreateDTO.Content1,
+            ContentImages2 = consoleCreateDTO.Content2,
+            ContentImages3 = consoleCreateDTO.Content3,
+            ContentImages4 = consoleCreateDTO.Content4,
+            MainImage = consoleCreateDTO.Main
         };
 
         //Creamos el producto       
@@ -72,7 +78,6 @@ public class ConsoleService : IConsoleService
         console.Stock = dto.Stock;
         console.Discount = dto.Discount;
         console.Price = dto.Price;
-        console.PrincipalImageURL = dto.PrincipalImageURL;
         console.ReleaseDate = dto.ReleaseDate;
         console.Specifications = dto.Specifications;
         console.Brand = dto.Brand;

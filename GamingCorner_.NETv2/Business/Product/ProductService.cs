@@ -66,7 +66,15 @@ namespace GamingCorner.Business
                     VideogameId = product.Videogame.Id,
                     PlatformId = product.PlatformId,
                     Price = product.Videogame.Price,
-                    PrincipalImageURL = product.Videogame.PrincipalImageURL,
+                    ProductImages = new ProductsImagesDto
+                    {
+                        Background = product.BackgroundImage,
+                        Content1 = product.ContentImages1,
+                        Content2 = product.ContentImages2,
+                        Content3 = product.ContentImages3,
+                        Content4 = product.ContentImages4,
+                        Main = product.MainImage,
+                    },
                     Genders = product.Videogame.VideogameGenders.Select(vg => new GenderDTO
                     {
                         GenderId = vg.Gender.GenderId,
@@ -94,11 +102,19 @@ namespace GamingCorner.Business
                     Specifications = product.Console.Specifications,
                     PlatformId = product.PlatformId,
                     Price = product.Console.Price,
-                    PrincipalImageURL = product.Console.PrincipalImageURL
+                    ProductImages = new ProductsImagesDto
+                    {
+                        Background = product.BackgroundImage,
+                        Content1 = product.ContentImages1,
+                        Content2 = product.ContentImages2,
+                        Content3 = product.ContentImages3,
+                        Content4 = product.ContentImages4,
+                        Main = product.MainImage,
+                    },
                 };
 
             }
-            
+
             // Si el producto es un producto de segunda mano
             if (product.SecondHandProduct != null)
             {
@@ -143,7 +159,7 @@ namespace GamingCorner.Business
                     Name = product.Videogame.Name,
                     Discount = product.Videogame.Discount,
                     Price = product.Videogame.Price,
-                    PrincipalImageURL = product.Videogame.PrincipalImageURL
+                    Main = product.MainImage
                 }).ToList<ProductDTOBase>();
 
                 return products;
@@ -156,8 +172,8 @@ namespace GamingCorner.Business
                     Id = product.Id,
                     Name = product.Console.Name,
                     Discount = product.Console.Discount,
-                   Price = product.Console.Price,
-                    PrincipalImageURL = product.Console.PrincipalImageURL
+                    Price = product.Console.Price,
+                    Main = product.MainImage
                 }).ToList<ProductDTOBase>();
 
                 return products;
@@ -165,8 +181,8 @@ namespace GamingCorner.Business
 
             return new List<ProductDTOBase>(); // Nunca devuelvas null en listas, mejor una vacía
         }
-        
-        
+
+
         /// <summary>
         /// Obtener productos compatibles por su ID
         /// </summary>
@@ -192,7 +208,7 @@ namespace GamingCorner.Business
                     Name = product.Videogame.Name,
                     Discount = product.Videogame.Discount,
                     Price = product.Videogame.Price,
-                    PrincipalImageURL = product.Videogame.PrincipalImageURL
+                    Main = product.MainImage
                 }).ToList<ProductDTOBase>();
 
                 return products;
@@ -205,8 +221,8 @@ namespace GamingCorner.Business
                     Id = product.Id,
                     Name = product.Console.Name,
                     Discount = product.Console.Discount,
-                   Price = product.Console.Price,
-                    PrincipalImageURL = product.Console.PrincipalImageURL
+                    Price = product.Console.Price,
+                    Main = product.MainImage
                 }).ToList<ProductDTOBase>();
 
                 return products;

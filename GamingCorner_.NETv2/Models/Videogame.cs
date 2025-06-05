@@ -29,8 +29,6 @@ public class Videogame
     public string Developer { get; set; }
     [Required] 
     public string Distributor { get; set; }
-    [Required] 
-    public string PrincipalImageURL { get; set; }
 
     public string? Requisitos1 { get; set; }
     public string? Requisitos2 { get; set; }
@@ -55,7 +53,6 @@ public class Videogame
         DateTime releaseDate,
         string developer,
         string distributor,
-        string principalImageURL,
         int productId,
         string? requisitos1 = null,
         string? requisitos2 = null
@@ -70,7 +67,6 @@ public class Videogame
         ReleaseDate = releaseDate;
         Developer = developer;
         Distributor = distributor;
-        PrincipalImageURL = principalImageURL;
         ProductId = productId;
         Requisitos1 = requisitos1;
         Requisitos2 = requisitos2;
@@ -91,7 +87,6 @@ public class Videogame
             dto.ReleaseDate,
             dto.Developer,
             dto.Distributor,
-            dto.PrincipalImageURL,
             dto.ProductId,
             dto.Requisitos1,
             dto.Requisitos2
@@ -112,7 +107,6 @@ public class Videogame
             Stock = this.Stock,
             Discount = this.Discount,
             Price = this.Price,
-            PrincipalImageURL = this.PrincipalImageURL,
             ReleaseDate = this.ReleaseDate,
             Distributor = this.Distributor,
             Developer = this.Developer,

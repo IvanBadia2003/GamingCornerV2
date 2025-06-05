@@ -89,7 +89,7 @@ public class FavouriteEFRepository : IFavouriteRepository
                 Name = b.Product.Videogame?.Name ?? b.Product.Console?.Name,
                 Price = b.Product.Videogame?.Price ?? b.Product.Console.Price,
                 Discount = b.Product.Videogame?.Discount ?? b.Product.Console.Discount,
-                PrincipalImageURL = b.Product.Videogame?.PrincipalImageURL ?? b.Product.Console?.PrincipalImageURL,
+                Main = b.Product.MainImage,
                 System = b.Product.Platform.System,
 
 

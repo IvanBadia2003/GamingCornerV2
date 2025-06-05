@@ -7,6 +7,7 @@ using System.Data;
 using GamingCorner.Data;
 using Microsoft.EntityFrameworkCore;
 using GamingCorner.Models.Enums.OrderDirectionEnum;
+using GamingCorner.Models.DTOs.ProductDTOs;
 
 public class VideogameEFRepository : IVideogameRepository
 {
@@ -50,8 +51,17 @@ public class VideogameEFRepository : IVideogameRepository
                 PlatformId = v.Product.Platform.PlatformId,
                 GenderId = v.VideogameGenders.Select(vg => vg.GenderId).ToList(),
                 Price = v.Price,
-                PrincipalImageURL = v.PrincipalImageURL,
-                Sales = v.Product.Sales
+                Sales = v.Product.Sales,
+                ProductImages = new ProductsImagesDto
+                {
+                    Background = v.Product.BackgroundImage,
+                    Content1 = v.Product.ContentImages1,
+                    Content3 = v.Product.ContentImages3,
+                    Content2 = v.Product.ContentImages2,
+                    Content4 = v.Product.ContentImages4,
+                    Main = v.Product.MainImage,
+                }
+
 
             }).ToList();
 
@@ -142,13 +152,21 @@ public class VideogameEFRepository : IVideogameRepository
             PlatformId = v.Product.Platform.PlatformId,
             GenderId = v.VideogameGenders.Select(vg => vg.GenderId).ToList(),
             Price = v.Price,
-            PrincipalImageURL = v.PrincipalImageURL,
-            Sales = v.Product.Sales
+            Sales = v.Product.Sales,
+            ProductImages = new ProductsImagesDto
+                {
+                    Background = v.Product.BackgroundImage,
+                    Content1 = v.Product.ContentImages1,
+                    Content3 = v.Product.ContentImages3,
+                    Content2 = v.Product.ContentImages2,
+                    Content4 = v.Product.ContentImages4,
+                    Main = v.Product.MainImage,
+                }
         }).ToList();
 
         return videogameDto;
     }
-    
+
     /// <summary>
     /// Obtenemos lista con los videojuegos más vendidos
     /// </summary>
@@ -160,7 +178,7 @@ public class VideogameEFRepository : IVideogameRepository
                 .OrderByDescending(v => v.Product.Sales).Take(12)
             .ToList();
 
-        
+
 
         var videogameDto = videogames.Select(v => new VideogameDTO
         {
@@ -179,8 +197,16 @@ public class VideogameEFRepository : IVideogameRepository
             //PlatformId = v.Product.Platform.PlatformId,
             //GenderId = v.VideogameGenders.Select(vg => vg.GenderId).ToList(),
             Price = v.Price,
-            PrincipalImageURL = v.PrincipalImageURL,
-            Sales = v.Product.Sales
+            Sales = v.Product.Sales,
+            ProductImages = new ProductsImagesDto
+                {
+                    Background = v.Product.BackgroundImage,
+                    Content1 = v.Product.ContentImages1,
+                    Content3 = v.Product.ContentImages3,
+                    Content2 = v.Product.ContentImages2,
+                    Content4 = v.Product.ContentImages4,
+                    Main = v.Product.MainImage,
+                }
         }).ToList();
 
         return videogameDto;
@@ -238,8 +264,16 @@ public class VideogameEFRepository : IVideogameRepository
                 //PlatformId =v.PlatformId,
                 //GenderId =v.GenderId,
                 Price = videogame.Price,
-                PrincipalImageURL = videogame.PrincipalImageURL,
-                Sales = videogame.Product.Sales
+                Sales = videogame.Product.Sales,
+                ProductImages =
+                {
+                    Background = videogame.Product.BackgroundImage,
+                    Content1 = videogame.Product.ContentImages1,
+                    Content3 = videogame.Product.ContentImages3,
+                    Content2 = videogame.Product.ContentImages2,
+                    Content4 = videogame.Product.ContentImages4,
+                    Main = videogame.Product.MainImage,
+                }
             };
 
             // Devolvemos el DTO
