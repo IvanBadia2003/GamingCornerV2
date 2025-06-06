@@ -3,6 +3,7 @@
   <v-container style="width: 80%;">
 
     <h2>DESTACADOS Y RECOMENDADOS</h2>
+
     <DestacablesComponent />
   </v-container>
 
@@ -76,6 +77,15 @@ import DestacablesComponent from '@/components/Home/DestacablesComponent.vue';
 import GridComponentTopConsoles from '@/components/Home/GridComponentTopConsoles.vue';
 import GridComponentTopGames from '@/components/Home/GridComponentTopGames.vue';
 import PrincipalImage from '@/components/Images/PrincipalImage.vue';
+import { useProductStore } from '@/stores/ProductStore';
+import { onMounted } from 'vue';
+
+const productStore = useProductStore();
+
+onMounted(() => {
+  productStore.TopSellingVideogames();
+  productStore.TopSellingConsoles();
+});
 
 </script>
 

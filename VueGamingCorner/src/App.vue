@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HeaderComponent from '@/components/HeaderComponent.vue'
+import HeaderComponent from '@/components/Header/HeaderComponent.vue'
 </script>
 
-<template>
+<template >
+<div id="App1">
+
   <HeaderComponent id="Header" />
   <div class="bg-background" id="App">
     <RouterView />
   </div>
+</div>
 </template>
 
 <style lang="scss">
-$HeaderHeight: 80px;
+$HeaderHeight: 90px;
 
-#App {
-  min-height: calc(100vh - $HeaderHeight);
+#App1{
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr;
 }
 
 #Header {
@@ -33,7 +38,15 @@ h3 {
   font: {
     family: "Bebas Neue", serif;
     weight: 400;
-    size: 4vw;
+    size: clamp(20px, 5vw, 40px);
+  }
+}
+
+h4 {
+  font: {
+    family: "Bebas Neue", serif;
+    weight: 400;
+    size: clamp(15px, 2.5vw, 30px);
   }
 }
 
@@ -42,6 +55,13 @@ h5 {
     family: "Bebas Neue", serif;
     weight: 400;
     size: clamp(12px, 1.5vw, 24px);
+  }
+}
+
+p {
+  font: {
+    family: "Montserrat", serif;
+    size: clamp(1rem, 1vw, 2rem);
   }
 }
 </style>
