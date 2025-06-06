@@ -36,11 +36,12 @@ try {
 const app = createApp(App)
 
 app.use(createPinia())
+const user = useUserStore()
+await user.fetchCurrentUser()
 app.use(router)
 app.use(createMyVuetify(savedTheme))
 
 // verificar si el usuario está autenticado
-const user = useUserStore()
-user.fetchCurrentUser()
+
 
 app.mount('#app')

@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-type EntityType = 'juego' | 'consola' | 'genero' | 'plataforma';
+type EntityType = 'juego' | 'consola' | 'genero' | 'plataforma' | 'segundamano';
 
 type MediaMap = {
     [entityType: string]: Record<string, Record<string, string>>; // ahora key es el nombre
@@ -14,6 +14,7 @@ export const useCloudinaryStore = defineStore('cloudinaryStore', () => {
     consola: {},
     genero: {},
     plataforma: {},
+    segundamano: {}
   });
 
 // Añade en CloudinaryStore
@@ -61,7 +62,6 @@ async function uploadToCloudinary(
       throw new Error(data.error?.message || 'Error subiendo imagen');
     }
   
-    debugger
     return data.secure_url; // URL pública de la imagen subida
   }
   

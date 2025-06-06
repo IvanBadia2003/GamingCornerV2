@@ -9,7 +9,7 @@
       :md="12 / row.length"
     >
       <CardComponent :title="game.name" :discount="game.discount"
-          :price="game.price" :productId="game.productId"  :src="game.principalImageURL as string"/>
+          :price="game.price" :productId="game.productId"  :src="game.productImages.main || ''"/>
     </v-col>
   </v-row>
   </v-container>

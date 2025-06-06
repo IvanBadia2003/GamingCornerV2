@@ -9,7 +9,7 @@
       cols="4"
     >
       <CardComponent :title="console.name" :discount="console.discount"
-          :price="console.price" :productId="console.productId"  :src="console.principalImageURL as string"/>
+          :price="console.price" :productId="console.productId"  :src="console.productImages.main || ''"/>
     </v-col>
   </v-row>
   </v-container>

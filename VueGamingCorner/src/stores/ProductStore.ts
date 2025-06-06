@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed, reactive } from 'vue'
 import axios from 'axios'
 import router from '@/router'
-import { useUserStore } from './UserStore'
+import { useUserStore, type User } from './UserStore'
 import type { Gender } from './GenderStore'
 import { de } from 'vuetify/locale'
 import { nextTick } from 'vue';
@@ -41,6 +41,34 @@ export interface ProductImages {
     content4?: string | null;
   }
   
+// Interfaz para crear el producto de segunda mano 
+export interface SecondHandProductsCreate {
+    name: string // Nombre de la consola
+    description: string // Descripción de la consola
+    price: number // Precio de la consola
+    releaseDate: Date // Fecha de lanzamiento de la consola
+    main: string,
+    content1: string,
+    content2: string,
+    content3: string,
+    content4: string,
+    userId: number
+}
+
+export interface SecondHandProducts extends Product {
+    productId: number;
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    productImages: string[] | null;
+    user: User;
+    isChecked: boolean;
+    platformId: number | null;
+    discount: number;
+    system: string | null;
+}
+
 
 // Interfaz del videojuego
 export interface Videogame extends Product {
@@ -54,8 +82,7 @@ export interface Videogame extends Product {
     discount: number //Porcentaje de descuento sobre el precio del juego
     price: number //Precio del juego
     platformId?: number
-    genderId: Gender[] //Géneros del juego
-    principalImageURL?: string //Imagen principal del juego
+    genders: Gender[] //Géneros del juego
     releaseDate: Date //Fecha de lanzamiento del juego 
     distributor: string  //Distribuidor del juego
     developer: string //Desarrollador del juego
@@ -77,7 +104,6 @@ export interface VideogameCreate {
     price: number //Precio del juego
     genderId: number[] //Géneros del juego
     platformId?: number
-    principalImageURL?: string //Imagen principal del juego
     releaseDate: Date //Fecha de lanzamiento del juego 
     distributor: string  //Distribuidor del juego
     developer: string //Desarrollador del juego
@@ -101,7 +127,6 @@ export interface VideogameUpdate {
     price: number // Precio del juego
     genderId: number[] // Géneros del juego
     platformId?: number // Plataforma del juego
-    principalImageURL?: string // Imagen principal del juego
     releaseDate: Date // Fecha de lanzamiento del juego 
     distributor: string // Distribuidor del juego
     developer: string // Desarrollador del juego
@@ -118,7 +143,6 @@ export interface Console extends Product {
     discount: number //Porcentaje de descuento sobre el precio de la consola
     price: number //Precio de la consola
     platformId?: number
-    principalImageURL?: string //Imagen principal de la consola
     releaseDate: Date //Fecha de lanzamiento de la consola
     brand: string  //Distribuidor de la consola
     productImages: ProductImages
@@ -132,7 +156,6 @@ export interface ConsoleCreate {
     stock: number // Cantidad de stock de la consola
     discount: number // Porcentaje de descuento sobre el precio de la consola
     price: number // Precio de la consola
-    principalImageURL: string // Imagen principal de la consola
     releaseDate: Date // Fecha de lanzamiento de la consola
     specifications: string // Especificaciones de la consola
     brand: string // Marca o distribuidor de la consola
@@ -155,7 +178,6 @@ export interface UpdateConsole {
     stock: number // Cantidad de stock de la consola
     discount: number // Porcentaje de descuento sobre el precio de la consola
     price: number // Precio de la consola
-    principalImageURL: string // Imagen principal de la consola
     releaseDate: Date // Fecha de lanzamiento de la consola
     specifications: string // Especificaciones de la consola
     brand: string // Marca o distribuidor de la consola
@@ -167,6 +189,8 @@ export interface UpdateConsole {
 // #endregion
 
 export const useProductStore = defineStore('ProductStore', () => {
+    const userStore = useUserStore()
+
     // Estado
     const videogames = reactive<Videogame[]>([])
     const topVideogames = reactive<Videogame[]>([])
@@ -176,6 +200,7 @@ export const useProductStore = defineStore('ProductStore', () => {
     const products = reactive<Console[] | Videogame[]>([])
     const similarsProducts = reactive<Console[] | Videogame[]>([])
     const error = ref<string | null>(null)
+    const secondHandProducts = reactive<SecondHandProducts[]>([])
 
     const productType = ref<string | null>(null);
 
@@ -226,13 +251,17 @@ export const useProductStore = defineStore('ProductStore', () => {
 debugger
             if (type === 'videogame') {
                 const response = await axios.get('http://localhost:5000/Videogame')
-                products.splice(0, products.length) // Actualiza el array de videojuegos
+                products.splice(0, products.length) // Actualiza el array de productos
                 products.push(...response.data)// Añade los nuevos videojuegos al array
                 console.log(products);
                 
             } else if (type === 'console') {
                 const response = await axios.get('http://localhost:5000/Console')
-                products.splice(0, products.length) // Borra el array de consolas
+                products.splice(0, products.length) // Borra el array de productos
+                products.push(...response.data)// Añade las consolas al array
+            } else if (type === 'secondHand'){
+                const response = await axios.get('http://localhost:5000/SecondHandProduct/Checked')
+                products.splice(0, products.length) // Borra el array de productos
                 products.push(...response.data)// Añade las consolas al array
             }
 
@@ -391,7 +420,6 @@ debugger
 
     // Obtener todos los videojuegos filtrados
     const getFilteredVideogames = async (filters: Filters) => {
-        debugger
         try {
             console.log(videogames);
 
@@ -407,7 +435,6 @@ debugger
 
     // Obtener los 12 productos más vendidos
     const TopSellingVideogames = async () => {
-        debugger
         try {
             console.log(topVideogames);
 
@@ -520,7 +547,6 @@ debugger
 
     // Obtener todas las consolas filtradas
     const getFilteredConsoles = async (filters: Filters) => {
-        debugger
         try {
             console.log(consoles);
 
@@ -536,11 +562,10 @@ debugger
 
         // Obtener los 12 productos más vendidos
         const TopSellingConsoles = async () => {
-            debugger
             try {
                 console.log(topConsoles);
     
-                topConsoles.splice(0, videogames.length) // Actualiza el array de videojuegos
+                topConsoles.splice(0, topConsoles.length) // Actualiza el array de videojuegos
                 const response = await axios.get('http://localhost:5000/Console/Top');
                 topConsoles.push(...response.data)// Añade los nuevos videojuegos al array
                 console.log(topConsoles);
@@ -551,6 +576,72 @@ debugger
         }
 
     /************ FIN CONSOLAS **********/
+    
+    // #region 
+    // /************ SEGUNDA MANO **********/
+
+    // Obtener todas los productos de segunda mano
+    const getAllSecondHand= async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/SecondHandProduct')
+            secondHandProducts.splice(0, secondHandProducts.length) // Borra el array de consolas
+            secondHandProducts.push(...response.data)// Añade las consolas al array
+
+        } catch (err) {
+            error.value = 'Error al obtener los videojuegos'
+        }
+    }
+
+    // Obtener todas los productos de segunda mano validados
+    const getAllSecondHandChecked= async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/SecondHandProduct/Checked')
+            secondHandProducts.splice(0, secondHandProducts.length) // Borra el array de consolas
+            secondHandProducts.push(...response.data)// Añade las consolas al array
+
+        } catch (err) {
+            error.value = 'Error al obtener los videojuegos'
+        }
+    }
+
+
+
+    async function createSecondHand(secondHandProduct: SecondHandProductsCreate) {
+        try {
+            debugger
+            secondHandProduct.userId = userStore.user.userId
+            const response = await fetch('http://localhost:5000/SecondHandProduct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(secondHandProduct),
+            });
+            if (response.ok) {
+                alert('Producto de segunda mano creado exitosamente.' + response);
+                //getAllConsoles()
+            } else {
+                console.error('Error al crear el Producto de segunda mano:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error al crear el Producto de segunda mano:', error);
+        }
+    }
+
+
+    
+    // Obtener todas los productos de segunda mano
+    const changeCheck= async (id: number) => {
+        try {
+            const response = await axios.put('http://localhost:5000/SecondHandProduct/'+ id + '/Checked')
+            getAllSecondHand()
+        } catch (err) {
+            error.value = 'Error al obtener los videojuegos'
+        }
+    }
+
+
+    /************ FIN SEGUNDA MANO **********/
     // #endregion
 
 
@@ -584,6 +675,11 @@ debugger
         topConsoles,
         TopSellingConsoles,
         getCompatibleProducts,
-        compatibleProducts
+        compatibleProducts,
+        createSecondHand,
+        getAllSecondHand,
+        secondHandProducts,
+        changeCheck,
+        getAllSecondHandChecked
     }
 })

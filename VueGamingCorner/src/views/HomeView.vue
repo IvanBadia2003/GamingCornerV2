@@ -33,7 +33,7 @@
 
       <v-row justify="center">
         <v-col cols="12">
-          <v-btn variant="outlined">
+          <v-btn variant="outlined" @click="startSelling()">
             EMPEZAR A VENDER
           </v-btn>
         </v-col>
@@ -77,15 +77,23 @@ import DestacablesComponent from '@/components/Home/DestacablesComponent.vue';
 import GridComponentTopConsoles from '@/components/Home/GridComponentTopConsoles.vue';
 import GridComponentTopGames from '@/components/Home/GridComponentTopGames.vue';
 import PrincipalImage from '@/components/Images/PrincipalImage.vue';
+import router from '@/router';
 import { useProductStore } from '@/stores/ProductStore';
+import { useUserStore } from '@/stores/UserStore';
 import { onMounted } from 'vue';
 
 const productStore = useProductStore();
+const userStore = useUserStore();
 
 onMounted(() => {
   productStore.TopSellingVideogames();
   productStore.TopSellingConsoles();
 });
+
+function startSelling(){
+    router.push('/profile')
+ 
+}
 
 </script>
 

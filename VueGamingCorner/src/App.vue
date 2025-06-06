@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import FooterComponent from '@/components/Footer/FooterComponent.vue'
 import HeaderComponent from '@/components/Header/HeaderComponent.vue'
 </script>
 
@@ -10,6 +11,7 @@ import HeaderComponent from '@/components/Header/HeaderComponent.vue'
   <div class="bg-background" id="App">
     <RouterView />
   </div>
+  <FooterComponent/>
 </div>
 </template>
 
