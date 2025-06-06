@@ -52,7 +52,7 @@ export interface SecondHandProductsCreate {
     content2: string,
     content3: string,
     content4: string,
-    userId: number
+    userId: number,
 }
 
 export interface SecondHandProducts extends Product {
@@ -61,12 +61,14 @@ export interface SecondHandProducts extends Product {
     name: string;
     description: string;
     price: number;
-    productImages: string[] | null;
+    productImages: ProductImages;
     user: User;
     isChecked: boolean;
     platformId: number | null;
     discount: number;
     system: string | null;
+    releaseDate: Date | null
+    stock:number
 }
 
 
@@ -205,7 +207,7 @@ export const useProductStore = defineStore('ProductStore', () => {
     const productType = ref<string | null>(null);
 
 
-    const product = reactive<Videogame | Console>({ productId: 0, sales: '' } as Videogame | Console) // Producto actual
+    const product = reactive<Videogame | Console | SecondHandProducts>({ productId: 0, sales: '' } as Videogame | Console | SecondHandProducts) // Producto actual
 
     const requirementsTags = ['SO', 'Procesador', 'Memoria', 'Gráficos', 'Almacenamiento']
     const specificationsTags = ['CPU', 'GPU', 'Memoria', 'Almacenamiento', 'Peso', 'Entrada/Salida', 'Red', 'Alimentación', 'Consumo de energía', 'Salida AV']
@@ -213,6 +215,7 @@ export const useProductStore = defineStore('ProductStore', () => {
 
     // Obteener un producto por ID
     const getProductById = async (id: number) => {
+        debugger
         try {
             compatibleProducts.splice(0, compatibleProducts.length);
             similarsProducts.splice(0, similarsProducts.length);

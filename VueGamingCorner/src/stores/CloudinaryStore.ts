@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-type EntityType = 'juego' | 'consola' | 'genero' | 'plataforma' | 'segundamano';
+type EntityType = 'juego' | 'consola' | 'genero' | 'plataforma' | 'segundamano' | 'usuario';
 
 type MediaMap = {
     [entityType: string]: Record<string, Record<string, string>>; // ahora key es el nombre
@@ -14,7 +14,8 @@ export const useCloudinaryStore = defineStore('cloudinaryStore', () => {
     consola: {},
     genero: {},
     plataforma: {},
-    segundamano: {}
+    segundamano: {}, 
+    usuario: {}
   });
 
 // Añade en CloudinaryStore

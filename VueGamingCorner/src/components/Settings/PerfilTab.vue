@@ -46,8 +46,8 @@
 
       <!-- Avatar -->
           <v-col cols="12" md="12">
-            <v-text-field label="Avatar (URL de la imagen)" v-model="editedUser.avatar" type="url"
-              :rules="[v => !!v || 'El avatar es obligatorio']" />
+                 <v-file-input v-model="cloudinaryStore.avatarImage" label="Avatar" />
+
           </v-col>
 
 
@@ -65,10 +65,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, nextTick } from 'vue'
 import { useUserStore } from '@/stores/UserStore'
+import { useCloudinaryStore } from '@/stores/CloudinaryStore'
 
 const userStore = useUserStore()
+const cloudinaryStore = useCloudinaryStore()
 const formRef = ref()
 
 // Estado para mostrar/ocultar los campos de cambio de contraseña
@@ -99,6 +101,10 @@ onMounted(() => {
 })
 
 async function guardar() {
+  await cloudinaryStore.uploadImages('usuario', userStore.user.email)
+    await nextTick()
+    const media = useCloudinaryStore().getMedia('usuario', userStore.user.email);
+
   const form = formRef.value
   if (!form) return
 
@@ -112,6 +118,8 @@ async function guardar() {
   if (mostrarCambioContrasena.value) {
     editedUser.password = newPassword.value
   }
+
+  editedUser.avatar = media.avatar
 
   try {
     await userStore.updateUser(editedUser.userId, { ...editedUser })

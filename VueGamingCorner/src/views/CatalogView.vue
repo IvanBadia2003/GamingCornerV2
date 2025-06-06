@@ -92,7 +92,7 @@ const applyFilters = () => {
   <v-container style="width: 60%;">
 
     <!-- SISTEMAS -->
-    <v-row justify="center" class="mb-10 mt-5">
+    <v-row v-if="productStore.productType != 'secondHand'" justify="center" class="mb-10 mt-5">
       <v-btn-toggle rounded="xl" v-model="filters.system" class="store-button" @update:modelValue="onSystemChange">
         <v-btn v-for="(store, index) in platformStore.systemOptions" :key="index" :value="store.value"
           :size="mdAndUp ? 'large' : 'default'" :min-width="mdAndUp ? 150 : undefined">
