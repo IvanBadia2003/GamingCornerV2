@@ -82,7 +82,7 @@ export interface Videogame extends Product {
     discount: number //Porcentaje de descuento sobre el precio del juego
     price: number //Precio del juego
     platformId?: number
-    genderId: Gender[] //Géneros del juego
+    genders: Gender[] //Géneros del juego
     releaseDate: Date //Fecha de lanzamiento del juego 
     distributor: string  //Distribuidor del juego
     developer: string //Desarrollador del juego
