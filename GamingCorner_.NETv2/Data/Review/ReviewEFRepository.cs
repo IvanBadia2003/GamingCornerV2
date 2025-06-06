@@ -35,6 +35,34 @@ namespace GamingCorner.Data
 
         }
 
+        public List<Videogame> GetTopRatedVideogames()
+        {
+            var topVideogames = _context.Reviews
+                .Include(r => r.Product)
+                    .ThenInclude(p => p.Videogame)
+                    .ThenInclude(v => v.VideogameGenders)
+                    .ThenInclude(vg => vg.Gender)
+                .Where(r => r.Product.Videogame != null)
+                .AsEnumerable()
+                .GroupBy(r => r.Product.Videogame)
+                .Select(g => new
+                {
+                    Videogame = g.Key,
+                    AverageRating = g.Average(r => r.Rating)
+                })
+                .OrderByDescending(g => g.AverageRating)
+                .Take(3)
+                .Select(g => g.Videogame)
+                .ToList();
+
+            if (topVideogames.Count == 0)
+                throw new KeyNotFoundException("No se encontraron videojuegos con reseñas.");
+
+            return topVideogames;
+        }
+
+
+
         public List<Review> GetByUserId(int userId)
         {
             return _context.Reviews

@@ -19,6 +19,7 @@ namespace GamingCorner.Models
         public string? ProductPlatform { get; set; }
         public string? DigitalCode { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string OrderImg { get; set; }
 
         public OrderLine ToOrderLine()
         {

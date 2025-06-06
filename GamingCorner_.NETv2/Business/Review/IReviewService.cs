@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GamingCorner.Models;
 using GamingCorner.Models.DTOs.ReviewDTOs;
 
 namespace GamingCorner.Business
@@ -48,6 +49,15 @@ namespace GamingCorner.Business
         /// <param name="productId"></param>
         /// <returns></returns>
         double AverageRating(int productId);
+
+        /// <summary>
+        /// Obtenemos los 3 juegos mejor valorados
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        List<VideogameDTO> GetTopRatedVideogames();
+
+
     }
     
 }

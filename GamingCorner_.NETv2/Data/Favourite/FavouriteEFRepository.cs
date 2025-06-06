@@ -72,7 +72,7 @@ public class FavouriteEFRepository : IFavouriteRepository
         .ThenInclude(p => p.Console)
     .Include(b => b.Product)
         .ThenInclude(pp => pp.Platform)
-    .OrderByDescending(b => b.DateAdd) 
+    .OrderByDescending(b => b.DateAdd)
     .ToList();
 
 

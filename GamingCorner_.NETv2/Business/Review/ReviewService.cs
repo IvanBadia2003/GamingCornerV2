@@ -44,6 +44,28 @@ namespace GamingCorner.Business
                 throw new Exception("Error al obtener todas las reviews.", ex);
             }
         }
+        
+        public List<VideogameDTO> GetTopRatedVideogames()
+        {
+            try
+            {
+                 List<Videogame> entities = _reviewRepository.GetTopRatedVideogames();
+
+
+
+                return entities.Select(r => r.mapToReadDto()).ToList();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                throw new KeyNotFoundException( ex.Message);
+
+            }
+            catch (Exception ex)
+            {
+                // Aquí podrían ir logs antes de lanzar la excepción
+                throw new Exception("Error al obtener todas las reviews.", ex);
+            }
+        }
 
         /// <summary>
         /// Obtiene las reviews filtradas por Id de usuario.
