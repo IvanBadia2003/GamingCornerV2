@@ -45,7 +45,6 @@ public class UserDTO
             Email = this.Email,
             Password = this.Password,
             PhoneNumber = this.PhoneNumber,
-            Admin = this.Admin,
             Rol = this.Rol,
             DateCreated = this.DateCreated,
             State = this.State,

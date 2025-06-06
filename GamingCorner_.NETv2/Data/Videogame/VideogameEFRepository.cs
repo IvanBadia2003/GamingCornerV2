@@ -265,7 +265,7 @@ public class VideogameEFRepository : IVideogameRepository
                 //GenderId =v.GenderId,
                 Price = videogame.Price,
                 Sales = videogame.Product.Sales,
-                ProductImages =
+                ProductImages = new ProductsImagesDto
                 {
                     Background = videogame.Product.BackgroundImage,
                     Content1 = videogame.Product.ContentImages1,

@@ -127,6 +127,7 @@ namespace GamingCorner.Business
                     Price = product.SecondHandProduct.Price,
                     User = product.SecondHandProduct.User.ToUserDTO(),
                     ProductId = product.SecondHandProduct.ProductId,
+                    IsChecked = product.SecondHandProduct.IsChecked,
                     ProductImages = new ProductsImagesDto
                     {
                         Background = product.BackgroundImage,
