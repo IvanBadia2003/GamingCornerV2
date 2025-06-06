@@ -2,7 +2,7 @@
   <v-container class="auth-container">
     <v-row>
       <v-col cols="12" md="6" :class="imageDisplay">
-        <v-img src="@/../src/assets/Auth/loginIMG.png" max-width="100%" aspect-ratio="1.5" class="img"/>
+        <v-img src="https://res.cloudinary.com/dsaptfjxa/image/upload/v1749208476/loginIMG_ocw0pt.png" max-width="100%" aspect-ratio="1.5" class="img"/>
       </v-col>
 
       <v-col cols="12" md="6" class="d-flex justify-center align-center">
@@ -12,7 +12,7 @@
             <LoginForm @switch="isRegister = true" />
           </div>
           <!-- Lado registro -->
-          <div class="auth-side back bg-primary">
+          <div class="auth-side back bg-primary" style="height: auto;">
             <RegisterForm @switch="isRegister = false" />
           </div>
         </div>

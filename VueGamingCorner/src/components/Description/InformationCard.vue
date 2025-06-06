@@ -12,7 +12,8 @@ const productStore = useProductStore();
         </v-col>
         <v-col cols="12" sm="7">
             <div class="tags">
-                <v-chip v-for="(gender, index) in productStore.product?.genders" :key="index" class="mr-2" color="blue-darken-3">{{gender.name}}</v-chip>
+                <v-chip v-for="(gender, index) in productStore.product?.genders" :key="index" class="mr-2"
+                    color="blue-darken-3">{{ gender.name }}</v-chip>
             </div>
         </v-col>
 
@@ -80,6 +81,27 @@ const productStore = useProductStore();
 
 
 
+    </v-row>
+    <v-row dense v-if="productStore.product && 'isChecked' in productStore.product">
+
+        <v-col cols="12" sm="5">
+            <strong>Nombre del vendedor:</strong>
+        </v-col>
+        <v-col cols="12" sm="7">
+            {{ productStore.product.user.name }}
+        </v-col>
+        <v-col cols="12" sm="5">
+            <strong>Número de teléfono:</strong>
+        </v-col>
+        <v-col cols="12" sm="7">
+            {{ productStore.product.user.phoneNumber ?? 'No se aporta' }}
+        </v-col>
+        <v-col cols="12" sm="5">
+            <strong>Tipo de verificación:</strong>
+        </v-col>
+        <v-col cols="12" sm="7">
+            {{productStore.product.isChecked ? 'Verificado por un administrador' : 'No se ha verificado'}}
+        </v-col>
     </v-row>
 </template>
 

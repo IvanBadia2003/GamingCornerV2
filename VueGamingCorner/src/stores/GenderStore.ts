@@ -25,7 +25,7 @@ export const useGenderStore = defineStore('GenderStore', () => {
 
     // Obtener todos los géneros
     const getAllGenders = async () => {
-        debugger
+         
         try {
             genders.splice(0, genders.length) // Limpiar la lista antes de obtener nuevos datos
             const response = await axios.get('http://localhost:5000/Gender')
@@ -56,7 +56,7 @@ export const useGenderStore = defineStore('GenderStore', () => {
                 body: JSON.stringify(gender),
             });
             if (response.ok) {
-                alert('Genero creado exitosamente.' + response);
+                alert('Genero creado exitosamente.');
                 getAllGenders()
             } else {
                 console.error('Error al crear el genero:', response.statusText);

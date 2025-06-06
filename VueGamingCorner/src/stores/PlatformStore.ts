@@ -34,7 +34,7 @@ export const usePlatformStore = defineStore('PlatformStore', () => {
 
     // Obtener todos los géneros
     const getAllPlatforms = async () => {
-        debugger
+         
         try {
             platforms.splice(0, platforms.length) // Limpiar la lista antes de obtener nuevos datos
             const response = await axios.get('http://localhost:5000/Platform')
@@ -56,7 +56,7 @@ export const usePlatformStore = defineStore('PlatformStore', () => {
     }
 
     async function createPlatform(platform: PlatformCreate) {
-        debugger
+         
         try {
             const response = await fetch('http://localhost:5000/Platform', {
                 method: 'POST',
@@ -66,7 +66,7 @@ export const usePlatformStore = defineStore('PlatformStore', () => {
                 body: JSON.stringify(platform),
             });
             if (response.ok) {
-                alert('Plataforma creada exitosamente.' + response);
+                alert('Plataforma creada exitosamente.');
                 getAllPlatforms()
             } else {
                 console.error('Error al crear la plataforma:', response.statusText);

@@ -16,19 +16,13 @@
                     <Line :data="lineData" :options="chartOptions" height="300" />
                 </v-card>
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="6" offset="3">
                 <v-card class="pa-4" >
                     <div class="text-h6 mb-4">Ventas por plataforma</div>
                     <Pie :data="pieData" :options="chartOptions" />
                 </v-card>
             </v-col>
 
-            <v-col cols="12" md="6">
-                <v-card class="pa-4" >
-                    <div class="text-h6 mb-4">Comparativa de rendimiento</div>
-                    <Radar :data="radarData" :options="chartOptions" />
-                </v-card>
-            </v-col>
         </v-row>
 
        

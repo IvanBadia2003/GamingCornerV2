@@ -26,8 +26,6 @@ public class SecondHandProduct
     [Required]
     public bool IsChecked { get; set; }
 
-    [Required]
-    public string? ImageURL { get; set; }
 
     [ForeignKey("Product")]
     public int ProductId { get; set; }
@@ -45,14 +43,13 @@ public class SecondHandProduct
     public SecondHandProduct() { }
 
     //public SecondHandProduct(int id, string name, string description, bool isChecked, decimal price, int stock, int discount, DateTime releaseDate)
-    public SecondHandProduct(string name, string description, bool isChecked, decimal price, string imageURL, DateTime releaseDate, int userId)
+    public SecondHandProduct(string name, string description, bool isChecked, decimal price, DateTime releaseDate, int userId)
     {
         Name = name;
         Description = description;
         ReleaseDate = releaseDate;
         Price = price;
         IsChecked = isChecked;
-        ImageURL = imageURL;
         UserId = userId;
     }
 
@@ -70,7 +67,6 @@ public class SecondHandProduct
             productCreateDTO.Description,
             IsChecked = false,
             productCreateDTO.Price,
-            productCreateDTO.ImageURL,
             productCreateDTO.ReleaseDate,
             productCreateDTO.UserId
 
@@ -83,11 +79,20 @@ public class SecondHandProduct
         {
             Description = Description,
             Id = Id,
-            ImageURL = ImageURL,
             Name = Name,
             Price = Price,
             ProductId = ProductId,
+            IsChecked = IsChecked,
             User = User.ToUserDTO(),
+            ProductImages = new DTOs.ProductDTOs.ProductsImagesDto
+            {
+                Content1 = this.Product.ContentImages1,
+                Content3 = this.Product.ContentImages3,
+                Content2 = this.Product.ContentImages2,
+                Content4 = this.Product.ContentImages4,
+                Main = this.Product.MainImage,
+            }
+            
         };
     }
 

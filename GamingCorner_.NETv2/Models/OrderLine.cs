@@ -54,7 +54,8 @@ namespace GamingCorner.Models
                 CreatedAt = this.CreatedAt,
                 ProductName = this.Product.Videogame != null ? this.Product.Videogame.Name : this.Product.Console != null ? this.Product.Console.Name : this.Product.SecondHandProduct.Name,
                 ProductPlatform = this.Product.Platform.Name,
-                ProductSystem = this.Product.Platform.System.ToString()
+                ProductSystem = this.Product.Platform.System.ToString(),
+                OrderImg = this.Product.MainImage
 
             };
         }

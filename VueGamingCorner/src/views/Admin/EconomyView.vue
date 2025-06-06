@@ -41,7 +41,7 @@ import { computed, onMounted } from 'vue';
 const chartStore = useChartStore()
 
 onMounted(() => {
-  debugger;
+   ;
   chartStore.loadAllCharts()
   console.log('Datos de gráficos cargados:', chartStore.principalStats);
 

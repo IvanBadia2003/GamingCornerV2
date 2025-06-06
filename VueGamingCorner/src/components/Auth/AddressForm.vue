@@ -19,7 +19,7 @@
 
     </v-form>
     <v-card-actions v-if="!haveAddress">
-      <v-btn color="primary" @click="saveAddress">Guardar Dirección</v-btn>
+      <v-btn  class="bg-primary" @click="saveAddress">Guardar Dirección</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -91,7 +91,6 @@ function saveAddress() {
 
   } catch (error) {
     console.error('Error al guardar los datos:', error)
-    alert('Hubo un error al actualizar el usuario')
   }
 
 

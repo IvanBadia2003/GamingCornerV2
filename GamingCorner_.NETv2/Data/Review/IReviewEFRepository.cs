@@ -43,5 +43,13 @@ namespace GamingCorner.Data
         /// <param name="productId"></param>
         /// <returns></returns>
         double AverageRating(int productId);
+
+
+        /// <summary>
+        /// Obtenemos los 3 juegos mejor valorados
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+       List<Videogame> GetTopRatedVideogames();
     }
 }

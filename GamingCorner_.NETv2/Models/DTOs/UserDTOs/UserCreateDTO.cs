@@ -40,7 +40,6 @@ public class UserCreateDTO
             Email = this.Email,
             Password = this.Password,
             PhoneNumber = this.PhoneNumber,
-            Admin = this.Admin
         };
 
         return user;

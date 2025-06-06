@@ -189,9 +189,13 @@ public class OrderHeaderEFRepository : IOrderHeaderRepository
     {
         return _context.OrderHeaders
             .Where(o => o.UserId == userId)
+            .Include(o => o.OrderLines)
+                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(p => p.Videogame)
+                .ThenInclude(vp => vp.Product)
             .SelectMany(o => o.OrderLines)
-            .Where(ol => ol.Product.Videogame != null)
-            .Select(ol => ol.Product.Videogame)
+            .Where(ol => ol.Product != null && ol.Product.Videogame != null)
+            .Select(ol => ol.Product.Videogame!)
             .Distinct()
             .ToList();
     }

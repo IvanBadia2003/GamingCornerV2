@@ -35,7 +35,7 @@ export const useChartStore = defineStore('ChartStore', () => {
     const error = ref<string | null>(null)
 
     async function loadAllCharts() {
-        debugger
+         
           await Promise.all([
             loadBarChart(),
             loadLineChart(),

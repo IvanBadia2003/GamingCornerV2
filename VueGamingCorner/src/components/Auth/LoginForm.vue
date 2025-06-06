@@ -15,29 +15,32 @@ const showPassword = ref(false)
     <h2 class="mb-6">Iniciar sesión</h2>
 
     <v-text-field
-      label="Correo electrónico"
-      v-model="email"
-      :disabled="user.loading"
-      type="email"
-      :rules="[v => !!v || 'El correo es obligatorio']"
-      required
-    />
-    <v-text-field
-      label="Contraseña"
-      v-model="password"
-      :type="showPassword ? 'text' : 'password'"
-      :disabled="user.loading"
-      :rules="[v => !!v || 'La contraseña es obligatoria']"
-      :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-      @click:append="showPassword = !showPassword"
+  label="Correo electrónico"
+  v-model="email"
+  :disabled="user.loading"
+  type="email"
+  :rules="[v => !!v || 'El correo es obligatorio']"
+  prepend-inner-icon="mdi-email"
+  required
+/>
 
-      required
-    />
+    <v-text-field
+  label="Contraseña"
+  v-model="password"
+  :type="showPassword ? 'text' : 'password'"
+  :disabled="user.loading"
+  :rules="[v => !!v || 'La contraseña es obligatoria']"
+  prepend-inner-icon="mdi-lock" 
+  :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+  @click:append-inner="showPassword = !showPassword"
+  required
+/>
+
 
 
     <v-btn
       type="submit"
-      color="primary"
+      color="surface"
       block
       class="mt-4"
       :loading="user.loading"
@@ -56,9 +59,9 @@ const showPassword = ref(false)
       {{ user.error }}
     </v-alert>
 
-    <p class="text-center mt-6">
+    <h5 class="text-center mt-6">
       ¿No tienes cuenta?
       <v-btn variant="text" @click="$emit('switch')">Regístrate</v-btn>
-    </p>
+    </h5>
   </v-form>
 </template>

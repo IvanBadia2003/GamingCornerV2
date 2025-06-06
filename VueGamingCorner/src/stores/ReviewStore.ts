@@ -45,6 +45,8 @@ export const useReviewStore = defineStore('ReviewStore', () => {
         try {
             var response = await axios.post('http://localhost:5000/Review', review);
             reviews.push(...response.data)
+            getReviewByProductId(review.productId)
+            getAverageRatingByProductId(review.productId)
         } catch (error) {
             console.error("Error al añadir a la base de datos:", error);
         }
@@ -53,7 +55,7 @@ export const useReviewStore = defineStore('ReviewStore', () => {
          //Obtiene los productos del carrito almacenados en la cookie y los carga desde la API
      const getReviewByUserId = async () => {
         reviews.splice(0, reviews.length);
-    debugger
+     
             try {
                 const response = await axios.get('http://localhost:5000/Review/User/' + userStore.user.userId);
                     
@@ -69,7 +71,7 @@ export const useReviewStore = defineStore('ReviewStore', () => {
 
     const getReviewByProductId = async (productId: number) => {
         reviews.splice(0, reviews.length);
-    debugger
+     
             try {
                 const response = await axios.get('http://localhost:5000/Review/Product/' + productId);
 
@@ -83,7 +85,7 @@ export const useReviewStore = defineStore('ReviewStore', () => {
     };
 
     const getAverageRatingByProductId = async (productId: number) => {
-    debugger
+     
             try {
                 const response = await axios.get('http://localhost:5000/Review/AverageRating/' + productId);
 

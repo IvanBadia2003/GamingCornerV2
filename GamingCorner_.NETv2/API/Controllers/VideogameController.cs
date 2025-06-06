@@ -11,18 +11,24 @@ namespace GamingCorner.Controllers;
 public class VideogameController : ControllerBase
 {
     private readonly IVideogameService _videogameService;
+    private readonly IReviewService _reviewService;
     private readonly IVideogameGenderService _videogameGenderService;
 
-    public VideogameController(IVideogameService videogameService, IVideogameGenderService videogameGenderService)
+    public VideogameController(IVideogameService videogameService, IVideogameGenderService videogameGenderService, IReviewService reviewService)
     {
         _videogameService = videogameService;
         _videogameGenderService = videogameGenderService;
+        _reviewService = reviewService;
     }
 
 
     [HttpGet]
     public ActionResult<List<VideogameDTO>> GetAll() => _videogameService.GetAll();
     
+    [HttpGet("Best")]
+    public ActionResult<List<VideogameDTO>> GetTopRatedVideogames() => _reviewService.GetTopRatedVideogames();
+
+
     [HttpGet("Top")]
     public ActionResult<List<VideogameDTO>> TopSellingVideogames() => _videogameService.TopSellingVideogames();
 

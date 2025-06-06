@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed, reactive } from 'vue'
 import axios from 'axios'
 import router from '@/router'
-import { useUserStore } from './UserStore'
+import { useUserStore, type User } from './UserStore'
 import type { Gender } from './GenderStore'
 import { de } from 'vuetify/locale'
 import { nextTick } from 'vue';
@@ -32,6 +32,45 @@ export interface Filters {
     brand: string | null
 }
 
+export interface ProductImages {
+    main?: string | null;
+    background?: string | null;
+    content1?: string | null;
+    content2?: string | null;
+    content3?: string | null;
+    content4?: string | null;
+  }
+  
+// Interfaz para crear el producto de segunda mano 
+export interface SecondHandProductsCreate {
+    name: string // Nombre de la consola
+    description: string // Descripción de la consola
+    price: number // Precio de la consola
+    releaseDate: Date // Fecha de lanzamiento de la consola
+    main: string,
+    content1: string,
+    content2: string,
+    content3: string,
+    content4: string,
+    userId: number,
+}
+
+export interface SecondHandProducts extends Product {
+    productId: number;
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    productImages: ProductImages;
+    user: User;
+    isChecked: boolean;
+    platformId: number | null;
+    discount: number;
+    system: string | null;
+    releaseDate: Date | null
+    stock:number
+}
+
 
 // Interfaz del videojuego
 export interface Videogame extends Product {
@@ -45,11 +84,12 @@ export interface Videogame extends Product {
     discount: number //Porcentaje de descuento sobre el precio del juego
     price: number //Precio del juego
     platformId?: number
-    genderId: Gender[] //Géneros del juego
-    principalImageURL?: string //Imagen principal del juego
+    genders: Gender[] //Géneros del juego
     releaseDate: Date //Fecha de lanzamiento del juego 
     distributor: string  //Distribuidor del juego
     developer: string //Desarrollador del juego
+    productImages: ProductImages
+
 }
 
 
@@ -66,10 +106,15 @@ export interface VideogameCreate {
     price: number //Precio del juego
     genderId: number[] //Géneros del juego
     platformId?: number
-    principalImageURL?: string //Imagen principal del juego
     releaseDate: Date //Fecha de lanzamiento del juego 
     distributor: string  //Distribuidor del juego
     developer: string //Desarrollador del juego
+    main: string,
+    background: string,
+    content1: string,
+    content2: string,
+    content3: string,
+    content4: string
 }
 // Interfaz para editar el videojuego
 
@@ -84,7 +129,6 @@ export interface VideogameUpdate {
     price: number // Precio del juego
     genderId: number[] // Géneros del juego
     platformId?: number // Plataforma del juego
-    principalImageURL?: string // Imagen principal del juego
     releaseDate: Date // Fecha de lanzamiento del juego 
     distributor: string // Distribuidor del juego
     developer: string // Desarrollador del juego
@@ -101,9 +145,10 @@ export interface Console extends Product {
     discount: number //Porcentaje de descuento sobre el precio de la consola
     price: number //Precio de la consola
     platformId?: number
-    principalImageURL?: string //Imagen principal de la consola
     releaseDate: Date //Fecha de lanzamiento de la consola
     brand: string  //Distribuidor de la consola
+    productImages: ProductImages
+
 
 }
 // Interfaz para crear la consola 
@@ -113,7 +158,6 @@ export interface ConsoleCreate {
     stock: number // Cantidad de stock de la consola
     discount: number // Porcentaje de descuento sobre el precio de la consola
     price: number // Precio de la consola
-    principalImageURL: string // Imagen principal de la consola
     releaseDate: Date // Fecha de lanzamiento de la consola
     specifications: string // Especificaciones de la consola
     brand: string // Marca o distribuidor de la consola
@@ -121,6 +165,12 @@ export interface ConsoleCreate {
     generation: string // Generación de la consola
     colors: string // Colores disponibles
     services: string // Servicios compatibles
+    main: string,
+    background: string,
+    content1: string,
+    content2: string,
+    content3: string,
+    content4: string
 }
 
 // Interfaz para editar la consola 
@@ -130,7 +180,6 @@ export interface UpdateConsole {
     stock: number // Cantidad de stock de la consola
     discount: number // Porcentaje de descuento sobre el precio de la consola
     price: number // Precio de la consola
-    principalImageURL: string // Imagen principal de la consola
     releaseDate: Date // Fecha de lanzamiento de la consola
     specifications: string // Especificaciones de la consola
     brand: string // Marca o distribuidor de la consola
@@ -142,20 +191,24 @@ export interface UpdateConsole {
 // #endregion
 
 export const useProductStore = defineStore('ProductStore', () => {
+    const userStore = useUserStore()
+
     // Estado
     const videogames = reactive<Videogame[]>([])
     const topVideogames = reactive<Videogame[]>([])
+    const bestVideogames = reactive<Videogame[]>([])
     const consoles = reactive<Console[]>([])
     const topConsoles = reactive<Console[]>([])
     const compatibleProducts = reactive<Console[] | Videogame[]>([])
     const products = reactive<Console[] | Videogame[]>([])
     const similarsProducts = reactive<Console[] | Videogame[]>([])
     const error = ref<string | null>(null)
+    const secondHandProducts = reactive<SecondHandProducts[]>([])
 
     const productType = ref<string | null>(null);
 
 
-    const product = reactive<Videogame | Console>({ productId: 0, sales: '' } as Videogame | Console) // Producto actual
+    const product = reactive<Videogame | Console | SecondHandProducts>({ productId: 0, sales: '' } as Videogame | Console | SecondHandProducts) // Producto actual
 
     const requirementsTags = ['SO', 'Procesador', 'Memoria', 'Gráficos', 'Almacenamiento']
     const specificationsTags = ['CPU', 'GPU', 'Memoria', 'Almacenamiento', 'Peso', 'Entrada/Salida', 'Red', 'Alimentación', 'Consumo de energía', 'Salida AV']
@@ -163,6 +216,7 @@ export const useProductStore = defineStore('ProductStore', () => {
 
     // Obteener un producto por ID
     const getProductById = async (id: number) => {
+         
         try {
             compatibleProducts.splice(0, compatibleProducts.length);
             similarsProducts.splice(0, similarsProducts.length);
@@ -196,17 +250,27 @@ export const useProductStore = defineStore('ProductStore', () => {
 
 
     // Obtener todos los productos para el catálogo
-    const getProductsToCatalog = async (type: string) => {
+    const getProductsToCatalog = async (type: string | null) => {
         try {
-
+ 
             if (type === 'videogame') {
                 const response = await axios.get('http://localhost:5000/Videogame')
-                products.splice(0, products.length) // Actualiza el array de videojuegos
+                products.splice(0, products.length) // Actualiza el array de productos
                 products.push(...response.data)// Añade los nuevos videojuegos al array
+                console.log(products);
+                
             } else if (type === 'console') {
                 const response = await axios.get('http://localhost:5000/Console')
-                products.splice(0, products.length) // Borra el array de consolas
+                products.splice(0, products.length) // Borra el array de productos
                 products.push(...response.data)// Añade las consolas al array
+            } else if (type === 'secondHand'){
+                const response = await axios.get('http://localhost:5000/SecondHandProduct/Checked')
+                products.splice(0, products.length) // Borra el array de productos
+                products.push(...response.data)// Añade las consolas al array
+            }else{
+                const response = await axios.get('http://localhost:5000/Videogame')
+                products.splice(0, products.length) // Actualiza el array de productos
+                products.push(...response.data)// Añade los nuevos videojuegos al array
             }
 
         } catch (err) {
@@ -215,7 +279,7 @@ export const useProductStore = defineStore('ProductStore', () => {
     }
 
     const getSimilarsProducts = async () => {
-        debugger
+         
         try {
             similarsProducts.splice(0, similarsProducts.length); // Limpiar el array antes de agregar nuevos productos
             const response = await axios.get('http://localhost:5000/Product/Similar/' + product.id);
@@ -231,7 +295,7 @@ export const useProductStore = defineStore('ProductStore', () => {
 
             
         const getCompatibleProducts = async () => {
-            debugger
+             
             try {
                 console.log(topConsoles);
     
@@ -303,7 +367,7 @@ export const useProductStore = defineStore('ProductStore', () => {
     })
 
     async function createGame(game: VideogameCreate) {
-        debugger
+         
         try {
             const response = await fetch('http://localhost:5000/Videogame', {
                 method: 'POST',
@@ -314,10 +378,10 @@ export const useProductStore = defineStore('ProductStore', () => {
             });
             if (response.ok) {  
                 getAllVideogames()
-                alert('Juego creado exitosamente.' + response);
+                alert('Juego creado exitosamente.');
             } else {
                 console.error('Error al crear el juego:', response.statusText);
-                alert('Error al crear el juego:' + response.statusText);
+                alert('Error al crear el juego');
             }
         } catch (error) {
             console.error('Error al crear el juego:', error);
@@ -333,14 +397,14 @@ export const useProductStore = defineStore('ProductStore', () => {
             });
             console.log("Eliminar videojuego " + id + " hecho desde ProductStore.ts");
             getAllVideogames()
-            alert(`videojuego: ${id} eliminado con éxito` + response.ok);
+            alert(`videojuego: ${id} eliminado con éxito`);
         } catch (error) {
             console.error('Error al eliminar:', error);
         }
     }
 
     async function updateVideogame(id: number, videogame: VideogameUpdate) {
-        debugger
+         
         try {
             const response = await fetch('http://localhost:5000/Videogame/' + id, {
                 method: 'PUT',
@@ -350,11 +414,11 @@ export const useProductStore = defineStore('ProductStore', () => {
                 body: JSON.stringify(videogame),
             });
             if (response.ok) {
-                alert('Juego editado exitosamente.' + response);
+                alert('Juego editado exitosamente.');
                 getAllVideogames()
                 console.log('Juego editado exitosamente.' + response);
             } else {
-                alert('Error al editar el juego:' + response.statusText);
+                alert('Error al editar el juego:');
                 console.error('Error al editar el juego:', response.statusText);
             }
         } catch (error) {
@@ -364,7 +428,6 @@ export const useProductStore = defineStore('ProductStore', () => {
 
     // Obtener todos los videojuegos filtrados
     const getFilteredVideogames = async (filters: Filters) => {
-        debugger
         try {
             console.log(videogames);
 
@@ -380,11 +443,10 @@ export const useProductStore = defineStore('ProductStore', () => {
 
     // Obtener los 12 productos más vendidos
     const TopSellingVideogames = async () => {
-        debugger
         try {
             console.log(topVideogames);
 
-            topVideogames.splice(0, videogames.length) // Actualiza el array de videojuegos
+            topVideogames.splice(0, topVideogames.length) // Actualiza el array de videojuegos
             const response = await axios.get('http://localhost:5000/Videogame/Top');
             topVideogames.push(...response.data)// Añade los nuevos videojuegos al array
             console.log(topVideogames);
@@ -393,6 +455,25 @@ export const useProductStore = defineStore('ProductStore', () => {
             error.value = 'Error al obtener los videojuegos'
         }
     }
+ 
+    // Obtener los videojuegos mejor valorados
+    const GetTopRatedVideogames = async () => {
+         
+        try {
+            console.log('juegos mejor valorados'+ bestVideogames);
+
+            bestVideogames.splice(0, bestVideogames.length) // Actualiza el array de videojuegos
+            const response = await axios.get('http://localhost:5000/Videogame/Best');
+            bestVideogames.push(...response.data)// Añade los nuevos videojuegos al array
+            console.log('juegos mejor valorados'+ bestVideogames);
+            await nextTick()
+        } catch (err) {
+            error.value = 'Error al obtener los videojuegos'
+        }
+    }
+
+
+
     /************ FIN VIDEOJUEGOS **********/
     // #endregion 
 
@@ -435,6 +516,7 @@ export const useProductStore = defineStore('ProductStore', () => {
 
     async function createConsole(_console: ConsoleCreate) {
         try {
+             
             const response = await fetch('http://localhost:5000/Console', {
                 method: 'POST',
                 headers: {
@@ -443,7 +525,7 @@ export const useProductStore = defineStore('ProductStore', () => {
                 body: JSON.stringify(_console),
             });
             if (response.ok) {
-                alert('Consola creada exitosamente.' + response);
+                alert('Consola creada exitosamente.');
                 console.log('Consola creada exitosamente.' + response);
                 getAllConsoles()
             } else {
@@ -455,7 +537,7 @@ export const useProductStore = defineStore('ProductStore', () => {
     }
 
     async function updateConsole(id: number, _console: UpdateConsole) {
-        debugger
+         
         try {
             const response = await fetch('http://localhost:5000/Console/' + id, {
                 method: 'PUT',
@@ -465,7 +547,7 @@ export const useProductStore = defineStore('ProductStore', () => {
                 body: JSON.stringify(_console),
             });
             if (response.ok) {
-                alert('Consola editada exitosamente.' + response);
+                alert('Consola editada exitosamente.');
                 console.log('Consola editada exitosamente.' + response);
                 getAllConsoles()
             } else {
@@ -483,7 +565,7 @@ export const useProductStore = defineStore('ProductStore', () => {
                 method: 'DELETE',
             });
             console.log("Eliminar consola " + id + " hecho desde ProductStore.ts");
-            alert(`Consola: ${id} eliminado con éxito` + response.ok);
+            alert(`Consola: ${id} eliminado con éxito`);
             getAllConsoles()
         } catch (error) {
             console.error('Error al eliminar:', error);
@@ -492,7 +574,6 @@ export const useProductStore = defineStore('ProductStore', () => {
 
     // Obtener todas las consolas filtradas
     const getFilteredConsoles = async (filters: Filters) => {
-        debugger
         try {
             console.log(consoles);
 
@@ -508,11 +589,10 @@ export const useProductStore = defineStore('ProductStore', () => {
 
         // Obtener los 12 productos más vendidos
         const TopSellingConsoles = async () => {
-            debugger
             try {
                 console.log(topConsoles);
     
-                topConsoles.splice(0, videogames.length) // Actualiza el array de videojuegos
+                topConsoles.splice(0, topConsoles.length) // Actualiza el array de videojuegos
                 const response = await axios.get('http://localhost:5000/Console/Top');
                 topConsoles.push(...response.data)// Añade los nuevos videojuegos al array
                 console.log(topConsoles);
@@ -523,6 +603,71 @@ export const useProductStore = defineStore('ProductStore', () => {
         }
 
     /************ FIN CONSOLAS **********/
+    
+    // #region 
+    // /************ SEGUNDA MANO **********/
+
+    // Obtener todas los productos de segunda mano
+    const getAllSecondHand= async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/SecondHandProduct')
+            secondHandProducts.splice(0, secondHandProducts.length) // Borra el array de consolas
+            secondHandProducts.push(...response.data)// Añade las consolas al array
+
+        } catch (err) {
+            error.value = 'Error al obtener los videojuegos'
+        }
+    }
+
+    // Obtener todas los productos de segunda mano validados
+    const getAllSecondHandChecked= async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/SecondHandProduct/Checked')
+            secondHandProducts.splice(0, secondHandProducts.length) // Borra el array de consolas
+            secondHandProducts.push(...response.data)// Añade las consolas al array
+
+        } catch (err) {
+            error.value = 'Error al obtener los videojuegos'
+        }
+    }
+
+
+
+    async function createSecondHand(secondHandProduct: SecondHandProductsCreate) {
+        try {
+             
+            secondHandProduct.userId = userStore.user.userId
+            const response = await fetch('http://localhost:5000/SecondHandProduct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(secondHandProduct),
+            });
+            if (response.ok) {
+                //getAllConsoles()
+            } else {
+                console.error('Error al crear el Producto de segunda mano:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error al crear el Producto de segunda mano:', error);
+        }
+    }
+
+
+    
+    // Obtener todas los productos de segunda mano
+    const changeCheck= async (id: number) => {
+        try {
+            const response = await axios.put('http://localhost:5000/SecondHandProduct/'+ id + '/Checked')
+            getAllSecondHand()
+        } catch (err) {
+            error.value = 'Error al obtener los videojuegos'
+        }
+    }
+
+
+    /************ FIN SEGUNDA MANO **********/
     // #endregion
 
 
@@ -556,6 +701,13 @@ export const useProductStore = defineStore('ProductStore', () => {
         topConsoles,
         TopSellingConsoles,
         getCompatibleProducts,
-        compatibleProducts
+        compatibleProducts,
+        createSecondHand,
+        getAllSecondHand,
+        secondHandProducts,
+        changeCheck,
+        getAllSecondHandChecked,
+        GetTopRatedVideogames,
+        bestVideogames
     }
 })
