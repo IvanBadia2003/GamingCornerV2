@@ -5,6 +5,7 @@ import { useProductStore, type ConsoleCreate, type SecondHandProductsCreate, typ
 import { SystemEnum, usePlatformStore, type PlatformCreate } from '@/stores/PlatformStore';
 import { de } from 'vuetify/locale';
 import { useCloudinaryStore } from '@/stores/CloudinaryStore';
+import { validationRules } from '@/utils/validationRules'
 
 const genderStore = useGenderStore()
 const productStore = useProductStore()
@@ -151,13 +152,8 @@ watch(() => previewImages.value, (files) => {
     )
 })
 
-const rules = {
-    required: (v: any) => !!v || 'Este campo es obligatorio',
-    maxImages: (files: File[] | undefined) => (files?.length || 0) <= 6 || 'Máximo 6 imágenes',
-}
-
 const handleSubmit = async () => {
-    debugger
+     
     console.log(formData.value);
     await cloudinaryStore.uploadImages(props.type, formData.value.name)
     await nextTick()
@@ -290,7 +286,7 @@ const handleSubmit = async () => {
     //Si es videojuego y creación
     else if (!isEditing.value && isGame.value) {
         console.log('Formulario de creación listo:', formDataVideogame)
-        debugger
+         
         productStore.createGame(formDataVideogame)
         emit('cancel')
 
@@ -336,7 +332,7 @@ const handleSubmit = async () => {
     }    //Si es Segunda Mano y creación
     else if (!isEditing.value && isSecondHand.value) {
         console.log('Formulario de creación listo:', formDataCreateSecondHand)
-        debugger
+         
         productStore.createSecondHand(formDataCreateSecondHand)
         emit('cancel')
 
@@ -349,7 +345,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-    <v-card class="pa-6">
+    <v-card class="pa-6 bg-primary">
         <v-card-title>
             {{ isEditing ? 'Editar' : 'Añadir' }} {{ isGame ? 'Juego' : isConsole ? 'Consola' : isGender ? 'Género' :
                 isPlatform ? 'Plataforma' : 'Producto' }}
@@ -358,41 +354,41 @@ const handleSubmit = async () => {
         <v-card-text>
             <v-form ref="form" v-model="valid">
                 <!-- Campos comunes -->
-                <v-text-field label="Nombre" v-model="formData.name" :rules="[rules.required]" />
+                <v-text-field label="Nombre" v-model="formData.name" :rules="[validationRules.requiredTrimmed]" />
                 <v-row v-if="!isGenderOrPlatform">
                     <v-col>
                         <v-text-field  label="Precio (€)" type="number" v-model="formData.price"
-                            :rules="[rules.required]" />
+                            :rules="[validationRules.requiredTrimmed, validationRules.positiveNumber]" />
                     </v-col>
                     <v-col v-if="!isSecondHand">
                         <v-text-field label="Descuento" type="number" v-model="formData.discount"
-                            :rules="[rules.required]" />
+                            :rules="[validationRules.requiredTrimmed, validationRules.numberRange(0, 100)]" />
                     </v-col>
 
                 </v-row>
 
                 <v-text-field v-if="!isGenderOrPlatform && !isSecondHand" label="Stock" type="number" v-model="formData.stock"
-                    :rules="[rules.required]" />
+                    :rules="[validationRules.requiredTrimmed]" />
                 <v-textarea v-if="!isGenderOrPlatform" label="Descripción" v-model="formData.description"
-                    :rules="[rules.required]" />
+                    :rules="[validationRules.requiredTrimmed]" />
                 <!-- Campos específicos -->
                 <v-text-field v-if="isGame" label="Desarrollador" type="text" v-model="formData.developer"
-                    :rules="[rules.required]" />
+                    :rules="[validationRules.requiredTrimmed]" />
 
                 <v-text-field v-if="isGame" label="Distribuidor" type="text" v-model="formData.distributor"
-                    :rules="[rules.required]" />
+                    :rules="[validationRules.requiredTrimmed]" />
 
                 <v-select v-if="isGame || isConsole" label="Plataforma" :items="platformStore.platforms"
-                    v-model="formData.platformId" :rules="[rules.required]" item-title="name" item-value="platformId" />
+                    v-model="formData.platformId" :rules="[validationRules.requiredTrimmed]" item-title="name" item-value="platformId" />
 
                 <v-text-field v-if="!isGenderOrPlatform && !isSecondHand" v-model="releaseDateFormatted" label="Fecha de lanzamiento"
-                    type="date" :rules="[rules.required]" />
+                    type="date" :rules="[validationRules.requiredTrimmed]" />
 
                 <v-select v-if="isGame" label="PEGI" :items="pegiOptions" v-model="formData.pegi"
-                    :rules="[rules.required]" />
+                    :rules="[validationRules.requiredTrimmed]" />
 
                 <v-select v-if="isGame" label="Género" :items="genderStore.genders" item-title="name"
-                    item-value="genderId" v-model="formData.genderId" :rules="[rules.required]" chips multiple />
+                    item-value="genderId" v-model="formData.genderId" :rules="[validationRules.requiredTrimmed]" chips multiple />
 
                 <v-row v-if="isGame">
                     <v-col cols="6">
@@ -400,25 +396,25 @@ const handleSubmit = async () => {
                         <v-row class="mt-2">
                             <v-col cols="12">
                                 <v-select label="Sistema Operativo" :items="osOptions" v-model="minimumRequirements[0]"
-                                    :rules="[rules.required]" />
+                                    :rules="[validationRules.requiredTrimmed]" />
                             </v-col>
                             <v-col cols="12">
                                 <v-select label="Procesador" :items="cpuOptions" v-model="minimumRequirements[1]"
-                                    :rules="[rules.required]" />
+                                    :rules="[validationRules.requiredTrimmed]" />
                             </v-col>
 
                             <v-col cols="12">
                                 <v-select label="Memoria RAM" :items="ramOptions" v-model="minimumRequirements[2]"
-                                    :rules="[rules.required]" />
+                                    :rules="[validationRules.requiredTrimmed]" />
                             </v-col>
                             <v-col cols="12">
                                 <v-select label="Gráficos" :items="gpuOptions" v-model="minimumRequirements[3]"
-                                    :rules="[rules.required]" />
+                                    :rules="[validationRules.requiredTrimmed]" />
                             </v-col>
 
                             <v-col cols="12">
                                 <v-select label="Almacenamiento" :items="storageOptions"
-                                    v-model="minimumRequirements[4]" :rules="[rules.required]" />
+                                    v-model="minimumRequirements[4]" :rules="[validationRules.requiredTrimmed]" />
                             </v-col>
                         </v-row>
                     </v-col>
@@ -428,82 +424,82 @@ const handleSubmit = async () => {
                         <v-row class="mt-2">
                             <v-col cols="12">
                                 <v-select label="Sistema Operativo" :items="osOptions"
-                                    v-model="recomendedRequirements[0]" :rules="[rules.required]" />
+                                    v-model="recomendedRequirements[0]" :rules="[validationRules.requiredTrimmed]" />
                             </v-col>
                             <v-col cols="12">
                                 <v-select label="Procesador" :items="cpuOptions" v-model="recomendedRequirements[1]"
-                                    :rules="[rules.required]" />
+                                    :rules="[validationRules.requiredTrimmed]" />
                             </v-col>
 
                             <v-col cols="12">
                                 <v-select label="Memoria RAM" :items="ramOptions" v-model="recomendedRequirements[2]"
-                                    :rules="[rules.required]" />
+                                    :rules="[validationRules.requiredTrimmed]" />
                             </v-col>
                             <v-col cols="12">
                                 <v-select label="Gráficos" :items="gpuOptions" v-model="recomendedRequirements[3]"
-                                    :rules="[rules.required]" />
+                                    :rules="[validationRules.requiredTrimmed]" />
                             </v-col>
 
                             <v-col cols="12">
                                 <v-select label="Almacenamiento" :items="storageOptions"
-                                    v-model="recomendedRequirements[4]" :rules="[rules.required]" />
+                                    v-model="recomendedRequirements[4]" :rules="[validationRules.requiredTrimmed]" />
                             </v-col>
                         </v-row>
                     </v-col>
                 </v-row>
 
 
-                <v-text-field v-if="isConsole" label="Marca" v-model="formData.brand" :rules="[rules.required]" />
+                <v-text-field v-if="isConsole" label="Marca" v-model="formData.brand" :rules="[validationRules.requiredTrimmed]" />
                 <v-select v-if="isConsole" label="Generación" v-model="formData.generation"
                     :items="generationsOptions" />
                 <v-text-field v-if="isConsole" label="Servicios" v-model="formData.services"
-                    :rules="[rules.required]" />
-                <v-text-field v-if="isConsole" label="Colores" v-model="formData.colors" :rules="[rules.required]" />
+                    :rules="[validationRules.requiredTrimmed]" />
+                <v-text-field v-if="isConsole" label="Colores" v-model="formData.colors" :rules="[validationRules.requiredTrimmed]" />
                 <v-row v-if="isConsole">
                     <v-col cols="12">
                         <h5>Especificacoines</h5>
                         <v-row class="mt-2">
                             <v-col cols="6">
                                 <v-select label="CPU" :items="cpuOptions" v-model="specificationsConsole[0]"
-                                    :rules="[rules.required]" multiple />
+                                    :rules="[validationRules.requiredTrimmed]" multiple />
                             </v-col>
                             <v-col cols="6">
                                 <v-select label="GPU" :items="gpuOptions" v-model="specificationsConsole[1]"
-                                    :rules="[rules.required]" multiple />
+                                    :rules="[validationRules.requiredTrimmed]" multiple />
                             </v-col>
 
                             <v-col cols="6">
                                 <v-select label="Memoria" :items="ramOptions" v-model="specificationsConsole[2]"
-                                    :rules="[rules.required]" multiple />
+                                    :rules="[validationRules.requiredTrimmed]" multiple />
                             </v-col>
                             <v-col cols="6">
                                 <v-select label="Almacenamiento" :items="storageOptions"
-                                    v-model="specificationsConsole[3]" :rules="[rules.required]" multiple />
+                                    v-model="specificationsConsole[3]" :rules="[validationRules.requiredTrimmed]" multiple />
                             </v-col>
 
                             <v-col cols="6">
                                 <v-select label="Peso" :items="weightOptions" v-model="specificationsConsole[4]"
-                                    :rules="[rules.required]" multiple />
+                                    :rules="[validationRules.requiredTrimmed]" multiple />
                             </v-col>
                             <v-col cols="6">
                                 <v-select label="Entrada/Salida" :items="portsOptions"
-                                    v-model="specificationsConsole[5]" :rules="[rules.required]" multiple />
+                                    v-model="specificationsConsole[5]" :rules="[validationRules.requiredTrimmed]" multiple />
                             </v-col>
                             <v-col cols="6">
                                 <v-select label="Red" :items="networkOptions" v-model="specificationsConsole[6]"
-                                    :rules="[rules.required]" multiple />
+                                    :rules="[validationRules.requiredTrimmed]" multiple />
                             </v-col>
                             <v-col cols="6">
                                 <v-select label="Alimentación" :items="powerOptions" v-model="specificationsConsole[7]"
-                                    :rules="[rules.required]" multiple />
+                                    :rules="[validationRules.requiredTrimmed]" multiple />
                             </v-col>
                             <v-col cols="6">
                                 <v-select label="Consumo de energía" :items="energyOptions"
-                                    v-model="specificationsConsole[8]" :rules="[rules.required]" multiple />
+                                    v-model="specificationsConsole[8]" :rules="[validationRules.requiredTrimmed]" multiple />
                             </v-col>
                             <v-col cols="6">
                                 <v-select label="Salida AV" :items="AVOptions" v-model="specificationsConsole[9]"
-                                    :rules="[rules.required]" multiple />
+                                    :rules="[validationRules.requiredTrimmed]" multiple />
                             </v-col>
 
                         </v-row>
@@ -511,7 +507,7 @@ const handleSubmit = async () => {
                 </v-row>
 
                 <v-select v-if="isPlatform" label="Sistema" :items="platformStore.systemOptions"
-                    v-model="formData.system" :rules="[rules.required]" item-title="label" item-value="value" />
+                    v-model="formData.system" :rules="[validationRules.requiredTrimmed]" item-title="label" item-value="value" />
 
 
                 <!-- Subida de imágenes -->

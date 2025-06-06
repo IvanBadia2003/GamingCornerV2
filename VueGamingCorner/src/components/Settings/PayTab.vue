@@ -17,7 +17,7 @@
         <v-text-field label="Nueva tarjeta (mock)" v-model="nuevaTarjeta" />
       </v-col>
       <v-col cols="12" md="4">
-        <v-btn color="primary" @click="agregar">Añadir</v-btn>
+        <v-btn color="primary" class="mt-4" @click="agregar">Añadir</v-btn>
       </v-col>
     </v-row>
   </template>

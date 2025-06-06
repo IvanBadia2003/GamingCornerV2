@@ -19,7 +19,7 @@ function formatDate(dateString: string): string {
 }
 
 function modifyRole(rol: RolEnum, user: UpdateUser, userId: number) {
-  debugger
+   
   const updateUser: UpdateUser = {
     name: user.name,
     address: user.address,
@@ -38,7 +38,7 @@ function modifyRole(rol: RolEnum, user: UpdateUser, userId: number) {
 }
 
 function modifyStatus(state: UserStateEnum, user: UpdateUser, userId: number) {
-  debugger
+   
   const updateUser: UpdateUser = {
     name: user.name,
     address: user.address,

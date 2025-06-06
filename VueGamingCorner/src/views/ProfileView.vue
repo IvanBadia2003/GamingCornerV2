@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/UserStore'
 
@@ -34,9 +34,9 @@ onMounted(async () => {
     await reviewStore.getReviewByUserId()
     await orderStore.GetUserStats()
     const queryTab = parseInt(route.query.tab as string)
-  if (!isNaN(queryTab)) {
-    tab.value = queryTab
-  }
+    if (!isNaN(queryTab)) {
+        tab.value = queryTab
+    }
 })
 
 const avatarSize = computed(() => {
@@ -81,11 +81,8 @@ const propsDelComponente = computed(() => {
     return {} // Por defecto, sin props
 })
 
-const mostrarCodigos = ref<{ [key: number]: boolean }>({});
+const mostrarCodigos = ref<boolean[]>([])
 
-const toggleCodigo = (index: number) => {
-    mostrarCodigos.value[index] = !mostrarCodigos.value[index];
-};
 </script>
 <template>
 
@@ -105,7 +102,7 @@ const toggleCodigo = (index: number) => {
                         <v-row justify="center">
                             <v-col cols="12">
 
-                                <p>{{ userStore.user.name }}</p>
+                                <h4>{{ userStore.user.name }}</h4>
                                 <p>Usuario desde {{ userStore.cratedDateFormated }}</p>
                             </v-col>
                         </v-row>
@@ -161,7 +158,7 @@ const toggleCodigo = (index: number) => {
                             <v-row>
                                 <v-col cols="12" md="6">
                                     <v-card class="text-center bg-primary">
-                                        <v-card-title class="pt-5">PRODUCTOS COMPRADOS</v-card-title>
+                                        <v-card-title class="pt-5"><h3>PRODUCTOS COMPRADOS</h3></v-card-title>
                                         <v-card-text class="py-10">
                                             <v-row class="d-flex justify-space-between">
                                                 <v-col cols="12" md="4">
@@ -191,7 +188,7 @@ const toggleCodigo = (index: number) => {
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-card class="text-center bg-primary h-100">
-                                        <v-card-title class="pt-5">PRODUCTOS EN VENTA</v-card-title>
+                                        <v-card-title class="pt-5"><h3>PRODUCTOS EN VENTA</h3></v-card-title>
                                         <v-card-text class="py-10" v-if="orderStore.userStats.totalProductsOnSale > 0">
                                             <v-row class="d-flex justify-space-between">
                                                 <v-col cols="12" md="6">
@@ -213,10 +210,10 @@ const toggleCodigo = (index: number) => {
                                         </v-card-text>
                                         <v-card-text class="py-10" v-else>
                                             <v-row class="d-flex justify-space-between">
-                                                <v-col  cols="12">
-                                                    <div >
+                                                <v-col cols="12">
+                                                    <div>
                                                         <p>AÚN NO HAS PUESTO NADA A LA VENTA</p>
-                                                        <v-btn @click="tab = 5" color="primary">PON ALGO
+                                                        <v-btn @click="tab = 5" color="surface" class="mt-5">PON ALGO
                                                             A LA VENTA</v-btn>
                                                     </div>
                                                 </v-col>
@@ -231,9 +228,9 @@ const toggleCodigo = (index: number) => {
                             <v-row>
                                 <v-col cols="12" md="6">
                                     <v-card class="text-center bg-primary">
-                                        <v-card-title class="pt-5">ÚLTIMOS PRODUCTOS EN FAVORITOS</v-card-title>
+                                        <v-card-title class="pt-5"><h3>ÚLTIMOS PRODUCTOS EN FAVORITOS</h3></v-card-title>
                                         <v-card-text class="py-10">
-                                            <v-row  class="d-flex justify-center">
+                                            <v-row class="d-flex justify-center">
                                                 <v-col v-if="favouriteStore.favouriteProducts.length > 0"
                                                     v-for="(favouriteProduct, index) in favouriteStore.favouriteProducts.slice(0, 3)"
                                                     :key="index" cols="12" sm="6" md="4">
@@ -251,7 +248,7 @@ const toggleCodigo = (index: number) => {
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-card class="text-center bg-primary h-100 ">
-                                        <v-card-title class="pt-5">TOTAL AHORRADO</v-card-title>
+                                        <v-card-title class="pt-5"><h3>TOTAL AHORRADO</h3></v-card-title>
                                         <v-card-text class="py-5 ">
                                             <v-row class="d-flex justify-space-between ">
                                                 <v-col cols="12" class="pa-0">
@@ -296,11 +293,11 @@ const toggleCodigo = (index: number) => {
                                         </v-card-title>
 
                                         <!-- Líneas de pedido -->
-                                        <v-card-text class="py-5">
+                                        <v-card-text class="py-5 bg-background">
                                             <v-row v-for="(line, i) in order.orderLines" :key="i" class="mb-3">
                                                 <v-col cols="12" md="2">
                                                     <v-img
-                                                        src="https://i.eurosport.com/2015/07/20/1644653-34890947-2560-1440.png"
+                                                        :src="line.orderImg"
                                                         height="80" contain></v-img>
                                                 </v-col>
 
@@ -311,15 +308,13 @@ const toggleCodigo = (index: number) => {
                                                             line.productPlatform }}
                                                     </div>
 
-                                                    <div v-if="line.digitalCode">
-                                                        <span :class="{ 'blur-text': !mostrarCodigos[i] }">
+                                                    <div v-if="line.digitalCode"
+                                                        class="d-flex flex-column">
+                                                        <span >
                                                             {{ line.digitalCode }}
                                                         </span>
-                                                        <v-btn size="small" color="secondary" variant="outlined"
-                                                            class="ml-2 mt-2" @click="toggleCodigo(i)">
-                                                            {{ mostrarCodigos[i] ? 'Ocultar Código' : 'Ver Código' }}
-                                                        </v-btn>
                                                     </div>
+
                                                 </v-col>
 
                                                 <v-col cols="6" md="2" class="d-flex align-center justify-end">
@@ -336,7 +331,7 @@ const toggleCodigo = (index: number) => {
                         </v-tabs-window-item>
 
                         <v-tabs-window-item value="three">
-                            <v-row>
+                            <v-row class="py-10">
                                 <v-col v-for="(videogame, index) in favouriteStore.favouriteProducts" :key="index"
                                     cols="12" sm="4" md="4">
                                     <CardComponent :title="videogame.product.name"
@@ -347,7 +342,7 @@ const toggleCodigo = (index: number) => {
                             </v-row>
                         </v-tabs-window-item>
                         <v-tabs-window-item value="four">
-                            <v-row>
+                            <v-row class="py-10">
                                 <v-col v-for="(videogame, index) in orderStore.VideogameByUser" :key="index" cols="12"
                                     sm="4" md="4">
                                     <CardComponent :title="videogame.name" :discount="videogame.discount"
@@ -357,15 +352,18 @@ const toggleCodigo = (index: number) => {
                             </v-row>
                         </v-tabs-window-item>
                         <v-tabs-window-item value="five">
-
-                            <v-row>
-                                <ReviewCard v-for="(item, index) in reviewStore.reviews" :key="index" :review="item" />
+                            <v-row align="stretch">
+                                <v-col v-for="(item, index) in reviewStore.reviews" :key="index" cols="12" sm="6" md="4"
+                                    lg="3" class="d-flex">
+                                    <ReviewCard :review="item" class="flex-grow-1" />
+                                </v-col>
                             </v-row>
+
                         </v-tabs-window-item>
                         <v-tabs-window-item value="six">
-                            <v-row justify="center" >
-                                <v-col cols="7">
-                                    <AddProductDialogComponent type="segundamano"/>
+                            <v-row justify="center">
+                                <v-col cols="11">
+                                    <AddProductDialogComponent type="segundamano" />
 
                                 </v-col>
                             </v-row>

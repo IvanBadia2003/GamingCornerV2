@@ -26,7 +26,7 @@ const sortOptions = [
 ]
 
 onMounted(() => {
-  productStore.getProductsToCatalog("videogame");
+  productStore.getProductsToCatalog(productStore.productType);
   productStore.getAllVideogames();
   productStore.getAllConsoles();
   platformStore.getAllPlatforms();
@@ -35,7 +35,7 @@ onMounted(() => {
 });
 
 const onSystemChange = (newSystem: number | null) => {
-  debugger
+   
   if (newSystem === null) return;
 
   showStores.value = true;
@@ -168,7 +168,7 @@ const applyFilters = () => {
     </v-expand-transition>
 
 
-    <!-- Grid de Videojuegos -->
+    <!-- Grid de productos -->
     <v-row>
       <v-col v-for="product in productStore.products" :key="product.id" cols="6" xs="6" md="4">
         <CardComponent :title="product.name" :src="product.productImages?.main || ''" :discount="product.discount"

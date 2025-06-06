@@ -104,7 +104,7 @@ const Products = [
                     </v-btn>
 
                 </v-col>
-                <v-btn v-if="showFullMenu || (showMobileMenu && toggleMenu)" v-for="product in Products"
+                <v-btn v-if="showFullMenu || (showMobileMenu && toggleMenu)" v-for="product in Products" class="mx-2"
                     :key="product.name" :value="product.type" :to="{ path: '/catalog' }" variant="text" color="white"
                     @click="
                         productStore.getProductsToCatalog(product.type || '');
@@ -141,11 +141,8 @@ const Products = [
                         <v-list-item :to="'/admin'" v-if="user.user.rol == RolEnum.Admin" class="justify-center">
                             <v-list-item-title>Pantalla Admin</v-list-item-title>
                         </v-list-item>
-                        <v-list-item class="justify-center">
+                        <v-list-item class="justify-center"  style="cursor: pointer;">
                             <v-list-item-title @click="user.logout">Cerrar sesión</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item class="justify-center">
-                            <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
                         </v-list-item>
                     </v-list>
                 </v-menu>

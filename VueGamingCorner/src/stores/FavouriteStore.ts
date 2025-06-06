@@ -57,7 +57,6 @@ export const useFavouriteStore = defineStore('FavouriteStore', () => {
         try {
             await axios.delete(`http://localhost:5000/Favourite/User/${userStore.user.userId}/Product/${productId}`);
             await nextTick(); // Asegura que la UI se actualice después de la operación
-
             getFavouriteProducts()
         } catch (error) {
             console.error("Error al eliminar el producto de la base de datos:", error);
@@ -68,7 +67,7 @@ export const useFavouriteStore = defineStore('FavouriteStore', () => {
      //Obtiene los productos del carrito almacenados en la cookie y los carga desde la API
      const getFavouriteProducts = async () => {
         favouriteProducts.splice(0, favouriteProducts.length);
-    debugger
+     
             try {
                 const response = await axios.get('http://localhost:5000/Favourite/User/' + userStore.user.userId);
                 

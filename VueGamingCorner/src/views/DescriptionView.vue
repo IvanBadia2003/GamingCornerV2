@@ -130,7 +130,7 @@ const sendReview = () => {
     reviewStore.addReview(reviewData)
     rating.value = 0
     review.value = ''
-
+    dialog.value = false
 
 };
 
@@ -139,11 +139,11 @@ const isFavourite = computed(() =>
 )
 
 async function toggleFavourite(productId: number) {
-  if (isFavourite.value) {
-    await favouriteStore.deleteFavourite(productId);
-  } else {
-    await favouriteStore.addFavourite(productId);
-  }
+    if (isFavourite.value) {
+        await favouriteStore.deleteFavourite(productId);
+    } else {
+        await favouriteStore.addFavourite(productId);
+    }
 }
 
 
@@ -231,7 +231,7 @@ async function toggleFavourite(productId: number) {
                                 class="d-flex align-center">
                                 <v-icon>mdi-tag-arrow-down</v-icon>
                                 <h5 class="ml-2" style="text-decoration: line-through;">{{ productStore.product?.price
-                                }}€</h5>
+                                    }}€</h5>
                             </v-col>
                             <v-col v-if="productStore.product && !('isChecked' in productStore.product)" cols="auto"
                                 class="mr-2">
@@ -244,7 +244,8 @@ async function toggleFavourite(productId: number) {
                         </v-row>
 
                         <v-card-actions>
-                            <v-btn icon variant="text" :color="isFavourite ? 'red-darken-2' : 'deep-purple-lighten-2'"
+                            <v-btn v-if="userStore.isAuthenticated" icon variant="text"
+                                :color="isFavourite ? 'red-darken-2' : 'deep-purple-lighten-2'"
                                 @click="toggleFavourite(productStore.product?.id)">
                                 <v-icon>{{ isFavourite ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
                             </v-btn>
@@ -252,7 +253,7 @@ async function toggleFavourite(productId: number) {
 
                             <v-btn
                                 v-if="productStore.product?.stock > 0 || productStore.product && 'isChecked' in productStore.product"
-                                color="deep-purple-lighten-2" text="Comprar Ahora" border
+                                class="bg-primary" text="Comprar Ahora"
                                 @click="reserve(productStore.product?.id)"></v-btn>
                             <v-btn v-else color="deep-purple-lighten-2" text="Avisar cuando repongan stock"
                                 border></v-btn>
@@ -291,12 +292,13 @@ async function toggleFavourite(productId: number) {
                                 <v-img :alt="productStore.product.user.name"
                                     :src="productStore.product.user.avatar"></v-img>
                             </v-avatar>
-                            <div v-if="productStore.product && !('isChecked' in productStore.product)"
+                            <div v-if="productStore.product && !('isChecked' in productStore.product) && reviewStore.reviews.length > 0"
                                 class="review-score">
-                                <v-avatar class="score-circle" color="green-darken-2">{{ reviewStore.AverageRating
-                                    }}</v-avatar>
+                                <v-avatar class="score-circle" color="primary">{{ reviewStore.AverageRating
+                                }}</v-avatar>
                                 <span class="reviews">Basado en {{ reviewStore.ReviewCount }} reseña(s)</span>
                             </div>
+                            <p v-else>Este producto aún no tiene reseñas</p>
                             <v-divider class="my-3"></v-divider>
                             <v-container>
                                 <VideogameCardInformation />
@@ -311,7 +313,8 @@ async function toggleFavourite(productId: number) {
                 <v-col cols="12">
                     <h3>ACERCA DE</h3>
                     <p class="game-text" v-html="isExpanded ? descriptionTxt : truncatedDescription"></p>
-                    <v-btn variant="text" class="text-primary" @click="toggleExpand">
+                    <v-btn v-if="descriptionTxt.length > maxLength" variant="text" class="text-primary"
+                        @click="toggleExpand">
                         {{ isExpanded ? 'Ver menos' : 'Ver más' }}
                     </v-btn>
                 </v-col>
@@ -377,9 +380,13 @@ async function toggleFavourite(productId: number) {
                         </v-col>
 
                     </v-row>
-                    <v-row>
-                        <ReviewCard v-for="(item, index) in reviewStore.reviews" :key="index" :review="item" />
+                    <v-row align="stretch">
+                        <v-col v-for="(item, index) in reviewStore.reviews" :key="index" cols="12" sm="6" md="4" lg="3"
+                            class="d-flex">
+                            <ReviewCard :review="item" class="flex-grow-1" />
+                        </v-col>
                     </v-row>
+
                 </v-col>
             </v-row>
 

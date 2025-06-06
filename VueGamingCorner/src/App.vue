@@ -8,6 +8,8 @@ const route = useRoute()
 
 // Lista de rutas donde NO se quiere mostrar el footer
 const hideFooterOnRoutes = ['/login','/admin']
+const shouldHideFooter = hideFooterOnRoutes.some(prefix => route.path.startsWith(prefix));
+
 // Lista de rutas donde NO se quiere mostrar el header
 const hideHeaderOnRoutes = ['/login', '/register', '/admin']
 </script>
@@ -19,17 +21,21 @@ const hideHeaderOnRoutes = ['/login', '/register', '/admin']
   <div class="bg-background" id="App">
     <RouterView />
   </div>
-  <FooterComponent v-if="!hideFooterOnRoutes.includes(route.path)" />
+  <FooterComponent v-if="!shouldHideFooter" class=""/>
 </div>
 </template>
 
 <style lang="scss">
 $HeaderHeight: 90px;
+html, body {
+  height: 100%;
+  margin: 0;
+}
 
-#App1{
+#App1 {
   display: grid;
-  min-height: 100vh;
-  grid-template-rows: auto 1fr;
+  min-height: 100vh; // Esto asegura que al menos ocupe toda la pantalla
+  grid-template-rows: auto 1fr auto;
 }
 
 #Header {
@@ -62,9 +68,9 @@ h4 {
 
 h5 {
   font: {
-    family: "Bebas Neue", serif;
+    family: "Montserrat", serif;
     weight: 400;
-    size: clamp(12px, 1.5vw, 24px);
+    size: clamp(10px, 1vw, 19px);
   }
 }
 

@@ -196,6 +196,7 @@ export const useProductStore = defineStore('ProductStore', () => {
     // Estado
     const videogames = reactive<Videogame[]>([])
     const topVideogames = reactive<Videogame[]>([])
+    const bestVideogames = reactive<Videogame[]>([])
     const consoles = reactive<Console[]>([])
     const topConsoles = reactive<Console[]>([])
     const compatibleProducts = reactive<Console[] | Videogame[]>([])
@@ -215,7 +216,7 @@ export const useProductStore = defineStore('ProductStore', () => {
 
     // Obteener un producto por ID
     const getProductById = async (id: number) => {
-        debugger
+         
         try {
             compatibleProducts.splice(0, compatibleProducts.length);
             similarsProducts.splice(0, similarsProducts.length);
@@ -249,9 +250,9 @@ export const useProductStore = defineStore('ProductStore', () => {
 
 
     // Obtener todos los productos para el catálogo
-    const getProductsToCatalog = async (type: string) => {
+    const getProductsToCatalog = async (type: string | null) => {
         try {
-debugger
+ 
             if (type === 'videogame') {
                 const response = await axios.get('http://localhost:5000/Videogame')
                 products.splice(0, products.length) // Actualiza el array de productos
@@ -266,6 +267,10 @@ debugger
                 const response = await axios.get('http://localhost:5000/SecondHandProduct/Checked')
                 products.splice(0, products.length) // Borra el array de productos
                 products.push(...response.data)// Añade las consolas al array
+            }else{
+                const response = await axios.get('http://localhost:5000/Videogame')
+                products.splice(0, products.length) // Actualiza el array de productos
+                products.push(...response.data)// Añade los nuevos videojuegos al array
             }
 
         } catch (err) {
@@ -274,7 +279,7 @@ debugger
     }
 
     const getSimilarsProducts = async () => {
-        debugger
+         
         try {
             similarsProducts.splice(0, similarsProducts.length); // Limpiar el array antes de agregar nuevos productos
             const response = await axios.get('http://localhost:5000/Product/Similar/' + product.id);
@@ -290,7 +295,7 @@ debugger
 
             
         const getCompatibleProducts = async () => {
-            debugger
+             
             try {
                 console.log(topConsoles);
     
@@ -362,7 +367,7 @@ debugger
     })
 
     async function createGame(game: VideogameCreate) {
-        debugger
+         
         try {
             const response = await fetch('http://localhost:5000/Videogame', {
                 method: 'POST',
@@ -373,10 +378,10 @@ debugger
             });
             if (response.ok) {  
                 getAllVideogames()
-                alert('Juego creado exitosamente.' + response);
+                alert('Juego creado exitosamente.');
             } else {
                 console.error('Error al crear el juego:', response.statusText);
-                alert('Error al crear el juego:' + response.statusText);
+                alert('Error al crear el juego');
             }
         } catch (error) {
             console.error('Error al crear el juego:', error);
@@ -392,14 +397,14 @@ debugger
             });
             console.log("Eliminar videojuego " + id + " hecho desde ProductStore.ts");
             getAllVideogames()
-            alert(`videojuego: ${id} eliminado con éxito` + response.ok);
+            alert(`videojuego: ${id} eliminado con éxito`);
         } catch (error) {
             console.error('Error al eliminar:', error);
         }
     }
 
     async function updateVideogame(id: number, videogame: VideogameUpdate) {
-        debugger
+         
         try {
             const response = await fetch('http://localhost:5000/Videogame/' + id, {
                 method: 'PUT',
@@ -409,11 +414,11 @@ debugger
                 body: JSON.stringify(videogame),
             });
             if (response.ok) {
-                alert('Juego editado exitosamente.' + response);
+                alert('Juego editado exitosamente.');
                 getAllVideogames()
                 console.log('Juego editado exitosamente.' + response);
             } else {
-                alert('Error al editar el juego:' + response.statusText);
+                alert('Error al editar el juego:');
                 console.error('Error al editar el juego:', response.statusText);
             }
         } catch (error) {
@@ -441,7 +446,7 @@ debugger
         try {
             console.log(topVideogames);
 
-            topVideogames.splice(0, videogames.length) // Actualiza el array de videojuegos
+            topVideogames.splice(0, topVideogames.length) // Actualiza el array de videojuegos
             const response = await axios.get('http://localhost:5000/Videogame/Top');
             topVideogames.push(...response.data)// Añade los nuevos videojuegos al array
             console.log(topVideogames);
@@ -450,6 +455,25 @@ debugger
             error.value = 'Error al obtener los videojuegos'
         }
     }
+ 
+    // Obtener los videojuegos mejor valorados
+    const GetTopRatedVideogames = async () => {
+         
+        try {
+            console.log('juegos mejor valorados'+ bestVideogames);
+
+            bestVideogames.splice(0, bestVideogames.length) // Actualiza el array de videojuegos
+            const response = await axios.get('http://localhost:5000/Videogame/Best');
+            bestVideogames.push(...response.data)// Añade los nuevos videojuegos al array
+            console.log('juegos mejor valorados'+ bestVideogames);
+            await nextTick()
+        } catch (err) {
+            error.value = 'Error al obtener los videojuegos'
+        }
+    }
+
+
+
     /************ FIN VIDEOJUEGOS **********/
     // #endregion 
 
@@ -492,7 +516,7 @@ debugger
 
     async function createConsole(_console: ConsoleCreate) {
         try {
-            debugger
+             
             const response = await fetch('http://localhost:5000/Console', {
                 method: 'POST',
                 headers: {
@@ -501,7 +525,7 @@ debugger
                 body: JSON.stringify(_console),
             });
             if (response.ok) {
-                alert('Consola creada exitosamente.' + response);
+                alert('Consola creada exitosamente.');
                 console.log('Consola creada exitosamente.' + response);
                 getAllConsoles()
             } else {
@@ -513,7 +537,7 @@ debugger
     }
 
     async function updateConsole(id: number, _console: UpdateConsole) {
-        debugger
+         
         try {
             const response = await fetch('http://localhost:5000/Console/' + id, {
                 method: 'PUT',
@@ -523,7 +547,7 @@ debugger
                 body: JSON.stringify(_console),
             });
             if (response.ok) {
-                alert('Consola editada exitosamente.' + response);
+                alert('Consola editada exitosamente.');
                 console.log('Consola editada exitosamente.' + response);
                 getAllConsoles()
             } else {
@@ -541,7 +565,7 @@ debugger
                 method: 'DELETE',
             });
             console.log("Eliminar consola " + id + " hecho desde ProductStore.ts");
-            alert(`Consola: ${id} eliminado con éxito` + response.ok);
+            alert(`Consola: ${id} eliminado con éxito`);
             getAllConsoles()
         } catch (error) {
             console.error('Error al eliminar:', error);
@@ -611,7 +635,7 @@ debugger
 
     async function createSecondHand(secondHandProduct: SecondHandProductsCreate) {
         try {
-            debugger
+             
             secondHandProduct.userId = userStore.user.userId
             const response = await fetch('http://localhost:5000/SecondHandProduct', {
                 method: 'POST',
@@ -621,7 +645,6 @@ debugger
                 body: JSON.stringify(secondHandProduct),
             });
             if (response.ok) {
-                alert('Producto de segunda mano creado exitosamente.' + response);
                 //getAllConsoles()
             } else {
                 console.error('Error al crear el Producto de segunda mano:', response.statusText);
@@ -683,6 +706,8 @@ debugger
         getAllSecondHand,
         secondHandProducts,
         changeCheck,
-        getAllSecondHandChecked
+        getAllSecondHandChecked,
+        GetTopRatedVideogames,
+        bestVideogames
     }
 })

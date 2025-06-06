@@ -54,7 +54,7 @@
       <!-- Botones -->
       <v-col cols="12" class="d-flex gap-4">
         <v-btn color="primary" type="submit">Guardar</v-btn>
-        <v-btn color="secondary" @click="mostrarCambioContrasena = !mostrarCambioContrasena">
+        <v-btn color="primary" class="ml-5" @click="mostrarCambioContrasena = !mostrarCambioContrasena">
           Cambiar contraseña
         </v-btn>
       </v-col>
@@ -123,13 +123,11 @@ async function guardar() {
 
   try {
     await userStore.updateUser(editedUser.userId, { ...editedUser })
-    alert('Usuario actualizado con éxito')
     mostrarCambioContrasena.value = false
     newPassword.value = ''
     repeatNewPassword.value = ''
   } catch (error) {
     console.error('Error al guardar los datos:', error)
-    alert('Hubo un error al actualizar el usuario')
   }
 }
 </script>
