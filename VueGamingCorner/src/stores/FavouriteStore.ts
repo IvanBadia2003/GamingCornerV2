@@ -3,7 +3,7 @@ import { ref, computed, reactive, nextTick } from 'vue'
 import axios from 'axios'
 import router from '@/router'
 import { de } from 'vuetify/locale'
-import type { Videogame } from './ProductStore'
+import type { ProductImages, Videogame } from './ProductStore'
 import type { Console } from './ProductStore'
 import { useProductStore } from './ProductStore'
 import { useUserStore } from './UserStore'
@@ -16,7 +16,7 @@ export interface Productfavourite {
     price: number
     discount: number
     system: number
-    principalImageURL: string
+    productImages: ProductImages
   }
   
   export interface Favourite {
@@ -57,7 +57,6 @@ export const useFavouriteStore = defineStore('FavouriteStore', () => {
         try {
             await axios.delete(`http://localhost:5000/Favourite/User/${userStore.user.userId}/Product/${productId}`);
             await nextTick(); // Asegura que la UI se actualice después de la operación
-
             getFavouriteProducts()
         } catch (error) {
             console.error("Error al eliminar el producto de la base de datos:", error);
@@ -68,7 +67,7 @@ export const useFavouriteStore = defineStore('FavouriteStore', () => {
      //Obtiene los productos del carrito almacenados en la cookie y los carga desde la API
      const getFavouriteProducts = async () => {
         favouriteProducts.splice(0, favouriteProducts.length);
-    debugger
+     
             try {
                 const response = await axios.get('http://localhost:5000/Favourite/User/' + userStore.user.userId);
                 

@@ -12,6 +12,7 @@ const productStore = useProductStore();
 const platformStore = usePlatformStore();
 
 onMounted(() => {
+  productStore.getAllSecondHand();
   productStore.getAllVideogames();
   productStore.getAllConsoles();
   genderStore.getAllGenders()
@@ -48,8 +49,8 @@ const consoleHeaders = [
 
 const usedHeaders = [
   { title: 'Producto', key: 'name' },
-  { title: 'Vendedor', key: 'seller' },
-  { title: 'Estado', key: 'condition' },
+  { title: 'Vendedor', key: 'user.name' }, // Accedemos al nombre del vendedor
+  { title: 'Estado', key: 'estado' },      // Usaremos un slot para mostrarlo
   { title: 'Precio', key: 'price' },
   { title: 'Acciones', key: 'actions', sortable: false },
 ]
@@ -153,8 +154,9 @@ function eliminarPlataforma(item: any) {
 }
 ////////////////////////////////////
 
-const aprobarProducto = (item: any) => alert('Producto aprobado: ' + item.name)
-const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name)
+const aprobarProducto = (item: any) => {
+  productStore.changeCheck(item.id)
+}
 </script>
 
 
@@ -194,18 +196,30 @@ const rechazarProducto = (item: any) => alert('Producto rechazado: ' + item.name
       <!-- SEGUNDA MANO -->
       <v-window-item value="segundaMano">
 
-        <v-data-table :headers="usedHeaders" :items="usedProducts" class="elevation-1" item-value="id">
+        <v-data-table :headers="usedHeaders" :items="productStore.secondHandProducts" class="elevation-1"
+          item-value="id">
           <template #top>
             <v-toolbar flat>
               <v-toolbar-title>Productos de Segunda Mano</v-toolbar-title>
             </v-toolbar>
           </template>
 
+          <!-- Vendedor (ya se accede directamente por user.name) -->
+
+          <!-- Estado -->
+          <template #item.estado="{ item }">
+            <v-chip :color="item.isChecked ? 'green' : 'orange'" dark small>
+              {{ item.isChecked ? 'Aprobado' : 'Pendiente' }}
+            </v-chip>
+          </template>
+
+          <!-- Acciones -->
           <template #item.actions="{ item }">
-            <v-icon @click="aprobarProducto(item)">mdi-check</v-icon>
-            <v-icon @click="rechazarProducto(item)">mdi-close</v-icon>
+            <v-icon class="me-2" color="green" @click="aprobarProducto(item)">mdi-check</v-icon>
+            <v-icon color="red" @click="">mdi-close</v-icon>
           </template>
         </v-data-table>
+
       </v-window-item>
 
       <!-- GENEROS -->

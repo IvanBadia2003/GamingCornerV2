@@ -69,7 +69,7 @@ const cartStore = useCartStore()
 
   // Login
   const login = async (email: string, password: string) => {
-    debugger
+     
     loading.value = true
     error.value = null
     try {
@@ -106,28 +106,33 @@ const cartStore = useCartStore()
   // Logout
   const logout = async () => {
     try {
-      await axios.post('http://localhost:5000/User/logout', {}, { withCredentials: true })
+      await axios.post('http://localhost:5000/User/logout', {}, { withCredentials: true });
     } catch (err) {
       // No pasa nada si falla
     } finally {
       Object.assign(user, null);
+      window.location.href = '/'; // O usa reload si quieres refrescar completamente
+      // window.location.reload(); // Esto recarga la página actual
     }
   }
-
+  
   // Cargar usuario actual (por cookie)
   const fetchCurrentUser = async () => {
-    debugger
+     
     try {
       const response = await axios.get('http://localhost:5000/User/me', { withCredentials: true })
       Object.assign(user, response.data.value);
+      await cartStore.getCartProducts()
+
     } catch {
       Object.assign(user, null);
+      
     }
   }
 
   const getAllUsers = async () => {
     try {
-      debugger
+       
       const response = await axios.get('http://localhost:5000/User')
       users.splice(0, users.length) // Actualiza el array de usuarios
       users.push(...response.data)// Añade los nuevos usuarios al array
@@ -138,7 +143,7 @@ const cartStore = useCartStore()
   }
 
   async function updateUser(id: number, userToUpdate: UpdateUser) {
-    debugger
+     
     try {
       console.log(JSON.stringify(userToUpdate));
 
@@ -152,10 +157,8 @@ const cartStore = useCartStore()
       if (response.ok) {
         getAllUsers(); // Actualiza la lista de usuarios después de editar
         fetchCurrentUser();
-        alert('Usuario editado exitosamente.' + response.text);
         console.log('Usuario editado exitosamente.' + response);
       } else {
-        alert('Error al editar el Usuario:' + response.statusText);
         console.error('Error al editar el Usuario:', response.statusText);
       }
     } catch (error) {
@@ -172,7 +175,7 @@ const cartStore = useCartStore()
         if (response.ok) {
           getAllUsers(); // Actualiza la lista de usuarios después de editar
           console.log("Eliminar usuairo " + id + " hecho desde UserStore.ts");
-          alert(`usuario: ${id} eliminado con éxito` + response.ok);
+          alert(`usuario: ${id} eliminado con éxito`);
         }
 
     } catch (error) {

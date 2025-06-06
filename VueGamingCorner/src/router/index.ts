@@ -11,7 +11,7 @@ import AdminEconomyView from '../views/Admin/EconomyView.vue'
 import AdminChartView from '../views/Admin/ChartView.vue'
 import AdminUsersView from '../views/Admin/UsersView.vue'
 import AdminDataManagementView from '../views/Admin/DataManagement.vue'
-import { useUserStore } from '@/stores/UserStore' // o desde Pinia, etc.
+import { RolEnum, useUserStore } from '@/stores/UserStore' // o desde Pinia, etc.
 
 
 const router = createRouter({
@@ -23,40 +23,40 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/perfil',
-      name: 'perfil',
+      path: '/profile',
+      name: 'profile',
       component: ProfileView,
-      //meta: { requiresAuth: true },
+      meta: { requiresAuth: true },
     },
     {
       path: '/admin',
       name: 'admin',
       component: AdminView,
-      //meta: { requiresAuth: true },
+      meta: { requiresAuth: true },
     },
     {
       path: '/admin/economy',
       name: 'adminEconomy',
       component: AdminEconomyView,
-      //meta: { requiresAuth: true },
+      meta: { requiresAuth: true },
     },
     {
       path: '/admin/charts',
       name: 'adminCharts',
       component: AdminChartView,
-     // meta: { requiresAuth: true },
+     meta: { requiresAuth: true },
      },
     {
       path: '/admin/users',
       name: 'adminUsers',
       component: AdminUsersView,
-    //  meta: { requiresAuth: true },
+     meta: { requiresAuth: true },
      },
     {
       path: '/admin/datamanagement',
       name: 'adminDataManagement',
       component: AdminDataManagementView,
-    //  meta: { requiresAuth: true },
+     meta: { requiresAuth: true },
      },
     {
       path: '/catalog',
@@ -103,12 +103,33 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useUserStore()
 
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next({ name: 'login' })
-  } else {
-    next()
+  // Si intenta entrar a /login y ya está autenticado -> redirige
+  if (to.name === 'login' && authStore.isAuthenticated) {
+    next({ name: 'profile' })
+    return
   }
 
+  // Si intenta entrar a rutas que requieren auth y NO está autenticado -> redirige a login
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next({ name: 'login' })
+    return
+  }
+
+  // Si intenta entrar a /perfil y no tiene email (no autenticado)
+  if (to.name === 'profile' && authStore.user.email === '') {
+    next({ name: 'login' })
+    return
+  }
+
+  // Si intenta entrar a /admin y NO es admin -> redirige a home
+  if (to.name === 'admin' && authStore.user.rol !== RolEnum.Admin) {
+    next({ name: 'home' })
+    return
+  }
+
+  // Si todo va bien, permite la navegación
+  next()
 })
+  
 
 export default router

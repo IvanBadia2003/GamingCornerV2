@@ -75,6 +75,7 @@ public class UserService : IUserService
         user.Email = userUpdateDTO.Email;
         user.Password = userUpdateDTO.Password;
         user.PhoneNumber = userUpdateDTO.PhoneNumber;
+        user.Avatar = userUpdateDTO.Avatar;
         user.Address = userUpdateDTO.Address;
         user.Rol = (RolEnum)userUpdateDTO.Rol;
         user.State = (UserStateEnum)userUpdateDTO.State;

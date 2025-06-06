@@ -37,6 +37,7 @@ export interface OrderLine {
     productPlatform: string
     digitalCode: string
     createdAt: Date
+    orderImg: string
 }
 
 export enum PaymentMethodEnum {
@@ -91,7 +92,7 @@ export const useOrderStore = defineStore('OrderStore', () => {
     })
     // Añade un producto al carrito guardado en la base de datos (modo autenticado)
     async function addOrder(order: CreateOrder) {
-        debugger
+         
         try {
 
             VideogamePurchases.splice(0, VideogamePurchases.length)
@@ -108,7 +109,7 @@ export const useOrderStore = defineStore('OrderStore', () => {
     //Obtiene los productos del carrito almacenados en la cookie y los carga desde la API
     const getOrderByUserId = async () => {
         orders.splice(0, orders.length);
-        debugger
+         
         try {
             const response = await axios.get('http://localhost:5000/OrderHeader/User/' + userStore.user.userId);
 

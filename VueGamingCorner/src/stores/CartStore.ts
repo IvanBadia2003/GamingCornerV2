@@ -50,9 +50,9 @@ export const useCartStore = defineStore('CartStore', () => {
     // Añade un producto al carrito, ya sea a través de la API o guardándolo en cookies si el usuario no está autenticado
     async function addToCart(productId: number) {
         if (userStore.isAuthenticated) {
-             addToCartAPI(productId);
+            addToCartAPI(productId);
         } else {
-             addToCartCookie(productId);
+            addToCartCookie(productId);
         }
         await getCartProducts()
 
@@ -64,16 +64,16 @@ export const useCartStore = defineStore('CartStore', () => {
             axios.post('http://localhost:5000/Basket', { userId: userStore.user.userId, productId: productId });
             await nextTick(); // Asegura que la UI se actualice después de la operación
 
-            
+
             updateCartCount(); // Actualiza el contador desde la base de datos
         } catch (error) {
             console.error("Error al añadir a la base de datos:", error);
         }
     }
 
-     // Añade un producto al carrito guardado en cookies (modo invitado)
+    // Añade un producto al carrito guardado en cookies (modo invitado)
     async function addToCartCookie(productId: number) {
-        debugger
+         
         const time = 5 * 60 * 1000; // Duración de la cookie: 5 minutos
 
         try {
@@ -102,6 +102,7 @@ export const useCartStore = defineStore('CartStore', () => {
             await nextTick(); // Asegura que la UI se actualice después de la operación
 
             updateCartCount();
+            getCartProducts();
 
         } catch (error) {
             console.error("Error al actualizar la cookie del carrito:", error);
@@ -114,21 +115,21 @@ export const useCartStore = defineStore('CartStore', () => {
         } else {
             await removeFromCartCookie(productId);
         }
-    
+
         await nextTick(); // Asegura que la UI se actualice después de la operación
 
-         updateCartCount();
-         getCartProducts(); // Para refrescar los productos visibles
+        updateCartCount();
+        getCartProducts(); // Para refrescar los productos visibles
     }
 
     async function removeFromCartCookie(productId: number) {
         try {
             const cookie = await cookieStore.get(cookieName);
             let currentCart: number[] = cookie?.value ? JSON.parse(cookie.value) : [];
-    
+
             // Filtramos el producto a eliminar
             currentCart = currentCart.filter(id => id !== productId);
-    
+
             // Reescribimos la cookie sin ese producto
             await cookieStore.set({
                 name: cookieName,
@@ -147,11 +148,11 @@ export const useCartStore = defineStore('CartStore', () => {
             console.error("Error al eliminar el producto de la base de datos:", error);
         }
     }
-    
-    
-    
-      //Actualiza el contador de productos del carrito basándose en la cookie
-      const updateCartCount = async () => {
+
+
+
+    //Actualiza el contador de productos del carrito basándose en la cookie
+    const updateCartCount = async () => {
         if (userStore.isAuthenticated) {
             try {
                 cartCountCookies.value = cartProducts.length; // Actualiza el contador desde los productos cargados
@@ -168,20 +169,20 @@ export const useCartStore = defineStore('CartStore', () => {
             }
         }
     };
-    
 
-    
-     //Obtiene los productos del carrito almacenados en la cookie y los carga desde la API
-     const getCartProducts = async () => {
+
+
+    //Obtiene los productos del carrito almacenados en la cookie y los carga desde la API
+    const getCartProducts = async () => {
         cartProducts.splice(0, cartProducts.length);
-    debugger
+         
         if (userStore.isAuthenticated) {
             try {
                 const response = await axios.get('http://localhost:5000/Basket/User/' + userStore.user.userId);
-                
+
                 // La API devuelve un array de objetos con estructura { userId, product }
                 const cartItems = response.data;
-    
+
                 for (const item of cartItems) {
                     cartProducts.push(item.product); // Solo empujamos el producto
                 }
@@ -192,7 +193,7 @@ export const useCartStore = defineStore('CartStore', () => {
             try {
                 const cookie = await cookieStore.get(cookieName);
                 const IdsCartCookie = cookie?.value ? JSON.parse(cookie.value) : [];
-    
+
                 for (const Id of IdsCartCookie) {
                     const response = await axios.get('http://localhost:5000/Product/' + Id);
                     cartProducts.push(response.data);
@@ -203,8 +204,8 @@ export const useCartStore = defineStore('CartStore', () => {
         }
         updateCartCount();
     };
-    
-    
+
+
     // Precio oficial sin descuento
     const totalCartOficialPrice = computed(() => {
         return cartProducts.reduce((total, product) => {
@@ -239,20 +240,20 @@ export const useCartStore = defineStore('CartStore', () => {
 
     async function transferCookieCartToDatabase() {
         if (!userStore.isAuthenticated) return;
-    
+
         try {
             const cookie = await cookieStore.get(cookieName);
             const ids = cookie?.value ? JSON.parse(cookie.value) : [];
-    
+
             for (const productId of ids) {
                 await addToCartAPI(productId); // Reutilizas la función ya creada
             }
-    
+
             // Una vez migrados, borra la cookie
-             cookieStore.delete(cookieName);
-    
-             updateCartCount();
-             getCartProducts();
+            cookieStore.delete(cookieName);
+
+            updateCartCount();
+            getCartProducts();
         } catch (error) {
             console.error("Error al migrar productos del carrito:", error);
         }

@@ -2,7 +2,7 @@
 import PrincipalImage from '@/components/Images/PrincipalImage.vue';
 import VideogameCardInformation from '@/components/Description/InformationCard.vue';
 import Specifications from '@/components/Description/Specifications.vue';
-import { computed, nextTick, onMounted, ref } from 'vue';
+import { computed, nextTick, onMounted, ref, watchEffect } from 'vue';
 import CardComponent from '@/components/CardComponent.vue'
 import { useProductStore, type Videogame } from '@/stores/ProductStore';
 import { useRoute } from 'vue-router';
@@ -26,6 +26,10 @@ onMounted(() => {
 
 });
 
+
+import { useCloudinaryStore } from '@/stores/CloudinaryStore';
+
+const cloudinaryStore = useCloudinaryStore();
 
 const pegiMap: Record<number, string> = {
     3: pegi3,
@@ -59,17 +63,28 @@ async function reserve(productId: number) {
 
 /* PARA EL CARRUSEL */
 
-const images = ref([
-    "https://helios-i.mashable.com/imagery/articles/02aR11GDLtX9X3OuVX7Oh9E/images-4.fill.size_2000x1125.v1667406172.png",
-    "https://i.blogs.es/23b32a/0000/1366_2000.jpeg",
-    "https://img.redbull.com/images/c_limit,w_1500,h_1000/f_auto,q_auto/redbullcom/2022/11/8/woz7urmjqlvaat1roixn/kratos-god-of-war-ragnarok",
-    "https://www.diez.hn/binrepository/1200x675/0c0/0d0/none/3014757/QLHS/god2_7637565_20240531011042.jpg"
+const selectedImage = ref("");
 
-]);
+// Actualizar cuando productImages cambie
+watchEffect(() => {
+    const productImages = productStore.product?.productImages;
+    if (productImages) {
+        const firstContentImage = Object.entries(productImages)
+            .find(([key]) => key.toLowerCase().startsWith('content'));
 
-const selectedImage = ref(images.value[0]);
-
-
+        if (firstContentImage) {
+            selectedImage.value = firstContentImage[1] ?? '';
+        }
+    }
+});
+// //Obtenemos los datos de cloudinary
+// const mediaCloudinary = computed(() => cloudinaryStore.getMedia('products', productStore.product.id));
+// // Creamos un array de imágenes miniatura (solo las que existan)
+// const imagesCloudinary = computed(() =>
+//     ['main', 'background', 'content1', 'content2', 'content3', 'content4']
+//         .map(key => mediaCloudinary.value[key])
+//         .filter(url => !!url) // Solo si existe
+// );
 
 
 /* PARA LA DESCRIPCIÓN */
@@ -115,9 +130,23 @@ const sendReview = () => {
     reviewStore.addReview(reviewData)
     rating.value = 0
     review.value = ''
-
+    dialog.value = false
 
 };
+
+const isFavourite = computed(() =>
+    favouriteStore.favouriteProducts.some(fav => fav.product.id === productStore.product.id)
+)
+
+async function toggleFavourite(productId: number) {
+    if (isFavourite.value) {
+        await favouriteStore.deleteFavourite(productId);
+    } else {
+        await favouriteStore.addFavourite(productId);
+    }
+}
+
+
 
 </script>
 
@@ -148,9 +177,7 @@ const sendReview = () => {
 
     <v-container fluid class="game-description">
         <!-- Imagen de fondo -->
-        <v-img class="background-image"
-            src="https://helios-i.mashable.com/imagery/articles/02aR11GDLtX9X3OuVX7Oh9E/images-4.fill.size_2000x1125.v1667406172.png"
-            cover>
+        <v-img class="background-image" :src="productStore.product?.productImages?.background || ''" cover>
         </v-img>
 
         <!-- Contenedor del contenido -->
@@ -159,7 +186,7 @@ const sendReview = () => {
                 <!-- Imagen principal del juego -->
                 <v-col cols="12" md="6">
                     <v-sheet class="game-cover" elevation="5">
-                        <v-img :src="productStore.product?.principalImageURL" cover width="100%" class="img" />
+                        <v-img :src="productStore.product?.productImages?.main || ''" cover width="100%" class="img" />
                     </v-sheet>
                 </v-col>
 
@@ -173,7 +200,8 @@ const sendReview = () => {
                             <h1 class="game-title">{{ productStore.product?.name }}</h1>
                         </v-card-title>
 
-                        <div class="d-flex py-3 justify-space-between bg-background" style="border-radius: 50px;">
+                        <div v-if="productStore.product && !('isChecked' in productStore.product)"
+                            class="d-flex py-3 justify-space-between bg-background" style="border-radius: 50px;">
                             <v-list-item density="compact">
                                 <v-list-item-subtitle>
                                     <v-avatar>
@@ -199,12 +227,14 @@ const sendReview = () => {
                             </v-list-item>
                         </div>
                         <v-row class="py-3 align-center" dense>
-                            <v-col cols="auto" class="d-flex align-center">
+                            <v-col v-if="productStore.product && !('isChecked' in productStore.product)" cols="auto"
+                                class="d-flex align-center">
                                 <v-icon>mdi-tag-arrow-down</v-icon>
                                 <h5 class="ml-2" style="text-decoration: line-through;">{{ productStore.product?.price
-                                }}€</h5>
+                                    }}€</h5>
                             </v-col>
-                            <v-col cols="auto" class="mr-2">
+                            <v-col v-if="productStore.product && !('isChecked' in productStore.product)" cols="auto"
+                                class="mr-2">
                                 <h5 class="text-primary">-{{ productStore.product?.discount }}%</h5>
                             </v-col>
                             <v-col cols="auto" class="ml-2">
@@ -214,11 +244,17 @@ const sendReview = () => {
                         </v-row>
 
                         <v-card-actions>
-                            <v-btn color="deep-purple-lighten-2" text="Añadir a favoritos" border
-                                @click="favouriteStore.addFavourite(productStore.product?.id)"></v-btn>
+                            <v-btn v-if="userStore.isAuthenticated" icon variant="text"
+                                :color="isFavourite ? 'red-darken-2' : 'deep-purple-lighten-2'"
+                                @click="toggleFavourite(productStore.product?.id)">
+                                <v-icon>{{ isFavourite ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+                            </v-btn>
 
-                            <v-btn v-if="productStore.product?.stock > 0" color="deep-purple-lighten-2"
-                                text="Comprar Ahora" border @click="reserve(productStore.product?.id)"></v-btn>
+
+                            <v-btn
+                                v-if="productStore.product?.stock > 0 || productStore.product && 'isChecked' in productStore.product"
+                                class="bg-primary" text="Comprar Ahora"
+                                @click="reserve(productStore.product?.id)"></v-btn>
                             <v-btn v-else color="deep-purple-lighten-2" text="Avisar cuando repongan stock"
                                 border></v-btn>
                         </v-card-actions>
@@ -233,14 +269,17 @@ const sendReview = () => {
                     <h3>MULTIMEDIA</h3>
 
                     <!-- Imagen principal -->
-                    <v-img :src="selectedImage" class="main-image rounded-lg border-primary" cover></v-img>
+                    <v-img :src="selectedImage" class="main-image rounded-lg border-primary" cover height="400"></v-img>
 
                     <!-- Miniaturas -->
                     <v-row class="mt-3 thumbnails">
-                        <v-col v-for="(image, index) in images" :key="index" cols="3">
-                            <v-img :src="image" class="thumbnail rounded-lg" cover
-                                @click="selectedImage = image"></v-img>
+                        <v-col
+                            v-for="([key, image], index) in Object.entries(productStore.product?.productImages || {}).filter(([key]) => key.toLowerCase().startsWith('content'))"
+                            :key="index" cols="3">
+                            <v-img v-if="image" :src="image" class="thumbnail rounded-lg" cover height="100"
+                                @click="selectedImage = image" />
                         </v-col>
+
                     </v-row>
 
                 </v-col>
@@ -249,11 +288,17 @@ const sendReview = () => {
 
                     <v-card class="game-card">
                         <v-card-text>
-                            <div class="review-score">
-                                <v-avatar class="score-circle" color="green-darken-2">{{ reviewStore.AverageRating
-                                    }}</v-avatar>
+                            <v-avatar v-if="productStore.product && 'isChecked' in productStore.product" color="">
+                                <v-img :alt="productStore.product.user.name"
+                                    :src="productStore.product.user.avatar"></v-img>
+                            </v-avatar>
+                            <div v-if="productStore.product && !('isChecked' in productStore.product) && reviewStore.reviews.length > 0"
+                                class="review-score">
+                                <v-avatar class="score-circle" color="primary">{{ reviewStore.AverageRating
+                                }}</v-avatar>
                                 <span class="reviews">Basado en {{ reviewStore.ReviewCount }} reseña(s)</span>
                             </div>
+                            <p v-else>Este producto aún no tiene reseñas</p>
                             <v-divider class="my-3"></v-divider>
                             <v-container>
                                 <VideogameCardInformation />
@@ -268,7 +313,8 @@ const sendReview = () => {
                 <v-col cols="12">
                     <h3>ACERCA DE</h3>
                     <p class="game-text" v-html="isExpanded ? descriptionTxt : truncatedDescription"></p>
-                    <v-btn variant="text" class="text-primary" @click="toggleExpand">
+                    <v-btn v-if="descriptionTxt.length > maxLength" variant="text" class="text-primary"
+                        @click="toggleExpand">
                         {{ isExpanded ? 'Ver menos' : 'Ver más' }}
                     </v-btn>
                 </v-col>
@@ -285,7 +331,7 @@ const sendReview = () => {
         </v-container>
 
 
-        <v-row class="bg-primary my-15">
+        <v-row class="bg-primary my-15" v-if="productStore.product && !('isChecked' in productStore.product)">
             <v-container class="content mt-0">
                 <v-col cols="12">
                     <h3>Productos similares</h3>
@@ -295,7 +341,7 @@ const sendReview = () => {
                         <v-col v-for="(similarProduct, i) in productStore.similarsProducts" :key="i" cols="6" lg="3">
                             <CardComponent :title="similarProduct.name" :discount="similarProduct.discount"
                                 :price="similarProduct.price" :product-id="similarProduct.id"
-                                :src="similarProduct.principalImageURL as string" />
+                                :src="similarProduct.productImages.main || ''" />
                         </v-col>
 
                     </v-row>
@@ -304,7 +350,7 @@ const sendReview = () => {
             </v-container>
 
         </v-row>
-        <v-row class="bg-primary my-15">
+        <v-row class="bg-primary my-15" v-if="productStore.product && !('isChecked' in productStore.product)">
             <v-container class="content mt-0">
                 <v-col cols="12">
                     <h3>Productos compatibles</h3>
@@ -313,7 +359,7 @@ const sendReview = () => {
                             lg="3">
                             <CardComponent :title="compatibleProduct.name" :discount="compatibleProduct.discount"
                                 :price="compatibleProduct.price" :product-id="compatibleProduct.id"
-                                :src="compatibleProduct.principalImageURL as string" />
+                                :src="compatibleProduct.productImages?.main || ''" />
                         </v-col>
 
                     </v-row>
@@ -322,7 +368,7 @@ const sendReview = () => {
 
         </v-row>
 
-        <v-container class="content mt-0">
+        <v-container v-if="productStore.product && !('isChecked' in productStore.product)" class="content mt-0">
             <v-row style="width: 100%;" class="pt-15">
                 <v-col cols="12">
                     <v-row>
@@ -334,9 +380,13 @@ const sendReview = () => {
                         </v-col>
 
                     </v-row>
-                    <v-row>
-                        <ReviewCard v-for="(item, index) in reviewStore.reviews" :key="index" :review="item" />
+                    <v-row align="stretch">
+                        <v-col v-for="(item, index) in reviewStore.reviews" :key="index" cols="12" sm="6" md="4" lg="3"
+                            class="d-flex">
+                            <ReviewCard :review="item" class="flex-grow-1" />
+                        </v-col>
                     </v-row>
+
                 </v-col>
             </v-row>
 

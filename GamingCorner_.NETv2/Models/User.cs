@@ -26,8 +26,6 @@ public class User
 
     public string? PhoneNumber { get; set; }
 
-    public bool Admin { get; set; }
-
     public RolEnum Rol { get; set; }
     
     public UserStateEnum State { get; set; }
@@ -48,14 +46,13 @@ public class User
 
     public User() { }
 
-    public User(string name,string address, string email,string password,string phoneNumber,bool admin, RolEnum rol, UserStateEnum state, DateTime dateCreated, string avatar)
+    public User(string name,string address, string email,string password,string phoneNumber, RolEnum rol, UserStateEnum state, DateTime dateCreated, string avatar)
     {
         Name = name;
         Address = address;
         Email = email;
         Password = password;
         PhoneNumber = phoneNumber;
-        Admin = admin;
         Rol = rol;
         State = state;
         DateCreated = dateCreated;
@@ -72,7 +69,6 @@ public class User
             Email = this.Email,
             Password = this.Password,
             PhoneNumber = this.PhoneNumber,
-            Admin = this.Admin,
             Rol = this.Rol,
             DateCreated = this.DateCreated,
             State = this.State,

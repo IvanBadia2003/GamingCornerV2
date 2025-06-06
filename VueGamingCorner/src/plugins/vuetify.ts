@@ -9,66 +9,72 @@ import '@mdi/font/css/materialdesignicons.css'
 const light = {
   dark: false,
   colors: {
-    background: '#FFFFFF', // Fondo principal claro
-    surface: '#FFFFFF', // Fondo secundario
-    primary: '#FF6F00', // Naranja personalizado
-    'primary-darken-1': '#E6740F', // Naranja más oscuro
-    secondary: '#FFCC70', // Secundario: Naranja pastel
-    'secondary-darken-1': '#E6B960', // Secundario más oscuro
-    error: '#FF453A', // Rojo para errores
-    info: '#4A90E2', // Azul para información
-    success: '#34C759', // Verde para éxito
-    warning: '#FB8C00', // Naranja para advertencias
-    'on-background': '#000000', // Color del texto sobre el fondo
-    'on-surface': '#000000', // Color del texto sobre la superficie
-    'on-primary': '#000000', // Color del texto sobre el color primario
-    'on-secondary': '#000000', // Color del texto sobre el color secundario
-    'on-error': '#FFFFFF', // Color del texto sobre el color de error
-    'on-info': '#FFFFFF', // Color del texto sobre el color de información
-    'on-success': '#FFFFFF', // Color del texto sobre el color de éxito
-    'on-warning': '#FFFFFF', // Color del texto sobre el color de advertencia
-    'border-color': '#E0E0E0', // Color de los bordes
-    'hover-background': '#F5F5F5', // Color de fondo al pasar el ratón
-    'hover-surface': '#EEEEEE', // Color de superficie al pasar el ratón
-    'focus-background': '#E0E0E0', // Color de fondo al enfocar
-    'focus-surface': '#D0D0D0', // Color de superficie al enfocar
-    'active-background': '#C0C0C0', // Color de fondo al estar activo
-    'active-surface': '#B0B0B0', // Color de superficie al estar activo
-    'selected-background': '#A0A0A0', // Color de fondo al estar seleccionado
-    'selected-surface': '#909090', // Color de superficie al estar seleccionado
+    background: '#F5F7FA',             // Fondo principal claro
+    surface: '#FFFFFF',                // Superficies / tarjetas
+    primary: '#27659C',                // Mismo azul personalizado
+    'primary-darken-1': '#E6740F',     // Contraste (naranja)
+    secondary: '#FFA940',              // Naranja pastel más vivo
+    'secondary-darken-1': '#E69138',   // Naranja más oscuro
+
+    error: '#B00020',
+    info: '#1976D2',
+    success: '#2E7D32',
+    warning: '#F57C00',
+
+    'on-background': '#1A1A1A',        // Texto sobre fondo
+    'on-surface': '#1A1A1A',           // Texto sobre superficie
+    'on-primary': '#FFFFFF',
+    'on-secondary': '#1A1A1A',
+    'on-error': '#FFFFFF',
+    'on-info': '#FFFFFF',
+    'on-success': '#FFFFFF',
+    'on-warning': '#FFFFFF',
+
+    'border-color': '#E0E0E0',
+    'hover-background': '#F0F0F0',
+    'hover-surface': '#F9F9F9',
+    'focus-background': '#E8F0FE',
+    'focus-surface': '#E3F2FD',
+    'active-background': '#D1E3FF',
+    'active-surface': '#C8E0FF',
+    'selected-background': '#BBDFFF',
+    'selected-surface': '#AED4FF',
   },
 };
 
 const dark = {
   dark: true,
   colors: {
-    background: '#1A2A3E', // Fondo principal oscuro
-    surface: '#101A23', // Fondo secundario
-    primary: '#27659C', // azul personalizado
-    'primary-darken-1': '#E6740F', // Naranja más oscuro
-    secondary: '#FFCC70', // Secundario: Naranja pastel
-    'secondary-darken-1': '#E6B960', // Secundario más oscuro
-    error: '#CF6679', // Rojo para errores
-    info: '#4A90E2', // Azul para información
-    success: '#34C759', // Verde para éxito
-    warning: '#FB8C00', // Naranja para advertencias
-    'on-background': '#FFFFFF', // Color del texto sobre el fondo
-    'on-surface': '#FFFFFF', // Color del texto sobre la superficie
-    'on-primary': '#FFFFFF', // Color del texto sobre el color primario
-    'on-secondary': '#FFFFFF', // Color del texto sobre el color secundario
-    'on-error': '#000000', // Color del texto sobre el color de error
-    'on-info': '#000000', // Color del texto sobre el color de información
-    'on-success': '#000000', // Color del texto sobre el color de éxito
-    'on-warning': '#000000', // Color del texto sobre el color de advertencia
-    'border-color': '#333333', // Color de los bordes
-    'hover-background': '#2A2A2A', // Color de fondo al pasar el ratón
-    'hover-surface': '#3A3A3A', // Color de superficie al pasar el ratón
-    'focus-background': '#4A4A4A', // Color de fondo al enfocar
-    'focus-surface': '#5A5A5A', // Color de superficie al enfocar
-    'active-background': '#6A6A6A', // Color de fondo al estar activo
-    'active-surface': '#7A7A7A', // Color de superficie al estar activo
-    'selected-background': '#8A8A8A', // Color de fondo al estar seleccionado
-    'selected-surface': '#9A9A9A', // Color de superficie al estar seleccionado
+    background: '#1A2A3E',             // Fondo principal
+    surface: '#101A23',                // Fondo de tarjetas/superficies
+    primary: '#27659C',                // Azul personalizado
+    'primary-darken-1': '#E6740F',     // Contraste (naranja)
+    secondary: '#FFCC70',              // Naranja pastel
+    'secondary-darken-1': '#E6B960',   // Naranja más oscuro
+
+    error: '#CF6679',
+    info: '#4A90E2',
+    success: '#34C759',
+    warning: '#FB8C00',
+
+    'on-background': '#FFFFFF',
+    'on-surface': '#FFFFFF',
+    'on-primary': '#FFFFFF',
+    'on-secondary': '#FFFFFF',
+    'on-error': '#000000',
+    'on-info': '#000000',
+    'on-success': '#000000',
+    'on-warning': '#000000',
+
+    'border-color': '#333333',
+    'hover-background': '#2A2A2A',
+    'hover-surface': '#3A3A3A',
+    'focus-background': '#4A4A4A',
+    'focus-surface': '#5A5A5A',
+    'active-background': '#6A6A6A',
+    'active-surface': '#7A7A7A',
+    'selected-background': '#8A8A8A',
+    'selected-surface': '#9A9A9A',
   },
 };
 
@@ -89,10 +95,10 @@ export function createMyVuetify(defaultTheme: 'light' | 'dark') {
     defaults: {
       VTextField: {
         variant: 'outlined',
-        color: 'primary',
+        color: 'background',
         density: 'comfortable',
-        clearable : true,
-      },
+        class: 'my-2'
+       },
       VSelect: {
         variant: 'outlined',
         color: 'primary',
