@@ -74,7 +74,7 @@ function pay() {
                         <v-row>
                             <v-col cols="12">
                                 <h3>CESTA</h3>
-                                <v-card class="cart-item pa-4 mb-5" elevation="2"
+                                <v-card class="cart-item pa-4 mb-5" elevation="2" v-if="cartStore.cartProducts.length > 0"
                                     v-for="(item, index) in cartStore.cartProducts" :key="index">
                                     <v-row align="center">
                                         <!-- Imagen del producto -->
@@ -120,6 +120,7 @@ function pay() {
                                     </v-row>
 
                                 </v-card>
+                                <p v-else>No hay productos en el carrito</p>
 
 
                             </v-col>

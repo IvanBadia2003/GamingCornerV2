@@ -518,7 +518,6 @@ const handleSubmit = async () => {
                 <v-divider class="my-4" />
                 <h5 class="mb-2">Subir imágenes</h5>
 
-                <!-- <v-file-input v-if="entityType === 'users'" v-model="cloudinaryStore.avatarImage" label="Avatar" /> -->
 
                 <v-file-input v-if="isConsole || isGame || isPlatform || isSecondHand" 
                     v-model="cloudinaryStore.mainImage" label="Imagen principal" />
@@ -534,18 +533,7 @@ const handleSubmit = async () => {
                     label="Contenido 3" />
                 <v-file-input v-if="isConsole || isGame || isSecondHand"  v-model="cloudinaryStore.contentImages[3]"
                     label="Contenido 4" />
-                <!-- <div v-if="!isGenderOrPlatform" class="my-4">
-                    <p>Subir imágenes (máx. 6):</p>
-                    <v-file-input v-model="previewImages" accept="image/*" multiple show-size counter
-                        :rules="[rules.maxImages]" label="Seleccionar imágenes" prepend-icon="mdi-camera" />
 
-                    <v-row class="mt-2" v-if="formData.images.length">
-                        <v-col v-for="(image, index) in formData.images" :key="index" cols="4"
-                            class="d-flex justify-center">
-                            <v-img :src="image" height="100" width="100" cover />
-                        </v-col>
-                    </v-row>
-                </div> -->
             </v-form>
         </v-card-text>
 

@@ -68,14 +68,19 @@ const Products = [
                             <v-icon icon="mdi-cart" size="x-large"></v-icon>
                         </v-badge>
                     </v-btn>
-                    <v-menu offset-y transition="slide-y-transition" :close-on-content-click="false">
+                    <v-btn v-if="showFullMenu && !user.isAuthenticated" :to="'/login'" prepend-icon="mdi-login"
+                        variant="text">
+                        Iniciar Sesión
+                    </v-btn>
+                    <v-menu v-if="user.isAuthenticated" offset-y transition="slide-y-transition"
+                        :close-on-content-click="false">
                         <template #activator="{ props }">
                             <v-btn icon v-bind="props" color="white">
                                 <v-icon>mdi-account</v-icon>
                             </v-btn>
                         </template>
 
-                        <v-list v-if="user.isAuthenticated" class="text-center">
+                        <v-list class="text-center">
                             <v-list-item :to="'/profile'" class="justify-center">
                                 <v-list-item-title>Mi perfil</v-list-item-title>
                             </v-list-item>
@@ -89,43 +94,47 @@ const Products = [
                                 <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
                             </v-list-item>
                         </v-list>
-
-                        <v-list v-else class="text-center">
-                            <v-list-item :to="'/login'" class="justify-center">
-                                <v-list-item-title>Iniciar Sesión</v-list-item-title>
-                            </v-list-item>
-                            <v-list-item class="justify-center">
-                                <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
-                            </v-list-item>
-                        </v-list>
                     </v-menu>
 
                 </div>
-                <v-btn v-for="product in Products" :key="product.name" :value="product.type" :to="{ path: '/catalog' }"
-                    variant="text" color="white" @click="
+                <v-col v-if="showMobileMenu && toggleMenu && !user.isAuthenticated" cols="6" sm="6" md="6"
+                    class="d-flex flex-column flex-md-row justify-center align-center my-2">
+                    <v-btn :to="'/login'" prepend-icon="mdi-login" variant="text">
+                        Iniciar Sesión
+                    </v-btn>
+
+                </v-col>
+                <v-btn v-if="showFullMenu || (showMobileMenu && toggleMenu)" v-for="product in Products"
+                    :key="product.name" :value="product.type" :to="{ path: '/catalog' }" variant="text" color="white"
+                    @click="
                         productStore.getProductsToCatalog(product.type || '');
                     productStore.productType = product.type || '';
                     ">
                     {{ product.name }}
                 </v-btn>
-
-
             </v-col>
 
-            <v-col v-if="showFullMenu" cols="3" sm="3" md="3" class="d-flex justify-end align-center px-10 ">
+
+
+            <v-col v-if="showFullMenu" cols=" 3" sm="3" md="3" class="d-flex justify-end align-center px-10 ">
                 <v-btn icon :to="'/cart'" color="white" class="me-4">
                     <v-badge :content="cartCountItems" color="background" overlap>
                         <v-icon icon="mdi-cart" size="x-large"></v-icon>
                     </v-badge>
                 </v-btn>
-                <v-menu offset-y transition="slide-y-transition" :close-on-content-click="false">
+                <v-btn v-if="showFullMenu && !user.isAuthenticated" :to="'/login'" prepend-icon="mdi-login"
+                    variant="text">
+                    Iniciar Sesión
+                </v-btn>
+                <v-menu v-if="user.isAuthenticated" offset-y transition="slide-y-transition"
+                    :close-on-content-click="false">
                     <template #activator="{ props }">
                         <v-btn icon v-bind="props" color="white">
                             <v-icon>mdi-account</v-icon>
                         </v-btn>
                     </template>
 
-                    <v-list v-if="user.isAuthenticated" class="text-center">
+                    <v-list class="text-center">
                         <v-list-item :to="'/profile'" class="justify-center">
                             <v-list-item-title>Mi perfil</v-list-item-title>
                         </v-list-item>
@@ -139,18 +148,11 @@ const Products = [
                             <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
                         </v-list-item>
                     </v-list>
-
-                    <v-list v-else class="text-center">
-                        <v-list-item :to="'/login'" class="justify-center">
-                            <v-list-item-title>Iniciar Sesión</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item class="justify-center">
-                            <v-btn @click="toggleTheme">Cambiar Tema</v-btn>
-                        </v-list-item>
-                    </v-list>
                 </v-menu>
 
             </v-col>
+
+
             <v-col v-if="showMobileMenu" cols="3" sm="3" md="3" class="d-flex justify-end align-center px-10">
                 <button @click="toggleMenuManual = !toggleMenuManual" :class="{ 'open': toggleMenu }" class="button">
                     <div></div>

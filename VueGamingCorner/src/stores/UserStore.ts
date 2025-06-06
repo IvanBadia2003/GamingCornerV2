@@ -121,7 +121,8 @@ const cartStore = useCartStore()
     try {
       const response = await axios.get('http://localhost:5000/User/me', { withCredentials: true })
       Object.assign(user, response.data.value);
-      
+      await cartStore.getCartProducts()
+
     } catch {
       Object.assign(user, null);
       

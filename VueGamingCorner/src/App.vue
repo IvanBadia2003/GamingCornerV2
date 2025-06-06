@@ -1,7 +1,15 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRoute } from 'vue-router'
 import FooterComponent from '@/components/Footer/FooterComponent.vue'
 import HeaderComponent from '@/components/Header/HeaderComponent.vue'
+
+
+const route = useRoute()
+
+// Lista de rutas donde NO se quiere mostrar el footer
+const hideFooterOnRoutes = ['/login','/admin']
+// Lista de rutas donde NO se quiere mostrar el header
+const hideHeaderOnRoutes = ['/login', '/register', '/admin']
 </script>
 
 <template >
@@ -11,7 +19,7 @@ import HeaderComponent from '@/components/Header/HeaderComponent.vue'
   <div class="bg-background" id="App">
     <RouterView />
   </div>
-  <FooterComponent/>
+  <FooterComponent v-if="!hideFooterOnRoutes.includes(route.path)" />
 </div>
 </template>
 
